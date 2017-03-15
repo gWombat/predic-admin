@@ -40,6 +40,9 @@ public class Congregation extends AuditableEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
     private List<CongregationPublisher> publishers;
 
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
+    private List<TheocraticYear>        years;
+
     public Long getId() {
         return id;
     }
@@ -70,5 +73,13 @@ public class Congregation extends AuditableEntity {
 
     public void setPublishers(List<CongregationPublisher> publishers) {
         this.publishers = publishers;
+    }
+
+    public List<TheocraticYear> getYears() {
+        return years;
+    }
+
+    public void setYears(List<TheocraticYear> years) {
+        this.years = years;
     }
 }
