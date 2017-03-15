@@ -1,9 +1,18 @@
 package fr.gwombat.predicadmin.model;
 
-import org.hibernate.validator.constraints.NotBlank;
+import java.util.List;
 
-import javax.persistence.*;
-import java.io.Serializable;
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+
+import org.hibernate.validator.constraints.NotBlank;
 
 /**
  * Created by gWombat.
@@ -12,18 +21,24 @@ import java.io.Serializable;
  */
 @Entity
 @Table(name = "congregations")
-public class Congregation implements Serializable {
+public class Congregation extends AuditableEntity {
 
-    private static final long serialVersionUID = -6757555507970624970L;
+    private static final long           serialVersionUID = -6757555507970624970L;
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "congregation_id")
-    private Long id;
+    private Long                        id;
 
     @NotBlank
-    @Column(name = "identifier", nullable = false)
-    private String identifier = EntityIdGenerator.generateIdentifier();
+    @Column(name = "name", nullable = false)
+    private String                      name;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
+    private List<MeetingAttendance>     attendances;
+
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
+    private List<CongregationPublisher> publishers;
 
     public Long getId() {
         return id;
@@ -33,11 +48,27 @@ public class Congregation implements Serializable {
         this.id = id;
     }
 
-    public String getIdentifier() {
-        return identifier;
+    public List<MeetingAttendance> getAttendances() {
+        return attendances;
     }
 
-    public void setIdentifier(String identifier) {
-        this.identifier = identifier;
+    public void setAttendances(List<MeetingAttendance> attendances) {
+        this.attendances = attendances;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public List<CongregationPublisher> getPublishers() {
+        return publishers;
+    }
+
+    public void setPublishers(List<CongregationPublisher> publishers) {
+        this.publishers = publishers;
     }
 }
