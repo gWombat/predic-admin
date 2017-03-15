@@ -7,6 +7,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -65,7 +66,7 @@ public class Address extends AuditableEntity {
     }
 
     public void setCountry(String country) {
-        this.country = country;
+        this.country = StringUtils.upperCase(country);
     }
 
     public Long getId() {
