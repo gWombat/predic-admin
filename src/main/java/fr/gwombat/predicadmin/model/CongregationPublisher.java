@@ -12,6 +12,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Past;
@@ -57,6 +58,10 @@ public class CongregationPublisher extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "congregation_id", nullable = false)
     private Congregation      congregation;
+    
+    @OneToOne
+    @JoinColumn(name="address_id")
+    private Address address;
 
     public Long getId() {
         return id;
@@ -112,6 +117,14 @@ public class CongregationPublisher extends AuditableEntity {
 
     public void setCongregation(Congregation congregation) {
         this.congregation = congregation;
+    }
+
+    public Address getAddress() {
+        return address;
+    }
+
+    public void setAddress(Address address) {
+        this.address = address;
     }
 
 }
