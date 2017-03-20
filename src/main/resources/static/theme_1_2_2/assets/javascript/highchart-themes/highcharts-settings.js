@@ -706,7 +706,7 @@ $(function() {
             tooltip: {
                 headerFormat: '',
                 pointFormatter: function() {
-                    return `<strong>${moment.unix(this.x).format('MMM YYYY')}<strong>: ${this.y}`;
+                    return "<strong>${moment.unix(this.x).format('MMM YYYY')}<strong>: ${this.y}";
                 }
             },
             plotOptions: {
