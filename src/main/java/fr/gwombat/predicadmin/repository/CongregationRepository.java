@@ -7,5 +7,7 @@ import fr.gwombat.predicadmin.model.Congregation;
 
 @Repository
 public interface CongregationRepository extends JpaRepository<Congregation, Long> {
+    
+    Congregation findByName(String name);
 
 }

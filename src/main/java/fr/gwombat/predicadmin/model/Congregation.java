@@ -42,6 +42,11 @@ public class Congregation extends AuditableEntity {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
     private List<TheocraticYear>        years;
+    
+    @Override
+    public String toString() {
+        return name + "[" + identifier + "]";
+    }
 
     public Long getId() {
         return id;

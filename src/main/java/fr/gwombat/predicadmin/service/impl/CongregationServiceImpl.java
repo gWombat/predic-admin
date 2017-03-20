@@ -24,4 +24,9 @@ public class CongregationServiceImpl implements CongregationService {
         return congregationRepository.findAll();
     }
 
+    @Override
+    public Congregation getCongregationByName(final String name) {
+        return congregationRepository.findByName(name);
+    }
+
 }

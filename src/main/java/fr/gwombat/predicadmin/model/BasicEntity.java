@@ -16,8 +16,8 @@ class BasicEntity implements Serializable {
 
     @NotBlank
     @Column(name = "identifier", unique = true, nullable = false, length = 32)
-    private String            identifier       = EntityIdGenerator.generateIdentifier();
-    
+    protected String          identifier       = EntityIdGenerator.generateIdentifier();
+
     protected BasicEntity() {
     }
 

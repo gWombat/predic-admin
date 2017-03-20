@@ -20,19 +20,19 @@ class AuditableEntity extends BasicEntity {
 
     @CreatedBy
     @Column(name = "created_by")
-    private String            createdBy;
+    protected String          createdBy;
 
     @LastModifiedBy
     @Column(name = "last_modified_by")
-    private String            lastModifiedBy;
+    protected String          lastModifiedBy;
 
     @CreatedDate
     @Column(name = "created_date")
-    private LocalDate         createdDate;
+    protected LocalDate       createdDate;
 
     @LastModifiedDate
     @Column(name = "last_modified_date")
-    private LocalDate         lastModifiedDate;
+    protected LocalDate       lastModifiedDate;
 
     protected AuditableEntity() {
     }

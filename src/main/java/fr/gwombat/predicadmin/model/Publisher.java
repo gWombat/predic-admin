@@ -15,7 +15,6 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Past;
 
 import org.hibernate.validator.constraints.NotBlank;
 
@@ -41,12 +40,10 @@ public class Publisher extends AuditableEntity {
     private String            firstName;
 
     @NotNull
-    @Past
     @Column(name = "birth_date", nullable = false)
     private LocalDate         birthDate;
 
-    @NotNull
-    @Column(name = "baptism_date", nullable = false)
+    @Column(name = "baptism_date")
     private LocalDate         baptismDate;
 
     @NotNull
@@ -58,10 +55,15 @@ public class Publisher extends AuditableEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "congregation_id", nullable = false)
     private Congregation      congregation;
-    
+
     @OneToOne
-    @JoinColumn(name="address_id")
-    private Address address;
+    @JoinColumn(name = "address_id")
+    private Address           address;
+
+    @Override
+    public String toString() {
+        return name + " " + firstName + "[" + identifier + "]";
+    }
 
     public Long getId() {
         return id;
@@ -85,6 +87,10 @@ public class Publisher extends AuditableEntity {
 
     public void setFirstName(String firstName) {
         this.firstName = firstName;
+    }
+
+    public String getFullName() {
+        return firstName + " " + name;
     }
 
     public LocalDate getBirthDate() {
