@@ -23,7 +23,7 @@ import fr.gwombat.predicadmin.support.Gender;
 
 @Entity
 @Table(name = "congregations_publishers")
-public class CongregationPublisher extends AuditableEntity {
+public class Publisher extends AuditableEntity {
 
     private static final long serialVersionUID = 1L;
 

@@ -38,7 +38,7 @@ public class Congregation extends AuditableEntity {
     private List<MeetingAttendance>     attendances;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
-    private List<CongregationPublisher> publishers;
+    private List<Publisher> publishers;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
     private List<TheocraticYear>        years;
@@ -67,11 +67,11 @@ public class Congregation extends AuditableEntity {
         this.name = name;
     }
 
-    public List<CongregationPublisher> getPublishers() {
+    public List<Publisher> getPublishers() {
         return publishers;
     }
 
-    public void setPublishers(List<CongregationPublisher> publishers) {
+    public void setPublishers(List<Publisher> publishers) {
         this.publishers = publishers;
     }
 
