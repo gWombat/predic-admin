@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="www.thymeleaf.org" layout:decorate="~{layouts/default_layout}">
+<head>
+
+<title th:text="#{general.profile.edit}">Fiche proclamateur</title>
+
+</head>
+<body>
+
+    <div class="sub-navbar sub-navbar__header-breadcrumbs" layout:fragment="content-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 sub-navbar-column">
+                    <div class="sub-navbar-header">
+                        <h3>Edition d'une fiche proclamateur</h3>
+                    </div>
+                    <ol class="breadcrumb navbar-text navbar-right no-bg">
+                        <li class="current-parent"><a class="current-parent" href="index.html"> <i class="fa fa-fw fa-home"></i>
+                        </a></li>
+                        <li><a href="#"> Proclamateurs </a></li>
+                        <li class="active">Edition d'une fiche</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div layout:fragment="content">
+        <!-- START Avatar with Name -->
+        <div class="media m-b-3">
+            <div class="media-body">
+                <h3 class="f-w-300 m-b-0 m-t-1">
+                    <a href="profile-details.html"><span th:text="${publisher.fullName}">John DOE</span></a> <span class="text-muted"> <span class="m-r-1 m-l-1">/</span></span> Fiche proclamateur
+                </h3>
+                <p class="m-t-0">
+                    <span class="label label-warning label-outline text-uppercase m-r-1">Premium</span> Edite les informations de la fiche de ce proclamateur.
+                </p>
+            </div>
+        </div>
+        <!-- END Avatar with Name -->
+
+        <div class="row">
+            <!-- START Left Column -->
+            <div class="col-lg-2 m-b-2">
+                <!-- START Menu Pills Vertical - Profile, Account, Billing, Sessions -->
+                <ul class="nav nav-pills nav-stacked">
+                    <li role="presentation" class="active"><a href="profile-edit.html">Informations générales</a></li>
+                    <li role="presentation" class=""><a href="account-edit.html">Adresse</a></li>
+                </ul>
+                <!-- START Menu Pills Vertical - Profile, Account, Billing, Sessions -->
+            </div>
+            <!-- END Left Column -->
+
+            <div class="col-lg-10">
+                <div class="panel panel-default b-a-2 no-bg b-gray-dark">
+                    <div class="panel-heading">
+                        <h4 class="panel-title">Informations générales</h4>
+                    </div>
+
+                    <div class="panel-body">
+                        <!-- START All Forms -->
+                        <form class="form-horizontal">
+                            <!-- START Form Name -->
+                            <div class="form-group">
+                                <label for="profile-edit-name" class="col-sm-3 control-label"><span class="text-danger">*</span> Nom</label>
+                                <div class="col-sm-6">
+                                    <input type="email" class="form-control" id="profile-edit-name" placeholder="Nom du proclamateur...">
+                                </div>
+                            </div>
+                            <!-- END Form Name -->
+                            <!-- START Form First Name -->
+                            <div class="form-group">
+                                <label for="profile-edit-first-name" class="col-sm-3 control-label"><span class="text-danger">*</span> Prénom</label>
+                                <div class="col-sm-6">
+                                    <input type="email" class="form-control" id="profile-edit-first-name" placeholder="Prénom du proclamateur...">
+                                </div>
+                            </div>
+                            <!-- END Form First Name -->
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
