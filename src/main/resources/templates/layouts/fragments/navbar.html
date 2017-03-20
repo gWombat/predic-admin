@@ -19,46 +19,23 @@
 
         <div class="collapse navbar-collapse" id="navbar">
 
-            <!-- START Search Mobile -->
-            <div class="form-group hidden-lg hidden-md hidden-sm m-t-2">
-                <div class="input-group hidden-lg hidden-md">
-                    <input type="text" class="form-control" placeholder="Search for..."> <span class="input-group-btn">
-                        <button class="btn btn-primary" type="button">
-                            <i class="fa fa-fw fa-search"></i>
-                        </button>
-                    </span>
-                </div>
-            </div>
-            <!-- END Search Mobile -->
-
             <!-- START Left Side Navbar -->
             <ul class="nav navbar-nav navbar-left clearfix yamm">
 
                 <!-- START Switch Sidebar ON/OFF -->
-                <li id="sidebar-switch" class="hidden-xs"><a class="action-toggle-sidebar-slim" data-placement="bottom" data-toggle="tooltip" href="#" title="Slim sidebar on/off"> <i
-                        class="fa fa-lg fa-bars fa-fw"></i>
-                </a></li>
+                <li id="sidebar-switch" class="hidden-xs">
+                    <a class="action-toggle-sidebar-slim" data-placement="bottom" data-toggle="tooltip" href="#" th:title="#{menu.lateral.collpase.expand}">
+                        <i class="fa fa-lg fa-bars fa-fw"></i>
+                    </a>
+                </li>
                 <!-- END Switch Sidebar ON/OFF -->
 
-                <li class="spin-search-box clearfix hidden-xs">
-                    <a href="#" class="pull-left">
-                        <i class="fa fa-search fa-lg icon-inactive"></i>
-                        <i class="fa fa-close  fa-lg icon-active"></i>
-                    </a>
-                    <div class="input-group input-group-sm pull-left p-10">
-                        <input type="text" class="form-control" placeholder="Search for..."> <span class="input-group-btn active">
-                            <button class="btn btn-primary" type="button">
-                                <i class="fa fa-search"></i>
-                            </button>
-                        </span>
-                    </div>
-                </li>
             </ul>
             <!-- START Left Side Navbar -->
 
             <!-- START Right Side Navbar -->
             <ul class="nav navbar-nav navbar-right">
-                <li><a href="#">Sign Out<i class="m-l-1 fa-lg fa fa-fw fa-sign-out m-r-1"></i></a></li>
+                <li><a href="#" th:text="#{log.out}">Sign Out<i class="m-l-1 fa-lg fa fa-fw fa-sign-out m-r-1"></i></a></li>
 
             </ul>
             <!-- END Right Side Navbar -->
