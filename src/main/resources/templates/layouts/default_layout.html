@@ -1,102 +1,103 @@
 <!DOCTYPE html>
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
-    xmlns:th="http://www.thymeleaf.org">
+      xmlns:th="http://www.thymeleaf.org">
 <!-- START Head -->
 <head>
-<meta http-equiv="content-type" content="text/html; charset=utf-8">
+    <meta http-equiv="content-type" content="text/html; charset=utf-8">
 
-<!-- Enable responsiveness on mobile devices-->
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
+    <!-- Enable responsiveness on mobile devices-->
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1">
 
-<title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE" th:text="#{application.name}">MonAppli</title>
+    <title layout:title-pattern="$LAYOUT_TITLE | $CONTENT_TITLE" th:text="#{application.name}">MonAppli</title>
 
-<!-- START CSS -->
-<link rel="stylesheet" th:href="@{/theme_1_2_2/assets/stylesheets/bootstrap.min.css}">
-<link rel="stylesheet" th:href="@{/theme_1_2_2/assets/stylesheets/app.min.css}">
-<link rel="stylesheet" th:href="@{/theme_1_2_2/assets/stylesheets/plugins.min.css}">
-<link rel="stylesheet" th:href="@{/theme_1_2_2/assets/vendor/css/lib.min.css}">
+    <!-- START CSS -->
+    <link rel="stylesheet" th:href="@{/theme_1_2_2/assets/stylesheets/bootstrap.min.css}">
+    <link rel="stylesheet" th:href="@{/theme_1_2_2/assets/stylesheets/app.min.css}">
+    <link rel="stylesheet" th:href="@{/theme_1_2_2/assets/stylesheets/plugins.min.css}">
+    <link rel="stylesheet" th:href="@{/theme_1_2_2/assets/vendor/css/lib.min.css}">
 
-<link rel="stylesheet" th:href="@{/css/loader.min.css}">
+    <link rel="stylesheet" th:href="@{/css/loader.min.css}">
+    <link rel="stylesheet" th:href="@{/webjars/font-awesome/css/font-awesome.min.css}">
 
-<link rel="stylesheet" th:href="@{/datetimepicker/4_17_47/css/bootstrap-datetimepicker.min.css}">
-<!-- END CSS -->
+    <link rel="stylesheet" th:href="@{/datetimepicker/4_17_47/css/bootstrap-datetimepicker.min.css}">
+    <!-- END CSS -->
 
-<!-- START Favicon -->
-<link rel="apple-touch-icon" sizes="57x57" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-57x57.png}">
-<link rel="apple-touch-icon" sizes="60x60" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-60x60.png}">
-<link rel="apple-touch-icon" sizes="72x72" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-72x72.png}">
-<link rel="apple-touch-icon" sizes="76x76" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-76x76.png}">
-<link rel="apple-touch-icon" sizes="114x114" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-114x114.png}">
-<link rel="apple-touch-icon" sizes="120x120" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-120x120.png}">
-<link rel="apple-touch-icon" sizes="144x144" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-144x144.png}">
-<link rel="apple-touch-icon" sizes="152x152" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-152x152.png}">
-<link rel="apple-touch-icon" sizes="180x180" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-180x180.png}">
-<link rel="icon" type="image/png" sizes="192x192" th:href="@{/theme_1_2_2/assets/images/favicons/android-icon-192x192.png}">
-<link rel="icon" type="image/png" sizes="32x32" th:href="@{/theme_1_2_2/assets/images/favicons/favicon-32x32.png}">
-<link rel="icon" type="image/png" sizes="96x96" th:href="@{/theme_1_2_2/assets/images/favicons/favicon-96x96.png}">
-<link rel="icon" type="image/png" sizes="16x16" th:href="@{/theme_1_2_2/assets/images/favicons/favicon-16x16.png}">
+    <!-- START Favicon -->
+    <link rel="apple-touch-icon" sizes="57x57" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-57x57.png}">
+    <link rel="apple-touch-icon" sizes="60x60" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-60x60.png}">
+    <link rel="apple-touch-icon" sizes="72x72" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-72x72.png}">
+    <link rel="apple-touch-icon" sizes="76x76" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-76x76.png}">
+    <link rel="apple-touch-icon" sizes="114x114" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-114x114.png}">
+    <link rel="apple-touch-icon" sizes="120x120" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-120x120.png}">
+    <link rel="apple-touch-icon" sizes="144x144" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-144x144.png}">
+    <link rel="apple-touch-icon" sizes="152x152" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-152x152.png}">
+    <link rel="apple-touch-icon" sizes="180x180" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-180x180.png}">
+    <link rel="icon" type="image/png" sizes="192x192" th:href="@{/theme_1_2_2/assets/images/favicons/android-icon-192x192.png}">
+    <link rel="icon" type="image/png" sizes="32x32" th:href="@{/theme_1_2_2/assets/images/favicons/favicon-32x32.png}">
+    <link rel="icon" type="image/png" sizes="96x96" th:href="@{/theme_1_2_2/assets/images/favicons/favicon-96x96.png}">
+    <link rel="icon" type="image/png" sizes="16x16" th:href="@{/theme_1_2_2/assets/images/favicons/favicon-16x16.png}">
 
-<meta name="msapplication-TileColor" content="#ffffff">
-<meta name="msapplication-TileImage" th:content="@{/theme_1_2_2/assets/images/favicons/ms-icon-144x144.png}">
-<meta name="theme-color" content="#ffffff">
-<!-- END Favicon -->
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="msapplication-TileImage" th:content="@{/theme_1_2_2/assets/images/favicons/ms-icon-144x144.png}">
+    <meta name="theme-color" content="#ffffff">
+    <!-- END Favicon -->
 
-<!-- jekyll settings -->
-<script>
-	var ASSET_PATH_BASE = '';
-</script>
+    <!-- jekyll settings -->
+    <script>
+        var ASSET_PATH_BASE = '';
+    </script>
 </head>
 <!-- END Head -->
 
 
 <body class="">
-    <!-- JS -->
-    <script th:src="@{/webjars/momentjs/min/moment-with-locales.min.js}"></script>
-    
-    <script th:src="@{/theme_1_2_2/assets/vendor/js/lib.min.js}"></script>
+<!-- JS -->
+<script th:src="@{/webjars/momentjs/min/moment-with-locales.min.js}"></script>
+
+<script th:src="@{/theme_1_2_2/assets/vendor/js/lib.min.js}"></script>
 <!--     <script th:src="@{/theme_1_2_2/assets/vendor/js/daterangepicker.min.js}"></script> -->
-    <script th:src="@{/theme_1_2_2/assets/vendor/js/bootstrap-select.min.js}"></script>
-    
-    <script th:src="@{/theme_1_2_2/assets/javascript/app/helpers.min.js}"></script>
-    <script th:src="@{/theme_1_2_2/assets/javascript/app/layoutControl.min.js}"></script>
-    <script th:src="@{/theme_1_2_2/assets/javascript/app/rightSidebar.min.js}"></script>
-    <script th:src="@{/theme_1_2_2/assets/javascript/app/sidebar.min.js}"></script>
-    <script th:src="@{/theme_1_2_2/assets/javascript/app/main.min.js}"></script>
-    
-    <script th:src="@{/datetimepicker/4_17_47/js/bootstrap-datetimepicker.min.js}"></script>
-    
+<script th:src="@{/theme_1_2_2/assets/vendor/js/bootstrap-select.min.js}"></script>
 
-    <div class="main-wrap">
-        <nav class="navigation">
-            <!-- START Navbar -->
-            <div th:replace="layouts/fragments/navbar :: navbar"></div>
-            <!-- END Navbar -->
-            
-            <!-- START Sidebars -->
-            <div th:replace="layouts/fragments/sidebars :: sidebar"></div>
-            <!-- END Sidebars -->
+<script th:src="@{/theme_1_2_2/assets/javascript/app/helpers.min.js}"></script>
+<script th:src="@{/theme_1_2_2/assets/javascript/app/layoutControl.min.js}"></script>
+<script th:src="@{/theme_1_2_2/assets/javascript/app/rightSidebar.min.js}"></script>
+<script th:src="@{/theme_1_2_2/assets/javascript/app/sidebar.min.js}"></script>
+<script th:src="@{/theme_1_2_2/assets/javascript/app/main.min.js}"></script>
 
-        </nav>
-        
-        <div class="content">
-            <!-- START Sub-Navbar with Header and Breadcrumbs-->
-            <div layout:fragment="content-header"></div>
-            <!-- END Sub-Navbar with Header and Breadcrumbs-->
-            
-            <div class="container">
-                <!-- START Content -->
-                <div layout:fragment="content"></div>
-                <!-- END Content -->
-            </div>
+<script th:src="@{/datetimepicker/4_17_47/js/bootstrap-datetimepicker.min.js}"></script>
+
+
+<div class="main-wrap">
+    <nav class="navigation">
+        <!-- START Navbar -->
+        <div th:replace="layouts/fragments/navbar :: navbar"></div>
+        <!-- END Navbar -->
+
+        <!-- START Sidebars -->
+        <div th:replace="layouts/fragments/sidebars :: sidebar"></div>
+        <!-- END Sidebars -->
+
+    </nav>
+
+    <div class="content">
+        <!-- START Sub-Navbar with Header and Breadcrumbs-->
+        <div layout:fragment="content-header"></div>
+        <!-- END Sub-Navbar with Header and Breadcrumbs-->
+
+        <div class="container">
+            <!-- START Content -->
+            <div layout:fragment="content"></div>
+            <!-- END Content -->
         </div>
-
-        <!-- START Footer -->
-        <footer>
-            <div th:replace="layouts/fragments/footer :: footer"></div>
-        </footer>
-        <!-- END Footer -->
-
     </div>
+
+    <!-- START Footer -->
+    <footer>
+        <div th:replace="layouts/fragments/footer :: footer"></div>
+    </footer>
+    <!-- END Footer -->
+
+</div>
 
 </body>
 
