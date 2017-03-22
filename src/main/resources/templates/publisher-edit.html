@@ -44,12 +44,12 @@
         <div class="row">
             <!-- START Left Column -->
             <div class="col-lg-2 m-b-2">
-                <!-- START Menu Pills Vertical - Profile, Account, Billing, Sessions -->
+                <!-- START Menu Pills Vertical -->
                 <ul class="nav nav-pills nav-stacked">
                     <li role="presentation" class="active"><a href="profile-edit.html">Informations générales</a></li>
                     <li role="presentation" class=""><a href="account-edit.html">Adresse</a></li>
                 </ul>
-                <!-- START Menu Pills Vertical - Profile, Account, Billing, Sessions -->
+                <!-- END Menu Pills Vertical -->
             </div>
             <!-- END Left Column -->
 
@@ -61,28 +61,90 @@
 
                     <div class="panel-body">
                         <!-- START All Forms -->
-                        <form class="form-horizontal">
+                        <form class="form-horizontal" th:object="${publisher}">
                             <!-- START Form Name -->
                             <div class="form-group">
-                                <label for="profile-edit-name" class="col-sm-3 control-label"><span class="text-danger">*</span> Nom</label>
+                                <label for="profile-edit-name" class="col-sm-3 control-label">
+                                    <span class="text-danger">* </span>
+                                    <span th:text="#{general.name}"></span>
+                                </label>
                                 <div class="col-sm-6">
-                                    <input type="email" class="form-control" id="profile-edit-name" placeholder="Nom du proclamateur...">
+                                    <input type="text" class="form-control" id="profile-edit-name" placeholder="Nom du proclamateur..." th:field="*{name}">
                                 </div>
                             </div>
                             <!-- END Form Name -->
                             <!-- START Form First Name -->
                             <div class="form-group">
-                                <label for="profile-edit-first-name" class="col-sm-3 control-label"><span class="text-danger">*</span> Prénom</label>
+                                <label for="profile-edit-first-name" class="col-sm-3 control-label">
+                                    <span class="text-danger">* </span>
+                                    <span th:text="#{general.firstname}"></span>
+                                </label>
                                 <div class="col-sm-6">
-                                    <input type="email" class="form-control" id="profile-edit-first-name" placeholder="Prénom du proclamateur...">
+                                    <input type="text" class="form-control" id="profile-edit-first-name" placeholder="Prénom du proclamateur..." th:field="*{firstName}">
                                 </div>
                             </div>
                             <!-- END Form First Name -->
+                            <!-- START Form Birthdate -->
+                            <div class="form-group">
+                                <label for="profile-edit-birthdate" class="col-sm-3 control-label">
+                                    <span class="text-danger">* </span>
+                                    <span th:text="#{general.birthdate}"></span>
+                                </label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control date-range-picker" id="profile-edit-birthdate" placeholder="Date de naissance..." th:field="*{birthDate}">
+                                </div>
+                            </div>
+                            <!-- END Form Birthdate -->
+                            <!-- START Form Gender -->
+                            <div class="form-group">
+                                <label for="profile-edit-gender" class="col-sm-3 control-label">
+                                    <span th:text="#{general.sex}"></span>
+                                </label>
+                                <div class="col-sm-2">
+                                    <select id="profile-edit-gender" th:field="*{gender}" class="form-control selectpicker">
+                                        <option th:each="gender : ${genders}"
+                                            th:value="${gender}"
+                                            th:text="${#messages.msg(gender.labelCode)}">
+                                        </option>
+                                    </select>
+                                </div>
+                            </div>
+                            <!-- END Form Gender -->
+                            <!-- START Form Baptism Date -->
+                            <div class="form-group">
+                                <label for="profile-edit-baptism-date" class="col-sm-3 control-label">
+                                    <span th:text="#{general.baptism.date}"></span>
+                                </label>
+                                <div class="col-sm-6">
+                                    <input type="text" class="form-control date-range-picker" id="profile-edit-baptism-date" placeholder="Date de baptême..." th:field="*{baptismDate}">
+                                </div>
+                            </div>
+                            <!-- END Form Baptism Date -->
                         </form>
                     </div>
                 </div>
             </div>
         </div>
+        <script>
+        /*$('.date-range-picker').daterangepicker({
+            singleDatePicker: true,
+            showDropdowns: true,
+            locale: {
+            	format: "DD/MM/YYYY"
+            }
+        });*/
+        $('.date-range-picker').datetimepicker({
+        	locale: 'fr',
+        	format: 'DD/MM/YYYY',
+        	showClear: true,
+        	icons: {
+                time: "fa fa-clock-o",
+                date: "fa fa-calendar",
+                up: "fa fa-arrow-up",
+                down: "fa fa-arrow-down"
+            }
+        });
+        </script>
     </div>
 </body>
 </html>
