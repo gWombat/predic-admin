@@ -4,11 +4,14 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import fr.gwombat.predicadmin.model.Publisher;
 import fr.gwombat.predicadmin.service.PublisherService;
+import fr.gwombat.predicadmin.support.Gender;
+import fr.gwombat.predicadmin.web.vo.PublisherVO;
 
 @Controller
 @RequestMapping("/publishers")
@@ -25,9 +28,15 @@ public class PublisherController {
     public String editPublisherPage(@PathVariable("id") final String identifier, Model model) {
         
         final Publisher publisher = publisherService.getByIdentifier(identifier);
-        model.addAttribute("publisher", publisher);
+        final PublisherVO publisherVO = new PublisherVO(publisher);
+        model.addAttribute("publisher", publisherVO);
         
         return "publisher-edit";
+    }
+    
+    @ModelAttribute("genders")
+    public Gender[] getGenders(){
+        return Gender.values();
     }
 
 }
