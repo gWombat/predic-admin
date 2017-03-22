@@ -54,6 +54,7 @@ public class SetupListener {
         publisher.setFirstName("Guillaume");
         publisher.setGender(Gender.MALE);
         publisher.setBirthDate(LocalDate.of(1989, 5, 11));
+        publisher.setBaptismDate(LocalDate.of(2008, 12, 6));
         publisher.setCongregation(congreg);
         publisher = publisherRepository.save(publisher);
         logger.debug("new publisher saved: " + publisher.toString());
