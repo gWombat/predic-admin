@@ -1,8 +1,20 @@
 package fr.gwombat.predicadmin.support;
 
 public enum Gender {
-    
-    MALE,
-    FEMALE
+
+    MALE("general.sex.male"), 
+    FEMALE("general.sex.female")
+
+    ;
+
+    private final String labelCode;
+
+    private Gender(final String labelCode) {
+        this.labelCode = labelCode;
+    }
+
+    public String getLabelCode() {
+        return labelCode;
+    }
 
 }
