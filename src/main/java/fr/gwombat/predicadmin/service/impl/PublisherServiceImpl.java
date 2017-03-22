@@ -2,12 +2,14 @@ package fr.gwombat.predicadmin.service.impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import fr.gwombat.predicadmin.model.Publisher;
 import fr.gwombat.predicadmin.repository.PublisherRepository;
 import fr.gwombat.predicadmin.service.PublisherService;
 
 @Service
+@Transactional
 public class PublisherServiceImpl implements PublisherService {
 
     private PublisherRepository publisherRepository;
