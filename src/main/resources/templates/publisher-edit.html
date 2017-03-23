@@ -46,105 +46,151 @@
             <div class="col-lg-2 m-b-2">
                 <!-- START Menu Pills Vertical -->
                 <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation" class="active"><a href="profile-edit.html">Informations générales</a></li>
-                    <li role="presentation" class=""><a href="account-edit.html">Adresse</a></li>
+                    <li role="presentation" class="active"><a href="#tab-detail-general" role="tab" data-toggle="tab">Générals</a></li>
+                    <li role="presentation" class=""><a href="#tab-detail-address" role="tab" data-toggle="tab">Adresse</a></li>
                 </ul>
                 <!-- END Menu Pills Vertical -->
             </div>
             <!-- END Left Column -->
 
-            <div class="col-lg-10">
-                <div class="panel panel-default b-a-2 no-bg b-gray-dark">
-                    <div class="panel-heading">
-                        <h4 class="panel-title">Informations générales</h4>
-                    </div>
+            <!-- START All Forms -->
+            <form class="form-horizontal" th:object="${publisher}">
+                <div class="col-lg-10">
+                    <div class="tab-content">
+                    
+                        <!-- START Tab General informations -->
+                        <div class="tab-pane fade in active p-r-1" id="tab-detail-general" role="tabpanel">
+                            <div class="panel panel-default b-a-2 no-bg b-gray-dark">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Informations générales</h4>
+                                </div>
 
-                    <div class="panel-body">
-                        <!-- START All Forms -->
-                        <form class="form-horizontal" th:object="${publisher}">
-                            <!-- START Form Name -->
-                            <div class="form-group">
-                                <label for="profile-edit-name" class="col-sm-3 control-label">
-                                    <span class="text-danger">* </span>
-                                    <span th:text="#{general.name}"></span>
-                                </label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="profile-edit-name" placeholder="Nom du proclamateur..." th:field="*{name}">
+                                <div class="panel-body">
+                                    <!-- START Form Name -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-name" class="col-sm-3 control-label"> <span class="text-danger">* </span> <span th:text="#{general.name}"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="profile-edit-name" placeholder="Nom du proclamateur..." th:field="*{name}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form Name -->
+                                    <!-- START Form First Name -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-first-name" class="col-sm-3 control-label"> <span class="text-danger">* </span> <span th:text="#{general.firstname}"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="profile-edit-first-name" placeholder="Prénom du proclamateur..." th:field="*{firstName}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form First Name -->
+                                    <!-- START Form Birthdate -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-birthdate" class="col-sm-3 control-label"> <span class="text-danger">* </span> <span th:text="#{general.birthdate}"></span>
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control date-range-picker" id="profile-edit-birthdate" placeholder="Date de naissance..." th:field="*{birthDate}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form Birthdate -->
+                                    <!-- START Form Gender -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-gender" class="col-sm-3 control-label"> <span th:text="#{general.sex}"></span>
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <select id="profile-edit-gender" th:field="*{gender}" class="form-control selectpicker">
+                                                <option th:each="gender : ${genders}" th:value="${gender}" th:text="${#messages.msg(gender.labelCode)}"></option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                    <!-- END Form Gender -->
+                                    <!-- START Form Baptism Date -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-baptism-date" class="col-sm-3 control-label"> <span th:text="#{general.baptism.date}"></span>
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control date-range-picker" id="profile-edit-baptism-date" placeholder="Date de baptême..." th:field="*{baptismDate}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form Baptism Date -->
                                 </div>
                             </div>
-                            <!-- END Form Name -->
-                            <!-- START Form First Name -->
-                            <div class="form-group">
-                                <label for="profile-edit-first-name" class="col-sm-3 control-label">
-                                    <span class="text-danger">* </span>
-                                    <span th:text="#{general.firstname}"></span>
-                                </label>
-                                <div class="col-sm-6">
-                                    <input type="text" class="form-control" id="profile-edit-first-name" placeholder="Prénom du proclamateur..." th:field="*{firstName}">
+                        </div>
+                        <!-- END Tab General informations -->
+                        <!-- START Tab Address -->
+                        <div class="tab-pane fade p-r-1" id="tab-detail-address" role="tabpanel">
+                            <div class="panel panel-default b-a-2 no-bg b-gray-dark">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Adresse</h4>
+                                </div>
+                                
+                                <div class="panel-body">
+                                    <!-- START Form Street 1 -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-street-1" class="col-sm-3 control-label"> <span class="text-danger">* </span> <span th:text="Rue"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="profile-edit-street-1" th:field="*{address.street1}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form Street 1 -->
+                                    <!-- START Form Street 2 -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-street-2" class="col-sm-3 control-label"> <span th:text="Complément"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control" id="profile-edit-street-2" th:field="*{address.street2}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form Street 2 -->
+                                    <!-- START Form Zip -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-zip" class="col-sm-3 control-label"> <span class="text-danger">* </span> <span th:text="Code_postal"></span>
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="profile-edit-zip" th:field="*{address.zip}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form Zip -->
+                                    <!-- START Form City -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-city" class="col-sm-3 control-label"> <span class="text-danger">* </span> <span th:text="Ville"></span>
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="profile-edit-city" th:field="*{address.city}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form City -->
+                                    <!-- START Form Country -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-country" class="col-sm-3 control-label"> <span class="text-danger">* </span> <span th:text="Pays"></span>
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <input type="text" class="form-control" id="profile-edit-country" th:field="*{address.country}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form Country -->
                                 </div>
                             </div>
-                            <!-- END Form First Name -->
-                            <!-- START Form Birthdate -->
-                            <div class="form-group">
-                                <label for="profile-edit-birthdate" class="col-sm-3 control-label">
-                                    <span class="text-danger">* </span>
-                                    <span th:text="#{general.birthdate}"></span>
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control date-range-picker" id="profile-edit-birthdate" placeholder="Date de naissance..." th:field="*{birthDate}">
-                                </div>
-                            </div>
-                            <!-- END Form Birthdate -->
-                            <!-- START Form Gender -->
-                            <div class="form-group">
-                                <label for="profile-edit-gender" class="col-sm-3 control-label">
-                                    <span th:text="#{general.sex}"></span>
-                                </label>
-                                <div class="col-sm-2">
-                                    <select id="profile-edit-gender" th:field="*{gender}" class="form-control selectpicker">
-                                        <option th:each="gender : ${genders}"
-                                            th:value="${gender}"
-                                            th:text="${#messages.msg(gender.labelCode)}">
-                                        </option>
-                                    </select>
-                                </div>
-                            </div>
-                            <!-- END Form Gender -->
-                            <!-- START Form Baptism Date -->
-                            <div class="form-group">
-                                <label for="profile-edit-baptism-date" class="col-sm-3 control-label">
-                                    <span th:text="#{general.baptism.date}"></span>
-                                </label>
-                                <div class="col-sm-2">
-                                    <input type="text" class="form-control date-range-picker" id="profile-edit-baptism-date" placeholder="Date de baptême..." th:field="*{baptismDate}">
-                                </div>
-                            </div>
-                            <!-- END Form Baptism Date -->
-                        </form>
+                        </div>
+                        <!-- END Tab Address -->
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
         <script>
-        /*$('.date-range-picker').daterangepicker({
-            singleDatePicker: true,
-            showDropdowns: true,
-            locale: {
-            	format: "DD/MM/YYYY"
-            }
-        });*/
-        $('.date-range-picker').datetimepicker({
-        	locale: 'fr',
-        	format: 'DD/MM/YYYY',
-        	showClear: true,
-        	icons: {
-                time: "fa fa-clock-o",
-                date: "fa fa-calendar",
-                up: "fa fa-arrow-up",
-                down: "fa fa-arrow-down"
-            }
-        });
-        </script>
+			$('.date-range-picker').datetimepicker({
+				locale : 'fr',
+				format : 'DD/MM/YYYY',
+				showClear : true,
+				icons : {
+					time : "fa fa-clock-o",
+					date : "fa fa-calendar",
+					up : "fa fa-arrow-up",
+					down : "fa fa-arrow-down"
+				}
+			});
+		</script>
     </div>
 </body>
 </html>

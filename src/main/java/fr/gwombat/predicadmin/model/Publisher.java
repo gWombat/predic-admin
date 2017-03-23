@@ -2,6 +2,7 @@ package fr.gwombat.predicadmin.model;
 
 import java.time.LocalDate;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
@@ -56,7 +57,7 @@ public class Publisher extends AuditableEntity {
     @JoinColumn(name = "congregation_id", nullable = false)
     private Congregation      congregation;
 
-    @OneToOne
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "address_id")
     private Address           address;
 

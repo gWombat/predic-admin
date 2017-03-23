@@ -34,6 +34,9 @@ public class Address extends AuditableEntity {
     @Column(name = "zip")
     private String            zip;
 
+    @Column(name = "city")
+    private String            city;
+
     @Column(name = "country")
     private String            country;
 
@@ -75,6 +78,14 @@ public class Address extends AuditableEntity {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public String getCity() {
+        return city;
+    }
+
+    public void setCity(String city) {
+        this.city = city;
     }
 
 }

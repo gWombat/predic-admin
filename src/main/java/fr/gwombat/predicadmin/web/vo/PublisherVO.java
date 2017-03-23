@@ -24,6 +24,7 @@ public class PublisherVO {
     private String            baptismDate;
     @NotNull
     private Gender            gender;
+    private AddressVO         address;
 
     public PublisherVO() {
 
@@ -46,6 +47,7 @@ public class PublisherVO {
             this.gender = publisher.getGender();
             this.identifier = publisher.getIdentifier();
             this.fullName = publisher.getFullName();
+            this.address = new AddressVO(publisher.getAddress());
         }
     }
 
@@ -103,6 +105,14 @@ public class PublisherVO {
 
     public void setFullName(String fullName) {
         this.fullName = fullName;
+    }
+
+    public AddressVO getAddress() {
+        return address;
+    }
+
+    public void setAddress(AddressVO address) {
+        this.address = address;
     }
 
 }
