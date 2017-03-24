@@ -46,8 +46,9 @@
             <div class="col-lg-2 m-b-2">
                 <!-- START Menu Pills Vertical -->
                 <ul class="nav nav-pills nav-stacked">
-                    <li role="presentation" class="active"><a href="#tab-detail-general" role="tab" data-toggle="tab">Générals</a></li>
+                    <li role="presentation" class="active"><a href="#tab-detail-general" role="tab" data-toggle="tab">Général</a></li>
                     <li role="presentation" class=""><a href="#tab-detail-address" role="tab" data-toggle="tab">Adresse</a></li>
+                    <li role="presentation" class=""><a href="#tab-detail-contact" role="tab" data-toggle="tab">Contact</a></li>
                 </ul>
                 <!-- END Menu Pills Vertical -->
             </div>
@@ -174,6 +175,48 @@
                             </div>
                         </div>
                         <!-- END Tab Address -->
+                        <!-- START Tab Contact -->
+                        <div class="tab-pane fade p-r-1" id="tab-detail-contact" role="tabpanel">
+                            <div class="panel panel-default b-a-2 no-bg b-gray-dark">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title">Contact</h4>
+                                </div>
+                                
+                                <div class="panel-body">
+                                    <!-- START Form Email -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-email" class="col-sm-3 control-label">
+                                            <span th:text="Email"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="email" class="form-control" id="profile-edit-email" th:field="*{contactDetail.email}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form Email -->
+                                    <!-- START Form Phone -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-phone" class="col-sm-3 control-label">
+                                            <span th:text="Téléphone_fixe"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control mask-phone" id="profile-edit-phone" th:field="*{contactDetail.phone}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form Phone -->
+                                    <!-- START Form Mobile Phone -->
+                                    <div class="form-group">
+                                        <label for="profile-edit-mobile" class="col-sm-3 control-label">
+                                            <span th:text="Téléphone_mobile"></span>
+                                        </label>
+                                        <div class="col-sm-6">
+                                            <input type="text" class="form-control mask-phone" id="profile-edit-mobile" th:field="*{contactDetail.mobilePhone}">
+                                        </div>
+                                    </div>
+                                    <!-- END Form Mobile Phone -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Tab Contact -->
                     </div>
                 </div>
             </form>
@@ -189,6 +232,11 @@
 					up : "fa fa-arrow-up",
 					down : "fa fa-arrow-down"
 				}
+			});
+			
+			$('.mask-phone').mask('00 00 00 00 00', {
+				placeholder: '__ __ __ __ __',
+				selectOnFocus: true
 			});
 		</script>
     </div>
