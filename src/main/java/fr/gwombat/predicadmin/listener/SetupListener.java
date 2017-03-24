@@ -12,6 +12,7 @@ import org.springframework.stereotype.Component;
 
 import fr.gwombat.predicadmin.model.Address;
 import fr.gwombat.predicadmin.model.Congregation;
+import fr.gwombat.predicadmin.model.ContactDetail;
 import fr.gwombat.predicadmin.model.Publisher;
 import fr.gwombat.predicadmin.repository.CongregationRepository;
 import fr.gwombat.predicadmin.repository.PublisherRepository;
@@ -58,12 +59,18 @@ public class SetupListener {
         //publisher.setBaptismDate(LocalDate.of(2008, 12, 6));
         publisher.setCongregation(congreg);
         
-        Address address = new Address();
+        final Address address = new Address();
         address.setCity("Paris");
         address.setCountry("FRANCE");
         address.setStreet1("1 rue de la gare");
         address.setZip("75002");
         publisher.setAddress(address);
+        
+        final ContactDetail contactDetail = new ContactDetail();
+        contactDetail.setEmail("gwombat.fake@email.com");
+        contactDetail.setMobilePhone("0623456789");
+        contactDetail.setPhone("0123456789");
+        publisher.setContactDetail(contactDetail);
         
         publisher = publisherRepository.save(publisher);
         logger.debug("new publisher saved: " + publisher.toString());
