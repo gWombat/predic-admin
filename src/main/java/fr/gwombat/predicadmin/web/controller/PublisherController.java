@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import fr.gwombat.predicadmin.model.Publisher;
 import fr.gwombat.predicadmin.service.PublisherService;
 import fr.gwombat.predicadmin.support.Gender;
-import fr.gwombat.predicadmin.web.vo.PublisherVO;
+import fr.gwombat.predicadmin.web.vo.PublisherForm;
 
 @Controller
 @RequestMapping("/publishers")
@@ -28,8 +28,8 @@ public class PublisherController {
     public String editPublisherPage(@PathVariable("id") final String identifier, Model model) {
         
         final Publisher publisher = publisherService.getByIdentifier(identifier);
-        final PublisherVO publisherVO = new PublisherVO(publisher);
-        model.addAttribute("publisher", publisherVO);
+        final PublisherForm publisherForm = new PublisherForm(publisher);
+        model.addAttribute("publisher", publisherForm);
         
         return "publisher-edit";
     }
