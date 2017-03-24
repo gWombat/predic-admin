@@ -61,6 +61,10 @@ public class Publisher extends AuditableEntity {
     @JoinColumn(name = "address_id")
     private Address           address;
 
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
+    @JoinColumn(name = "publisher_contact_details_id")
+    private ContactDetail     contactDetail;
+
     @Override
     public String toString() {
         return name + " " + firstName + "[" + identifier + "]";
@@ -132,6 +136,14 @@ public class Publisher extends AuditableEntity {
 
     public void setAddress(Address address) {
         this.address = address;
+    }
+
+    public ContactDetail getContactDetail() {
+        return contactDetail;
+    }
+
+    public void setContactDetail(ContactDetail contactDetail) {
+        this.contactDetail = contactDetail;
     }
 
 }
