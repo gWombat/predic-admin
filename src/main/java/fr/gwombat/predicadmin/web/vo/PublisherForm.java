@@ -9,7 +9,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import fr.gwombat.predicadmin.model.Publisher;
 import fr.gwombat.predicadmin.support.Gender;
 
-public class PublisherVO {
+public class PublisherForm {
 
     private DateTimeFormatter dateTimeFormatter;
     private String            identifier;
@@ -24,13 +24,14 @@ public class PublisherVO {
     private String            baptismDate;
     @NotNull
     private Gender            gender;
-    private AddressVO         address;
+    private AddressForm       address;
+    private ContactDetailForm contactDetail;
 
-    public PublisherVO() {
+    public PublisherForm() {
 
     }
 
-    public PublisherVO(Publisher publisher) {
+    public PublisherForm(Publisher publisher) {
         initFromEntity(publisher);
     }
 
@@ -47,7 +48,8 @@ public class PublisherVO {
             this.gender = publisher.getGender();
             this.identifier = publisher.getIdentifier();
             this.fullName = publisher.getFullName();
-            this.address = new AddressVO(publisher.getAddress());
+            this.address = new AddressForm(publisher.getAddress());
+            this.contactDetail = new ContactDetailForm(publisher.getContactDetail());
         }
     }
 
@@ -107,12 +109,20 @@ public class PublisherVO {
         this.fullName = fullName;
     }
 
-    public AddressVO getAddress() {
+    public AddressForm getAddress() {
         return address;
     }
 
-    public void setAddress(AddressVO address) {
+    public void setAddress(AddressForm address) {
         this.address = address;
+    }
+
+    public ContactDetailForm getContactDetail() {
+        return contactDetail;
+    }
+
+    public void setContactDetail(ContactDetailForm contactDetail) {
+        this.contactDetail = contactDetail;
     }
 
 }

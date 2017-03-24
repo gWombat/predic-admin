@@ -1,8 +1,11 @@
 package fr.gwombat.predicadmin.web.vo;
 
+import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.i18n.LocaleContextHolder;
+
 import fr.gwombat.predicadmin.model.Address;
 
-public class AddressVO {
+public class AddressForm {
 
     private String street1;
     private String street2;
@@ -10,21 +13,27 @@ public class AddressVO {
     private String city;
     private String country;
 
-    public AddressVO() {
+    public AddressForm() {
     }
 
-    public AddressVO(final Address address) {
+    public AddressForm(final Address address) {
         initFromEntity(address);
     }
 
     private void initFromEntity(final Address address) {
-        if(address != null){
+        if (address != null) {
             this.city = address.getCity();
             this.country = address.getCountry();
+            if (country == null)
+                resolveCountryFromContext();
             this.street1 = address.getStreet1();
             this.street2 = address.getStreet2();
             this.zip = address.getZip();
         }
+    }
+
+    private void resolveCountryFromContext() {
+        this.country = StringUtils.upperCase(LocaleContextHolder.getLocale().getDisplayCountry());
     }
 
     public String getStreet1() {
