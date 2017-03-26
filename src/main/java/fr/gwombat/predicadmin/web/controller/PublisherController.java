@@ -1,5 +1,6 @@
 package fr.gwombat.predicadmin.web.controller;
 
+import fr.gwombat.predicadmin.web.vo.PublisherVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,6 +26,15 @@ public class PublisherController {
     }
 
     @GetMapping("/{id}")
+    public String detailPublisherPage(@PathVariable("id") final String identifier, Model model){
+        final Publisher publisher = publisherService.getByIdentifier(identifier);
+        final PublisherVO publisherVo = new PublisherVO(publisher);
+        model.addAttribute("publisher", publisherVo);
+
+        return "publisher-detail";
+    }
+
+    @GetMapping("/{id}/edit")
     public String editPublisherPage(@PathVariable("id") final String identifier, Model model) {
         
         final Publisher publisher = publisherService.getByIdentifier(identifier);

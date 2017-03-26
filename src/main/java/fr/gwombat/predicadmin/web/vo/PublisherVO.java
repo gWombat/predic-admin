@@ -1,25 +1,26 @@
 package fr.gwombat.predicadmin.web.vo;
 
-import java.time.format.DateTimeFormatter;
-
+import fr.gwombat.predicadmin.model.Publisher;
 import org.springframework.util.Assert;
 
-import fr.gwombat.predicadmin.model.Publisher;
+import java.time.format.DateTimeFormatter;
 
 public class PublisherVO {
 
-    private DateTimeFormatter dateTimeFormatter;
+    private final String fullName;
+    private final String birthDate;
+    private final String identifier;
 
-    private final String      fullName;
-    private final String      birthDate;
+    private final ContactDetailVO contactDetail;
 
     public PublisherVO(final Publisher publisher) {
         Assert.notNull(publisher, "");
-
-        dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+        final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
         this.fullName = publisher.getFullName();
         this.birthDate = dateTimeFormatter.format(publisher.getBirthDate());
+        this.identifier = publisher.getIdentifier();
+        this.contactDetail = new ContactDetailVO(publisher.getContactDetail());
     }
 
     public String getBirthDate() {
@@ -30,4 +31,11 @@ public class PublisherVO {
         return fullName;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public ContactDetailVO getContactDetail() {
+        return contactDetail;
+    }
 }

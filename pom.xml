@@ -27,6 +27,7 @@
 		<bootstrap.version>3.3.7</bootstrap.version>
 		<font.awesome.version>4.7.0</font.awesome.version>
 		<momentjs.version>2.17.1</momentjs.version>
+        <google.libphone.version>8.3.3</google.libphone.version>
 	</properties>
 
 	<dependencies>
@@ -86,7 +87,14 @@
 		    <artifactId>commons-lang3</artifactId>
 		    <version>${apache.commons.version}</version>
 		</dependency>
-		
+
+		<dependency>
+			<groupId>com.googlecode.libphonenumber</groupId>
+			<artifactId>libphonenumber</artifactId>
+			<version>${google.libphone.version}</version>
+		</dependency>
+
+
 		<!-- Webjars -->
 		<dependency>
 			<groupId>org.webjars</groupId>

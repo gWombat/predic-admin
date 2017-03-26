@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="www.thymeleaf.org" layout:decorate="~{layouts/default_layout}">
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/default_layout}">
 <head>
 
 <title th:text="#{general.profile.edit}">Fiche proclamateur</title>
@@ -15,7 +15,7 @@
                         <h3>Edition d'une fiche proclamateur</h3>
                     </div>
                     <ol class="breadcrumb navbar-text navbar-right no-bg">
-                        <li class="current-parent"><a class="current-parent" href="index.html"> <i class="fa fa-fw fa-home"></i>
+                        <li class="current-parent"><a class="current-parent" th:href="@{/}"> <i class="fa fa-fw fa-home"></i>
                         </a></li>
                         <li><a href="#"> Proclamateurs </a></li>
                         <li class="active">Edition d'une fiche</li>
@@ -32,7 +32,7 @@
         <div class="media m-b-3">
             <div class="media-body">
                 <h3 class="f-w-300 m-b-0 m-t-1">
-                    <a href="profile-details.html"><span th:text="${publisher.fullName}">John DOE</span></a> <span class="text-muted"> <span class="m-r-1 m-l-1">/</span></span> Fiche proclamateur
+                    <a th:href="@{/publishers/{id}(id=${publisher.identifier})}"><span th:text="${publisher.fullName}">John DOE</span></a> <span class="text-muted"> <span class="m-r-1 m-l-1">/</span></span> Fiche proclamateur
                 </h3>
                 <p class="m-t-0">
                     <span class="label label-warning label-outline text-uppercase m-r-1">Premium</span> Edite les informations de la fiche de ce proclamateur.
@@ -186,7 +186,7 @@
                                     <!-- START Form Email -->
                                     <div class="form-group">
                                         <label for="profile-edit-email" class="col-sm-3 control-label">
-                                            <span th:text="Email"></span>
+                                            <span th:text="#{general.email}"></span>
                                         </label>
                                         <div class="col-sm-6">
                                             <input type="email" class="form-control" id="profile-edit-email" th:field="*{contactDetail.email}">
@@ -196,7 +196,7 @@
                                     <!-- START Form Phone -->
                                     <div class="form-group">
                                         <label for="profile-edit-phone" class="col-sm-3 control-label">
-                                            <span th:text="Téléphone_fixe"></span>
+                                            <span th:text="#{general.phone}"></span>
                                         </label>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control mask-phone" id="profile-edit-phone" th:field="*{contactDetail.phone}">
@@ -206,7 +206,7 @@
                                     <!-- START Form Mobile Phone -->
                                     <div class="form-group">
                                         <label for="profile-edit-mobile" class="col-sm-3 control-label">
-                                            <span th:text="Téléphone_mobile"></span>
+                                            <span th:text="#{general.mobile}"></span>
                                         </label>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control mask-phone" id="profile-edit-mobile" th:field="*{contactDetail.mobilePhone}">
