@@ -105,14 +105,14 @@
                                     <h6 class="text-white"><strong>Address</strong></h6>
                                 </div>
                                 <dl class="dl-horizontal text-left">
-                                    <dt class="text-left">Address</dt>
-                                    <dd class="text-left text-white"><span>154 Borer Crossing</span></dd>
-                                    <dt class="text-left">City</dt>
-                                    <dd class="text-left text-white"><span>Sanfordbury</span></dd>
-                                    <dt class="text-left">State</dt>
-                                    <dd class="text-left text-white"><span>Georgia</span></dd>
+                                    <dt class="text-left">Street</dt>
+                                    <dd class="text-left text-white"><span th:text="${publisher.address.street}">154 Borer Crossing</span></dd>
                                     <dt class="text-left">ZIP Code</dt>
-                                    <dd class="text-left text-white"><span>47991-5403</span></dd>
+                                    <dd class="text-left text-white"><span th:text="${publisher.address.zip}">47991-5403</span></dd>
+                                    <dt class="text-left">City</dt>
+                                    <dd class="text-left text-white"><span th:text="${publisher.address.city}">Sanfordbury</span></dd>
+                                    <dt class="text-left">State</dt>
+                                    <dd class="text-left text-white"><span th:text="${publisher.address.country}">Georgia</span></dd>
                                 </dl>
                             </div>
                             <!-- END Tab: Detail Contact -->
