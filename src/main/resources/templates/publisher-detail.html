@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/default_layout}">
+<head>
+
+<title th:text="#{general.profile.details}">Page title</title>
+
+</head>
+<body>
+
+    <div class="sub-navbar sub-navbar__header-breadcrumbs" layout:fragment="content-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 sub-navbar-column">
+                    <div class="sub-navbar-header">
+                        <h3>Title</h3>
+                    </div>
+                    <ol class="breadcrumb navbar-text navbar-right no-bg">
+                        <li class="current-parent">
+                            <a class="current-parent" th:href="@{/}">
+                                <i class="fa fa-fw fa-home"></i>
+                            </a>
+                        </li>
+                        <li><a href="#"> Tab 1 </a></li>
+                        <li class="active">Tab 2</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div layout:fragment="content">
+        <!-- START EDIT CONTENT -->
+        <div class="row">
+            <div class="col-md-12">
+                <div class="row">
+
+                    <!-- START Left Column -->
+                    <div class="col-lg-4 m-b-2">
+
+                        <!-- START Avatar with Name -->
+                        <div class="media">
+                            <div class="media-body">
+                                <h4 class="m-b-0"><span th:text="${publisher.fullName}">Haskell Hahn</span> </h4>
+                                <p class="m-t-0"><span th:text="${publisher.identifier}">Investor Directives Agent</span></p>
+
+                                <div class="btn-toolbar" role="toolbar" aria-label="...">
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <!-- Standard button -->
+                                        <a type="button" class="btn btn-warning"
+                                            th:href="@{/publishers/{id}/edit(id=${publisher.identifier})}">
+                                            <i class="fa fa-fw fa-pencil"></i>
+                                            <span class="m-l-1" th:text="#{general.edit}">Edit</span></a>
+
+                                    </div>
+                                    <div class="btn-group" role="group" aria-label="...">
+                                        <!-- Standard button -->
+                                        <button type="button" class="btn btn-danger">
+                                            <i class="fa fa-fw fa-trash"></i>
+                                            <span class="m-l-1" th:text="#{general.delete}">Delete</span></button>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+                        <!-- END Avatar with Name -->
+
+                        <div class="hr-text hr-text-left">
+                            <h6 class="text-white"><strong>Profile</strong></h6>
+                        </div>
+                        <dl class="dl-horizontal text-left">
+                            <dt class="text-left">Birthdate</dt>
+                            <dd class="text-left text-white"><span th:text="${publisher.birthDate}">775-027-5134</span></dd>
+                        </dl>
+                    </div>
+                    <!-- END Left Column -->
+
+                    <!-- START Tabs Content -->
+                    <div class="col-lg-8">
+
+                        <!-- Tabs Buttons -->
+                        <ul class="nav nav-tabs">
+                            <li role="presentation" class="active">
+                                <a aria-expanded="true" data-toggle="tab" href="#tab-detail-contact" role="tab">Contact details</a>
+                            </li>
+                        </ul>
+
+                        <!-- START Tabs Content -->
+                        <div class="tab-content">
+                            <!-- START Tab: Detail Contact -->
+                            <div class="tab-pane fade in p-r-1 active" id="tab-detail-contact" role="tabpanel">
+                                <div class="hr-text hr-text-left m-t-1">
+                                    <h6 class="text-white"><strong>Contact</strong></h6>
+                                </div>
+                                <dl class="dl-horizontal text-left">
+                                    <dt class="text-left">Phone</dt>
+                                    <dd class="text-left text-white"><span th:text="${publisher.contactDetail.phone}">775-027-5134</span></dd>
+                                    <dt class="text-left">Mobile</dt>
+                                    <dd class="text-left text-white"><span th:text="${publisher.contactDetail.mobilePhone}">628-674-2239</span></dd>
+                                    <dt class="text-left">Email</dt>
+                                    <dd class="text-left text-white"><a th:href="'mailto:' + ${publisher.contactDetail.email}" th:text="${publisher.contactDetail.email}"><span>Camden.Prosacco69@gmail.com</span></a></dd>
+                                </dl>
+                                <div class="hr-text hr-text-left m-t-1">
+                                    <h6 class="text-white"><strong>Address</strong></h6>
+                                </div>
+                                <dl class="dl-horizontal text-left">
+                                    <dt class="text-left">Address</dt>
+                                    <dd class="text-left text-white"><span>154 Borer Crossing</span></dd>
+                                    <dt class="text-left">City</dt>
+                                    <dd class="text-left text-white"><span>Sanfordbury</span></dd>
+                                    <dt class="text-left">State</dt>
+                                    <dd class="text-left text-white"><span>Georgia</span></dd>
+                                    <dt class="text-left">ZIP Code</dt>
+                                    <dd class="text-left text-white"><span>47991-5403</span></dd>
+                                </dl>
+                            </div>
+                            <!-- END Tab: Detail Contact -->
+                        </div>
+                        <!-- ENDTabs Content -->
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- END EDIT CONTENT -->
+    </div>
+</body>
+</html>
