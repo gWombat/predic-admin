@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import fr.gwombat.predicadmin.model.Publisher;
 import fr.gwombat.predicadmin.service.PublisherService;
 import fr.gwombat.predicadmin.support.Gender;
-import fr.gwombat.predicadmin.web.vo.PublisherForm;
+import fr.gwombat.predicadmin.web.form.PublisherForm;
 
 @Controller
 @RequestMapping("/publishers")
