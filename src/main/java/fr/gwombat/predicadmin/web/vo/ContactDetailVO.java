@@ -15,15 +15,16 @@ public class ContactDetailVO {
 
     private static final Logger logger = LoggerFactory.getLogger(ContactDetailVO.class);
 
-    private       String phone;
-    private       String mobilePhone;
+    private final String phone;
+    private final String mobilePhone;
     private final String email;
 
     ContactDetailVO(final ContactDetail contactDetail) {
         Assert.notNull(contactDetail, "");
 
         this.email = contactDetail.getEmail();
-        initPhoneNumbers(contactDetail);
+        this.phone = formatPhoneNumber(contactDetail.getPhone());
+        this.mobilePhone = formatPhoneNumber(contactDetail.getMobilePhone());
     }
 
     private static String formatPhoneNumber(final String strNumber) {
@@ -38,12 +39,6 @@ public class ContactDetailVO {
             }
         }
         return "N/A";
-    }
-
-    private void initPhoneNumbers(final ContactDetail contactDetail) {
-        mobilePhone = formatPhoneNumber(contactDetail.getMobilePhone());
-        phone = formatPhoneNumber(contactDetail.getPhone());
-
     }
 
     public String getPhone() {
