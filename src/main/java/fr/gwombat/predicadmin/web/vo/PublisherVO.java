@@ -12,6 +12,7 @@ public class PublisherVO {
     private final String identifier;
 
     private final ContactDetailVO contactDetail;
+    private final AddressVO       address;
 
     public PublisherVO(final Publisher publisher) {
         Assert.notNull(publisher, "");
@@ -21,6 +22,7 @@ public class PublisherVO {
         this.birthDate = dateTimeFormatter.format(publisher.getBirthDate());
         this.identifier = publisher.getIdentifier();
         this.contactDetail = new ContactDetailVO(publisher.getContactDetail());
+        this.address = new AddressVO(publisher.getAddress());
     }
 
     public String getBirthDate() {
@@ -37,5 +39,9 @@ public class PublisherVO {
 
     public ContactDetailVO getContactDetail() {
         return contactDetail;
+    }
+
+    public AddressVO getAddress() {
+        return address;
     }
 }
