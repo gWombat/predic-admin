@@ -31,6 +31,16 @@
 
 
     <div layout:fragment="content">
+    
+        <div class="alert alert-success" role="alert" th:if="${success}">
+            <button type="button" class="close success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <span class="fa-stack fa-lg m-r-1">
+                <i class="fa fa-circle-thin fa-stack-2x text-success"></i>
+                <i class="fa fa-check fa-stack-1x text-success"></i>
+            </span>
+            <strong th:text="#{general.success} + '!'">Well Done!</strong> <span th:text="#{${success}}">You successfully read this important alert message.</span>
+        </div>
+    
         <!-- START EDIT CONTENT -->
         <div class="row">
             <div class="col-md-12">
@@ -48,7 +58,7 @@
                                 <div class="btn-toolbar" role="toolbar">
                                     <div class="btn-group" role="group">
                                         <!-- Standard button -->
-                                        <a type="button" class="btn btn-warning"
+                                        <a type="button" class="btn btn-outline btn-warning"
                                             th:href="@{/publishers/{id}/edit(id=${publisher.identifier})}">
                                             <i class="fa fa-fw fa-pencil"></i>
                                             <span class="m-l-1" th:text="#{general.edit}">Edit</span>
@@ -56,7 +66,7 @@
                                     </div>
                                     <div class="btn-group" role="group">
                                         <!-- Standard button -->
-                                        <button type="button" class="btn btn-danger">
+                                        <button type="button" class="btn btn-outline btn-danger">
                                             <i class="fa fa-fw fa-trash"></i>
                                             <span class="m-l-1" th:text="#{general.delete}">Delete</span>
                                         </button>

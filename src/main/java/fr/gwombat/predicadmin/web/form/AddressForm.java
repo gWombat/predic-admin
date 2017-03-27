@@ -1,7 +1,9 @@
 package fr.gwombat.predicadmin.web.form;
 
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.util.Assert;
 
 import fr.gwombat.predicadmin.model.Address;
 
@@ -32,8 +34,43 @@ public class AddressForm {
         }
     }
 
+    public Address toEntity(Address address) {
+        if (allFieldsAreNull())
+            return null;
+
+        if (address == null)
+            address = new Address();
+
+        mergeFields(address);
+        return address;
+    }
+
+    private void mergeFields(final Address address) {
+        Assert.notNull(address, "The argument [address] must not be null");
+
+        address.setCity(WordUtils.capitalizeFully(city));
+        address.setCountry(StringUtils.upperCase(country));
+        address.setStreet1(street1);
+        address.setStreet2(street2);
+        address.setZip(zip);
+    }
+
     private void resolveCountryFromContext() {
         this.country = StringUtils.upperCase(LocaleContextHolder.getLocale().getDisplayCountry());
+    }
+
+    private boolean allFieldsAreNull() {
+        if (StringUtils.isBlank(street1))
+            return false;
+        if (StringUtils.isBlank(street2))
+            return false;
+        if (StringUtils.isBlank(zip))
+            return false;
+        if (StringUtils.isBlank(city))
+            return false;
+        if (StringUtils.isBlank(country))
+            return false;
+        return true;
     }
 
     public String getStreet1() {

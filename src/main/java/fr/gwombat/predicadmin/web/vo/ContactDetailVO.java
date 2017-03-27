@@ -1,12 +1,13 @@
 package fr.gwombat.predicadmin.web.vo;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
+
 import fr.gwombat.predicadmin.model.ContactDetail;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.util.Assert;
 
 /**
  * Created by gWombat
@@ -15,16 +16,16 @@ public class ContactDetailVO {
 
     private static final Logger logger = LoggerFactory.getLogger(ContactDetailVO.class);
 
-    private final String phone;
-    private final String mobilePhone;
-    private final String email;
+    private String              phone;
+    private String              mobilePhone;
+    private String              email;
 
     ContactDetailVO(final ContactDetail contactDetail) {
-        Assert.notNull(contactDetail, "");
-
-        this.email = contactDetail.getEmail();
-        this.phone = formatPhoneNumber(contactDetail.getPhone());
-        this.mobilePhone = formatPhoneNumber(contactDetail.getMobilePhone());
+        if (contactDetail != null) {
+            this.email = contactDetail.getEmail();
+            this.phone = formatPhoneNumber(contactDetail.getPhone());
+            this.mobilePhone = formatPhoneNumber(contactDetail.getMobilePhone());
+        }
     }
 
     private static String formatPhoneNumber(final String strNumber) {

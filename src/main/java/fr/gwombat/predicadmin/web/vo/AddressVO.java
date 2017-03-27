@@ -1,25 +1,24 @@
 package fr.gwombat.predicadmin.web.vo;
 
 import fr.gwombat.predicadmin.model.Address;
-import org.springframework.util.Assert;
 
 /**
  * Created by gWombat
  */
 public class AddressVO {
 
-    private final String street;
-    private final String country;
-    private final String zip;
-    private final String city;
+    private String street;
+    private String country;
+    private String zip;
+    private String city;
 
     AddressVO(final Address address) {
-        Assert.notNull(address, "");
-
-        this.country = address.getCountry();
-        this.city = address.getCity();
-        this.zip = address.getZip();
-        this.street = computeAddress(address);
+        if (address != null) {
+            this.country = address.getCountry();
+            this.city = address.getCity();
+            this.zip = address.getZip();
+            this.street = computeAddress(address);
+        }
     }
 
     private static String computeAddress(final Address address) {
@@ -33,7 +32,6 @@ public class AddressVO {
             builder.append(address.getStreet2());
         return builder.toString();
     }
-
 
     public String getStreet() {
         return street;

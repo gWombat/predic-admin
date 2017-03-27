@@ -13,7 +13,7 @@ import fr.gwombat.predicadmin.service.PublisherService;
 public class PublisherServiceImpl implements PublisherService {
 
     private PublisherRepository publisherRepository;
-    
+
     @Autowired
     public PublisherServiceImpl(final PublisherRepository publisherRepository) {
         this.publisherRepository = publisherRepository;
@@ -22,6 +22,11 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public Publisher getByIdentifier(String identifier) {
         return publisherRepository.findByIdentifier(identifier);
+    }
+
+    @Override
+    public Publisher save(final Publisher publisher) {
+        return publisherRepository.save(publisher);
     }
 
 }
