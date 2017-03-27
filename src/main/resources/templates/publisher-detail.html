@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-lg-12 sub-navbar-column">
                     <div class="sub-navbar-header">
-                        <h3>Title</h3>
+                        <h3 th:text="#{page.profile.detail.header.title}">Fiche proclamateur</h3>
                     </div>
                     <ol class="breadcrumb navbar-text navbar-right no-bg">
                         <li class="current-parent">
@@ -20,8 +20,8 @@
                                 <i class="fa fa-fw fa-home"></i>
                             </a>
                         </li>
-                        <li><a href="#"> Tab 1 </a></li>
-                        <li class="active">Tab 2</li>
+                        <li><a href="#" th:text="#{general.publishers}"> Proclamateurs </a></li>
+                        <li class="active" th:text="#{page.profile.detail.breadcrumb}">Détail d'une fiche</li>
                     </ol>
                 </div>
             </div>
@@ -45,34 +45,26 @@
                                 <h4 class="m-b-0"><span th:text="${publisher.fullName}">Haskell Hahn</span> </h4>
                                 <p class="m-t-0"><span th:text="${publisher.identifier}">Investor Directives Agent</span></p>
 
-                                <div class="btn-toolbar" role="toolbar" aria-label="...">
-                                    <div class="btn-group" role="group" aria-label="...">
+                                <div class="btn-toolbar" role="toolbar">
+                                    <div class="btn-group" role="group">
                                         <!-- Standard button -->
                                         <a type="button" class="btn btn-warning"
                                             th:href="@{/publishers/{id}/edit(id=${publisher.identifier})}">
                                             <i class="fa fa-fw fa-pencil"></i>
-                                            <span class="m-l-1" th:text="#{general.edit}">Edit</span></a>
-
+                                            <span class="m-l-1" th:text="#{general.edit}">Edit</span>
+                                        </a>
                                     </div>
-                                    <div class="btn-group" role="group" aria-label="...">
+                                    <div class="btn-group" role="group">
                                         <!-- Standard button -->
                                         <button type="button" class="btn btn-danger">
                                             <i class="fa fa-fw fa-trash"></i>
-                                            <span class="m-l-1" th:text="#{general.delete}">Delete</span></button>
+                                            <span class="m-l-1" th:text="#{general.delete}">Delete</span>
+                                        </button>
                                     </div>
                                 </div>
-
                             </div>
                         </div>
                         <!-- END Avatar with Name -->
-
-                        <div class="hr-text hr-text-left">
-                            <h6 class="text-white"><strong>Profile</strong></h6>
-                        </div>
-                        <dl class="dl-horizontal text-left">
-                            <dt class="text-left">Birthdate</dt>
-                            <dd class="text-left text-white"><span th:text="${publisher.birthDate}">775-027-5134</span></dd>
-                        </dl>
                     </div>
                     <!-- END Left Column -->
 
@@ -81,37 +73,54 @@
 
                         <!-- Tabs Buttons -->
                         <ul class="nav nav-tabs">
+                            <li role="presentation">
+                                <a aria-expanded="true" data-toggle="tab" href="#tab-detail-profile" role="tab" th:text="#{page.profile.detail.tab.profile}">Profile</a>
+                            </li>
                             <li role="presentation" class="active">
-                                <a aria-expanded="true" data-toggle="tab" href="#tab-detail-contact" role="tab">Contact details</a>
+                                <a aria-expanded="true" data-toggle="tab" href="#tab-detail-contact" role="tab" th:text="#{page.profile.detail.tab.contact}">Contact details</a>
                             </li>
                         </ul>
 
                         <!-- START Tabs Content -->
                         <div class="tab-content">
+                            <!-- START Tab: Profile -->
+                            <div class="tab-pane fade in p-r-1" id="tab-detail-profile" role="tabpanel">
+                                <div class="hr-text hr-text-left m-t-1">
+                                    <h6 class="text-white"><strong th:text="#{page.profile.detail.block.details}">Dates</strong></h6>
+                                </div>
+                                <dl class="dl-horizontal text-left">
+                                    <dt class="text-left" th:text="#{general.birthdate}">Birthdate</dt>
+                                    <dd class="text-left text-white"><span th:text="${publisher.birthDate}">775-027-5134</span></dd>
+                                    <dt class="text-left" th:text="#{general.baptism.date}">Baptism date</dt>
+                                    <dd class="text-left text-white"><span th:text="${publisher.baptismDate}">775-027-5134</span></dd>
+                                </dl>
+                            </div>
+                            <!-- END Tab: Profile -->
+                        
                             <!-- START Tab: Detail Contact -->
                             <div class="tab-pane fade in p-r-1 active" id="tab-detail-contact" role="tabpanel">
                                 <div class="hr-text hr-text-left m-t-1">
-                                    <h6 class="text-white"><strong>Contact</strong></h6>
+                                    <h6 class="text-white"><strong th:text="#{page.profile.detail.block.contact}">Contact</strong></h6>
                                 </div>
                                 <dl class="dl-horizontal text-left">
-                                    <dt class="text-left">Phone</dt>
+                                    <dt class="text-left" th:text="#{general.phone}">Phone</dt>
                                     <dd class="text-left text-white"><span th:text="${publisher.contactDetail.phone}">775-027-5134</span></dd>
-                                    <dt class="text-left">Mobile</dt>
+                                    <dt class="text-left" th:text="#{general.mobile}">Mobile</dt>
                                     <dd class="text-left text-white"><span th:text="${publisher.contactDetail.mobilePhone}">628-674-2239</span></dd>
-                                    <dt class="text-left">Email</dt>
+                                    <dt class="text-left" th:text="#{general.email}">Email</dt>
                                     <dd class="text-left text-white"><a th:href="'mailto:' + ${publisher.contactDetail.email}" th:text="${publisher.contactDetail.email}"><span>Camden.Prosacco69@gmail.com</span></a></dd>
                                 </dl>
                                 <div class="hr-text hr-text-left m-t-1">
-                                    <h6 class="text-white"><strong>Address</strong></h6>
+                                    <h6 class="text-white"><strong th:text="#{general.address}">Address</strong></h6>
                                 </div>
                                 <dl class="dl-horizontal text-left">
-                                    <dt class="text-left">Street</dt>
+                                    <dt class="text-left" th:text="#{general.street}">Street</dt>
                                     <dd class="text-left text-white"><span th:text="${publisher.address.street}">154 Borer Crossing</span></dd>
-                                    <dt class="text-left">ZIP Code</dt>
+                                    <dt class="text-left" th:text="#{general.zip}">ZIP Code</dt>
                                     <dd class="text-left text-white"><span th:text="${publisher.address.zip}">47991-5403</span></dd>
-                                    <dt class="text-left">City</dt>
+                                    <dt class="text-left" th:text="#{general.city}">City</dt>
                                     <dd class="text-left text-white"><span th:text="${publisher.address.city}">Sanfordbury</span></dd>
-                                    <dt class="text-left">State</dt>
+                                    <dt class="text-left" th:text="#{general.country}">State</dt>
                                     <dd class="text-left text-white"><span th:text="${publisher.address.country}">Georgia</span></dd>
                                 </dl>
                             </div>
