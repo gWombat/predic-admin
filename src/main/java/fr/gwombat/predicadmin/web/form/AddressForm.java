@@ -1,11 +1,6 @@
 package fr.gwombat.predicadmin.web.form;
 
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.util.Assert;
-
-import fr.gwombat.predicadmin.model.Address;
 
 public class AddressForm {
 
@@ -15,51 +10,7 @@ public class AddressForm {
     private String city;
     private String country;
 
-    public AddressForm() {
-    }
-
-    public AddressForm(final Address address) {
-        initFromEntity(address);
-    }
-
-    private void initFromEntity(final Address address) {
-        if (address != null) {
-            this.city = address.getCity();
-            this.country = address.getCountry();
-            if (country == null)
-                resolveCountryFromContext();
-            this.street1 = address.getStreet1();
-            this.street2 = address.getStreet2();
-            this.zip = address.getZip();
-        }
-    }
-
-    public Address toEntity(Address address) {
-        if (allFieldsAreNull())
-            return null;
-
-        if (address == null)
-            address = new Address();
-
-        mergeFields(address);
-        return address;
-    }
-
-    private void mergeFields(final Address address) {
-        Assert.notNull(address, "The argument [address] must not be null");
-
-        address.setCity(WordUtils.capitalizeFully(city));
-        address.setCountry(StringUtils.upperCase(country));
-        address.setStreet1(street1);
-        address.setStreet2(street2);
-        address.setZip(zip);
-    }
-
-    private void resolveCountryFromContext() {
-        this.country = StringUtils.upperCase(LocaleContextHolder.getLocale().getDisplayCountry());
-    }
-
-    private boolean allFieldsAreNull() {
+    public boolean isAllFieldsNull() {
         if (StringUtils.isBlank(street1))
             return false;
         if (StringUtils.isBlank(street2))

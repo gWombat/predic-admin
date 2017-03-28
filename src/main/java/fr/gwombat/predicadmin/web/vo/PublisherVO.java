@@ -1,11 +1,6 @@
 package fr.gwombat.predicadmin.web.vo;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
-import org.springframework.util.Assert;
-
-import fr.gwombat.predicadmin.model.Publisher;
+import fr.gwombat.predicadmin.web.vo.builder.PublisherVoBuilder;
 
 public class PublisherVO {
 
@@ -17,23 +12,13 @@ public class PublisherVO {
     private final ContactDetailVO contactDetail;
     private final AddressVO       address;
 
-    public PublisherVO(final Publisher publisher) {
-        Assert.notNull(publisher, "the field [publisher] must not be null");
-
-        this.fullName = publisher.getFullName();
-        this.birthDate = formatDate(publisher.getBirthDate());
-        this.baptismDate = formatDate(publisher.getBaptismDate());
-        this.identifier = publisher.getIdentifier();
-        this.contactDetail = new ContactDetailVO(publisher.getContactDetail());
-        this.address = new AddressVO(publisher.getAddress());
-    }
-
-    private static String formatDate(final LocalDate date) {
-        if (date != null) {
-            final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("dd MMMM yyyy");
-            return dateTimeFormatter.format(date);
-        }
-        return "N/A";
+    public PublisherVO(final PublisherVoBuilder builder) {
+        this.fullName = builder.getFullName();
+        this.birthDate = builder.getBirthDate();
+        this.baptismDate = builder.getBaptismDate();
+        this.identifier = builder.getIdentifier();
+        this.contactDetail = builder.getContactDetail();
+        this.address = builder.getAddress();
     }
 
     public String getBirthDate() {

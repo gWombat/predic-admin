@@ -2,6 +2,7 @@ package fr.gwombat.predicadmin.web.controller;
 
 import javax.validation.Valid;
 
+import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
 
 import org.slf4j.Logger;
@@ -26,20 +27,22 @@ import fr.gwombat.predicadmin.web.form.PublisherForm;
 @Controller
 @RequestMapping("/publishers")
 public class PublisherController {
-    
-    private static final Logger logger = LoggerFactory.getLogger(PublisherController.class);
 
-    private PublisherService publisherService;
+    private static final Logger  logger = LoggerFactory.getLogger(PublisherController.class);
+
+    private PublisherService     publisherService;
+    private PublisherTransformer publisherTransformer;
 
     @Autowired
-    public PublisherController(final PublisherService publisherService) {
+    public PublisherController(final PublisherService publisherService, final PublisherTransformer publisherTransformer) {
         this.publisherService = publisherService;
+        this.publisherTransformer = publisherTransformer;
     }
 
     @GetMapping("/{id}")
     public String detailPublisherPage(@PathVariable("id") final String identifier, Model model) {
         final Publisher publisher = publisherService.getByIdentifier(identifier);
-        final PublisherVO publisherVo = new PublisherVO(publisher);
+        final PublisherVO publisherVo = publisherTransformer.toViewObject(publisher);
         model.addAttribute("publisher", publisherVo);
 
         return "publisher-detail";
@@ -48,7 +51,7 @@ public class PublisherController {
     @GetMapping("/{id}/edit")
     public String editPublisherPage(@PathVariable("id") final String identifier, Model model) {
         final Publisher publisher = publisherService.getByIdentifier(identifier);
-        final PublisherForm publisherForm = new PublisherForm(publisher);
+        final PublisherForm publisherForm = publisherTransformer.toFormObject(publisher);
         model.addAttribute("publisher", publisherForm);
 
         return "publisher-edit";
@@ -62,12 +65,12 @@ public class PublisherController {
         }
 
         Publisher publisher = publisherService.getByIdentifier(publisherForm.getIdentifier());
-        publisher = publisherForm.toEntity(publisher);
+        publisher = publisherTransformer.toEntity(publisherForm, publisher);
 
         try {
             publisherService.save(publisher);
             redirectAttributes.addFlashAttribute("success", "page.profile.detail.update.success");
-            
+
             return "redirect:/publishers/" + publisher.getIdentifier();
         } catch (Exception e) {
             model.addAttribute("error");
