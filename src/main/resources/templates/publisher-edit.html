@@ -81,34 +81,37 @@
 
                                 <div class="panel-body">
                                     <!-- START Form Name -->
-                                    <div class="form-group">
+                                    <div class="form-group" th:classappend="${{#fields.hasErrors('name')} ? 'has-error'">
                                         <label for="profile-edit-name" class="col-sm-3 control-label"> <span class="text-danger">* </span> <span th:text="#{general.name}"></span>
                                         </label>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control" id="profile-edit-name" placeholder="Nom du proclamateur..." th:field="*{name}">
                                         </div>
+                                        <span class="help-block" th:if="${#fields.hasErrors('name')}" th:errors="*{name}">Incorrect name</span>
                                     </div>
                                     <!-- END Form Name -->
                                     <!-- START Form First Name -->
-                                    <div class="form-group">
+                                    <div class="form-group" th:classappend="${{#fields.hasErrors('firstName')} ? 'has-error'">
                                         <label for="profile-edit-first-name" class="col-sm-3 control-label"> <span class="text-danger">* </span> <span th:text="#{general.firstname}"></span>
                                         </label>
                                         <div class="col-sm-6">
                                             <input type="text" class="form-control" id="profile-edit-first-name" placeholder="Prénom du proclamateur..." th:field="*{firstName}">
                                         </div>
+                                        <span class="help-block" th:if="${#fields.hasErrors('firstName')}" th:errors="*{firstName}">Incorrect name</span>
                                     </div>
                                     <!-- END Form First Name -->
                                     <!-- START Form Birthdate -->
-                                    <div class="form-group">
+                                    <div class="form-group" th:classappend="${{#fields.hasErrors('birthDate')} ? 'has-error'">
                                         <label for="profile-edit-birthdate" class="col-sm-3 control-label"> <span th:text="#{general.birthdate}"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" class="form-control date-range-picker" id="profile-edit-birthdate" placeholder="Date de naissance..." th:field="*{birthDate}">
                                         </div>
+                                        <span class="help-block" th:if="${#fields.hasErrors('birthDate')}" th:errors="*{birthDate}">Incorrect name</span>
                                     </div>
                                     <!-- END Form Birthdate -->
                                     <!-- START Form Gender -->
-                                    <div class="form-group">
+                                    <div class="form-group" th:classappend="${{#fields.hasErrors('gender')} ? 'has-error'">
                                         <label for="profile-edit-gender" class="col-sm-3 control-label"> <span th:text="#{general.sex}"></span>
                                         </label>
                                         <div class="col-sm-3">
@@ -116,15 +119,17 @@
                                                 <option th:each="gender : ${genders}" th:value="${gender}" th:text="${#messages.msg(gender.labelCode)}"></option>
                                             </select>
                                         </div>
+                                        <span class="help-block" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}">Incorrect name</span>
                                     </div>
                                     <!-- END Form Gender -->
                                     <!-- START Form Baptism Date -->
-                                    <div class="form-group">
+                                    <div class="form-group" th:classappend="${{#fields.hasErrors('baptismDate')} ? 'has-error'">
                                         <label for="profile-edit-baptism-date" class="col-sm-3 control-label"> <span th:text="#{general.baptism.date}"></span>
                                         </label>
                                         <div class="col-sm-3">
                                             <input type="text" class="form-control date-range-picker" id="profile-edit-baptism-date" placeholder="Date de baptême..." th:field="*{baptismDate}">
                                         </div>
+                                        <span class="help-block" th:if="${#fields.hasErrors('baptismDate')}" th:errors="*{baptismDate}">Incorrect name</span>
                                     </div>
                                     <!-- END Form Baptism Date -->
                                 </div>
