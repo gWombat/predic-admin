@@ -2,25 +2,25 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/errors_layout}">
 <head>
 
-<title th:text="#{404}">404</title>
+<title th:text="#{page.404.code}">404</title>
 
 </head>
 <body>
 <div class="row m-t-3" layout:fragment="content">
     <div class="col-md-4 col-md-offset-4">
-        <div class="panel panel-default b-a-2 no-bg b-gray-dark">
+        <div class="panel panel-default b-a-2 no-bg b-warning">
             <div class="panel-heading text-center">
-                <a href="../index.html"><img th:src="@{/theme_1_2_2/assets/images/spin-logo-inverted-@2X.png}" alt="Logo" class="m-t-3 m-b-3 h-20"></a>
+                <a th:href="@{/}"><img th:src="@{/theme_1_2_2/assets/images/spin-logo-inverted-@2X.png}" alt="Logo" class="m-t-3 m-b-3 h-20"></a>
             </div>
             <div class="panel-body">
-                <h2 class="text-center display-1 m-b-0">404</h2>
-                <p class="text-center m-b-3">Sorry but the page you are looking for was not found. Try to fix the URL or use the search engine below.</p>
+                <h2 class="text-center display-1 m-b-0" th:text="#{page.404.code}">404</h2>
+                <p class="text-center m-b-3" th:text="#{page.404.message}">Sorry but the page you are looking for was not found. Try to fix the URL or use the search engine below.</p>
             </div>
             <div class="panel-footer b-a-0 b-r-a-0">
-                <a th:href="@{/}" type="button" class="btn btn-block btn-link"><i class="fa fa-angle-left m-r-1"></i>Back to Home</a>
+                <a th:href="@{/}" type="button" class="btn btn-block btn-link"><i class="fa fa-angle-left m-r-1"></i><span th:text="#{general.back.home}">Back to Home</span></a>
             </div>
         </div>
-        <p class="text-gray-light text-center"><strong>SPIN Dashboard </strong> <span class="text-gray-light">&#xA9; 2009 - 2016. Made by <i class="fa fa-fw fa-heart text-danger"></i> New York, US</span></p>
+        <p class="text-gray-light text-center"><strong>SPIN Dashboard </strong> <span class="text-gray-light" th:text="#{footer.text}">&#xA9; 2009 - 2016. Made by <i class="fa fa-fw fa-heart text-danger"></i> New York, US</span></p>
     </div>
 </div>
 </body>
