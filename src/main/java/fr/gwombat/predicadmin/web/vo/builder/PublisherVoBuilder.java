@@ -6,10 +6,12 @@ import fr.gwombat.predicadmin.web.vo.PublisherVO;
 
 public class PublisherVoBuilder {
 
-    private String          fullName;
-    private String          birthDate;
-    private String          identifier;
-    private String          baptismDate;
+    private String fullName;
+    private String birthDate;
+    private String identifier;
+    private String baptismDate;
+    private String name;
+    private String firstName;
 
     private ContactDetailVO contactDetail;
     private AddressVO       address;
@@ -45,6 +47,16 @@ public class PublisherVoBuilder {
         return this;
     }
 
+    public PublisherVoBuilder name(final String name) {
+        this.name = name;
+        return this;
+    }
+
+    public PublisherVoBuilder firstName(final String firstName) {
+        this.firstName = firstName;
+        return this;
+    }
+
     public PublisherVO build() {
         return new PublisherVO(this);
     }
@@ -71,5 +83,13 @@ public class PublisherVoBuilder {
 
     public AddressVO getAddress() {
         return address;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getFirstName() {
+        return firstName;
     }
 }

@@ -1,12 +1,14 @@
 package fr.gwombat.predicadmin.service.impl;
 
+import fr.gwombat.predicadmin.model.Congregation;
+import fr.gwombat.predicadmin.model.Publisher;
+import fr.gwombat.predicadmin.repository.PublisherRepository;
+import fr.gwombat.predicadmin.service.PublisherService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.gwombat.predicadmin.model.Publisher;
-import fr.gwombat.predicadmin.repository.PublisherRepository;
-import fr.gwombat.predicadmin.service.PublisherService;
+import java.util.List;
 
 @Service
 @Transactional
@@ -27,6 +29,11 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public Publisher save(final Publisher publisher) {
         return publisherRepository.save(publisher);
+    }
+
+    @Override
+    public List<Publisher> getByCongregation(final Congregation congregation) {
+        return publisherRepository.findByCongregation(congregation);
     }
 
 }

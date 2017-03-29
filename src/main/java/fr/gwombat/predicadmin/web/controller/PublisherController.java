@@ -1,10 +1,13 @@
 package fr.gwombat.predicadmin.web.controller;
 
-import javax.validation.Valid;
-
+import fr.gwombat.predicadmin.model.Congregation;
+import fr.gwombat.predicadmin.model.Publisher;
+import fr.gwombat.predicadmin.service.CongregationService;
+import fr.gwombat.predicadmin.service.PublisherService;
+import fr.gwombat.predicadmin.support.Gender;
+import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,31 +15,49 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import fr.gwombat.predicadmin.model.Publisher;
-import fr.gwombat.predicadmin.service.PublisherService;
-import fr.gwombat.predicadmin.support.Gender;
-import fr.gwombat.predicadmin.web.form.PublisherForm;
+import javax.validation.Valid;
+import java.util.ArrayList;
+import java.util.List;
 
 @Controller
 @RequestMapping("/publishers")
 public class PublisherController {
 
-    private static final Logger  logger = LoggerFactory.getLogger(PublisherController.class);
+    private static final Logger logger = LoggerFactory.getLogger(PublisherController.class);
 
     private PublisherService     publisherService;
     private PublisherTransformer publisherTransformer;
+    private CongregationService  congregationService;
 
     @Autowired
-    public PublisherController(final PublisherService publisherService, final PublisherTransformer publisherTransformer) {
+    public PublisherController(final PublisherService publisherService,
+                               final PublisherTransformer publisherTransformer,
+                               final CongregationService congregationService) {
         this.publisherService = publisherService;
         this.publisherTransformer = publisherTransformer;
+        this.congregationService = congregationService;
+    }
+
+    @GetMapping
+    public String allCongregationPublishers(Model model) {
+
+        final List<Congregation> congregations = congregationService.getAllCongregations();
+        final List<Publisher> publishers = publisherService.getByCongregation(congregations.get(0));
+
+        if (publishers != null) {
+            final List<PublisherVO> publisherVOS = new ArrayList<>(publishers.size());
+            for (Publisher publisher : publishers) {
+                PublisherVO publisherVo = publisherTransformer.toViewObject(publisher);
+                publisherVOS.add(publisherVo);
+            }
+
+            model.addAttribute("publishers", publisherVOS);
+        }
+
+        return "publishers";
     }
 
     @GetMapping("/{id}")

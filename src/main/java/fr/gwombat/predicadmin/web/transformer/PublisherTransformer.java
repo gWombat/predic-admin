@@ -92,6 +92,8 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
                     .fullName(publisher.getFullName())
                     .identifier(publisher.getIdentifier())
                     .birthDate(formatDateLarge(publisher.getBirthDate()))
+                    .name(publisher.getName())
+                    .firstName(publisher.getFirstName())
                     .baptismDate(formatDateLarge(publisher.getBaptismDate()));
             
             return builder.build();

@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/default_layout}">
+<head>
+    <title th:text="#{general.publishers}">Page title</title>
+</head>
+
+<body>
+
+    <div class="sub-navbar sub-navbar__header-breadcrumbs" layout:fragment="content-header">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 sub-navbar-column">
+                    <div class="sub-navbar-header">
+                        <h3 th:text="#{general.publishers}">Fiche proclamateur</h3>
+                    </div>
+                    <ol class="breadcrumb navbar-text navbar-right no-bg">
+                        <li class="current-parent">
+                            <a class="current-parent" th:href="@{/}">
+                                <i class="fa fa-fw fa-home"></i>
+                            </a>
+                        </li>
+                        <li class="active" th:text="#{general.publishers}">Publishers</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+
+    <div layout:fragment="content">
+        <div class="row">
+            <div class="col-lg-12">
+                <p>Voici la liste des proclamateurs de la congrégation de ...</p>
+
+                <table class="display table">
+                    <thead>
+                        <tr>
+                            <th>Nom</th>
+                            <th>Prénom</th>
+                            <th>Date de naissance</th>
+                            <th>Date de baptême</th>
+                            <th></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr th:each="publisher : ${publishers}">
+                            <td class="v-a-m">
+                                <span class="text-white" th:text="${publisher.name}"></span>
+                            </td>
+                            <td class="v-a-m">
+                                <span class="text-white" th:text="${publisher.firstName}"></span>
+                            </td>
+                            <td class="v-a-m" th:text="${publisher.birthDate}"></td>
+                            <td class="v-a-m" th:text="${publisher.baptismDate}"></td>
+                            <td class="text-right v-a-m">
+                                <div class="btn-group" role="group">
+                                    <a th:type="button" th:href="@{/publishers/{id}(id=${publisher.identifier})}"
+                                        class="btn btn-default">Modifier</a>
+                                </div>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
