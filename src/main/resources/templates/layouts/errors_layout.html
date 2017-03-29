@@ -16,6 +16,7 @@
 
     <!-- SCSS Output -->
     <link rel="stylesheet" th:href="@{/theme_1_2_2/assets/stylesheets/app.min.e0bb64e7.css}">
+    <link rel="stylesheet" th:href="@{/theme_1_2_2/assets/vendor/css/lib.min.css}">
 
     <!-- START Favicon -->
     <link rel="apple-touch-icon" sizes="57x57" th:href="@{/theme_1_2_2/assets/images/favicons/apple-icon-57x57.png}">
@@ -45,7 +46,7 @@
 
 
 <body class="sidebar-disabled navbar-disabled footer-disabled loading">
-    <div id="initial-loader">
+<div id="initial-loader">
     <div>
         <div class="initial-loader-top">
             <img class="initial-loader-logo" th:src="@{/theme_1_2_2/assets/images/spin-logo-inverted.png}" alt="Loader">
@@ -59,14 +60,12 @@
             </div>
         </div>
         <div class="initial-loader-bottom">
-            Loading. Please Wait. <i class="fa fa-cricle" style="opacity: 0"></i>
+            <span th:text="#{general.loading}">Loading. Please Wait.</span> <i class="fa fa-circle" style="opacity: 0"></i>
         </div>
     </div>
 </div>
 
     <!-- Bower Libraries Scripts -->
-    <script th:src="@{/theme_1_2_2/assets/vendor/js/lib.min.js}"></script>
-
     <div class="main-wrap">
         <div class="content">
             <div class="container-fluid">
@@ -74,6 +73,8 @@
             </div>
         </div> 
     </div>
+    
+    <script th:src="@{/theme_1_2_2/assets/vendor/js/lib.min.js}"></script>
     <script>
         // Hide loader
         (function() {
@@ -94,9 +95,6 @@
             });
         })();
     </script>
-
-    <!-- Bower Libraries Styles -->
-    <link rel="stylesheet" th:href="@{/theme_1_2_2/assets/vendor/css/lib.min.css}">
 
     <script th:src="@{/theme_1_2_2/assets/javascript/app.min.13a3a368.js}"></script>
 
