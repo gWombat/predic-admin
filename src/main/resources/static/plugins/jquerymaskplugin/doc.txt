@@ -1,0 +1,3 @@
+url: https://igorescobar.github.io/jQuery-Mask-Plugin/
+
+version: 1.14.10
