@@ -1,15 +1,18 @@
 package fr.gwombat.predicadmin.web.vo;
 
+import java.time.LocalDate;
+
 import fr.gwombat.predicadmin.web.vo.builder.PublisherVoBuilder;
 
 public class PublisherVO {
 
-    private final String name;
-    private final String firstName;
-    private final String fullName;
-    private final String birthDate;
-    private final String identifier;
-    private final String baptismDate;
+    private final String          name;
+    private final String          firstName;
+    private final String          fullName;
+    private final String          identifier;
+
+    private final LocalDate       birthDate;
+    private final LocalDate       baptismDate;
 
     private final ContactDetailVO contactDetail;
     private final AddressVO       address;
@@ -25,7 +28,7 @@ public class PublisherVO {
         this.firstName = builder.getFirstName();
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
@@ -45,7 +48,7 @@ public class PublisherVO {
         return address;
     }
 
-    public String getBaptismDate() {
+    public LocalDate getBaptismDate() {
         return baptismDate;
     }
 

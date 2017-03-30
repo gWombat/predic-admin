@@ -23,11 +23,10 @@ import fr.gwombat.predicadmin.web.vo.builder.PublisherVoBuilder;
 @Component
 public class PublisherTransformer extends AbstractEntityTransformer<Publisher, PublisherForm, PublisherVO> {
 
-    private static final Logger      logger                 = LoggerFactory.getLogger(PublisherTransformer.class);
+    private static final Logger      logger             = LoggerFactory.getLogger(PublisherTransformer.class);
 
-    private static final String      DATE_FORMAT_CODE       = "format.date";
-    private static final String      DATE_FORMAT_LARGE_CODE = "format.date.l";
-    private static final String      DEFAULT_DATE_VALUE     = "N/A";
+    private static final String      DATE_FORMAT_CODE   = "format.date";
+    private static final String      DEFAULT_DATE_VALUE = "N/A";
 
     private MessageSource            messageSource;
     private AddressTransformer       addressTransformer;
@@ -87,29 +86,19 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
         if (publisher != null) {
             final AddressVO addressVo = addressTransformer.toViewObject(publisher.getAddress());
             final ContactDetailVO contactDetailVo = contactDetailTransformer.toViewObject(publisher.getContactDetail());
-            
-            final PublisherVoBuilder builder = PublisherVoBuilder.begin(contactDetailVo, addressVo)
-                    .fullName(publisher.getFullName())
-                    .identifier(publisher.getIdentifier())
-                    .birthDate(formatDateLarge(publisher.getBirthDate()))
-                    .name(publisher.getName())
-                    .firstName(publisher.getFirstName())
-                    .baptismDate(formatDateLarge(publisher.getBaptismDate()));
-            
+
+            final PublisherVoBuilder builder = PublisherVoBuilder.begin(contactDetailVo, addressVo).fullName(publisher.getFullName()).identifier(publisher.getIdentifier()).birthDate(publisher.getBirthDate()).name(publisher.getName()).firstName(publisher.getFirstName()).baptismDate(publisher.getBaptismDate());
+
             return builder.build();
         }
         return null;
-    }
-    
-    private String formatDateLarge(LocalDate date) {
-        return formatDateToString(date, DATE_FORMAT_LARGE_CODE);
     }
 
     private String formatDate(LocalDate date) {
         return formatDateToString(date, DATE_FORMAT_CODE);
     }
-    
-    private String formatDateToString(LocalDate date, String format){
+
+    private String formatDateToString(LocalDate date, String format) {
         String result = DEFAULT_DATE_VALUE;
         if (date != null) {
             final String dateFormat = messageSource.getMessage(format, null, LocaleContextHolder.getLocale());

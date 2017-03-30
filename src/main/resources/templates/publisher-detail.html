@@ -100,9 +100,15 @@
                                 </div>
                                 <dl class="dl-horizontal text-left">
                                     <dt class="text-left" th:text="#{general.birthdate}">Birthdate</dt>
-                                    <dd class="text-left text-white"><span th:text="${publisher.birthDate}">775-027-5134</span></dd>
+                                    <dd class="text-left text-white">
+                                        <span th:if="${publisher.birthDate} != null" th:text="${#temporals.format(publisher.birthDate, 'dd MMM yyyy', #locale)}">775-027-5134</span>
+                                        <span th:if="${publisher.birthDate} == null" th:text="#{general.not.applicable}">N/A</span>
+                                    </dd>
                                     <dt class="text-left" th:text="#{general.baptism.date}">Baptism date</dt>
-                                    <dd class="text-left text-white"><span th:text="${publisher.baptismDate}">775-027-5134</span></dd>
+                                    <dd class="text-left text-white">
+                                        <span th:if="${publisher.baptismDate} != null"  th:text="${#temporals.format(publisher.baptismDate, 'dd MMM yyyy', #locale)}">775-027-5134</span>
+                                        <span th:if="${publisher.baptismDate} == null"  th:text="#{general.not.applicable}">N/A</span>
+                                    </dd>
                                 </dl>
                             </div>
                             <!-- END Tab: Profile -->

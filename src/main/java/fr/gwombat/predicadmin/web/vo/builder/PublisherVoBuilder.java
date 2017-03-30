@@ -1,17 +1,20 @@
 package fr.gwombat.predicadmin.web.vo.builder;
 
+import java.time.LocalDate;
+
 import fr.gwombat.predicadmin.web.vo.AddressVO;
 import fr.gwombat.predicadmin.web.vo.ContactDetailVO;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
 
 public class PublisherVoBuilder {
 
-    private String fullName;
-    private String birthDate;
-    private String identifier;
-    private String baptismDate;
-    private String name;
-    private String firstName;
+    private String          fullName;
+    private String          identifier;
+    private String          name;
+    private String          firstName;
+
+    private LocalDate       birthDate;
+    private LocalDate       baptismDate;
 
     private ContactDetailVO contactDetail;
     private AddressVO       address;
@@ -32,7 +35,7 @@ public class PublisherVoBuilder {
         return this;
     }
 
-    public PublisherVoBuilder birthDate(final String birthDate) {
+    public PublisherVoBuilder birthDate(final LocalDate birthDate) {
         this.birthDate = birthDate;
         return this;
     }
@@ -42,7 +45,7 @@ public class PublisherVoBuilder {
         return this;
     }
 
-    public PublisherVoBuilder baptismDate(final String baptismDate) {
+    public PublisherVoBuilder baptismDate(final LocalDate baptismDate) {
         this.baptismDate = baptismDate;
         return this;
     }
@@ -65,7 +68,7 @@ public class PublisherVoBuilder {
         return fullName;
     }
 
-    public String getBirthDate() {
+    public LocalDate getBirthDate() {
         return birthDate;
     }
 
@@ -73,7 +76,7 @@ public class PublisherVoBuilder {
         return identifier;
     }
 
-    public String getBaptismDate() {
+    public LocalDate getBaptismDate() {
         return baptismDate;
     }
 

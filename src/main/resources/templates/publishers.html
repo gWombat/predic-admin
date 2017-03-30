@@ -51,12 +51,18 @@
                             <td class="v-a-m">
                                 <span class="text-white" th:text="${publisher.firstName}"></span>
                             </td>
-                            <td class="v-a-m" th:text="${publisher.birthDate}"></td>
-                            <td class="v-a-m" th:text="${publisher.baptismDate}"></td>
+                            <td class="v-a-m">
+                                <span th:if="${publisher.birthDate} != null" th:text="${#temporals.format(publisher.birthDate, 'dd/MM/yyyy')}"></span>
+                                <span th:if="${publisher.birthDate} == null" th:text="#{general.not.applicable}"></span>
+                            </td>
+                            <td class="v-a-m">
+                                <span th:if="${publisher.baptismDate} != null" th:text="${#temporals.format(publisher.baptismDate, 'dd/MM/yyyy')}"></span>
+                                <span th:if="${publisher.baptismDate} == null" th:text="#{general.not.applicable}"></span>
+                            </td>
                             <td class="text-right v-a-m">
                                 <div class="btn-group" role="group">
                                     <a th:type="button" th:href="@{/publishers/{id}(id=${publisher.identifier})}"
-                                        class="btn btn-default">Modifier</a>
+                                        class="btn btn-default" th:text="#{general.detail}">Détails</a>
                                 </div>
                             </td>
                         </tr>
