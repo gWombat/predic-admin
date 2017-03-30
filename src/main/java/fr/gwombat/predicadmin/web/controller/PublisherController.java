@@ -8,6 +8,7 @@ import fr.gwombat.predicadmin.support.Gender;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,16 +28,18 @@ import java.util.List;
 @RequestMapping("/publishers")
 public class PublisherController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PublisherController.class);
+    private static final Logger  logger                = LoggerFactory.getLogger(PublisherController.class);
+
+    private static final String  PUBLISHERS_PAGE       = "publishers";
+    private static final String  PUBLISHER_EDIT_PAGE   = "publisher-edit";
+    private static final String  PUBLISHER_DETAIL_PAGE = "publisher-detail";
 
     private PublisherService     publisherService;
     private PublisherTransformer publisherTransformer;
     private CongregationService  congregationService;
 
     @Autowired
-    public PublisherController(final PublisherService publisherService,
-                               final PublisherTransformer publisherTransformer,
-                               final CongregationService congregationService) {
+    public PublisherController(final PublisherService publisherService, final PublisherTransformer publisherTransformer, final CongregationService congregationService) {
         this.publisherService = publisherService;
         this.publisherTransformer = publisherTransformer;
         this.congregationService = congregationService;
@@ -58,17 +62,17 @@ public class PublisherController {
             model.addAttribute("nbPublishers", publisherVOS.size());
         }
 
-        return "publishers";
+        return PUBLISHERS_PAGE;
     }
-    
+
     @GetMapping("/add")
-    public String showAddPublisherForm(Model model){
+    public String showAddPublisherForm(Model model) {
         final PublisherForm publisherForm = new PublisherForm();
-        
+
         model.addAttribute("publisher", publisherForm);
         model.addAttribute("newPublisher", true);
-        
-        return "publisher-edit";
+
+        return PUBLISHER_EDIT_PAGE;
     }
 
     @GetMapping("/{id}")
@@ -77,7 +81,7 @@ public class PublisherController {
         final PublisherVO publisherVo = publisherTransformer.toViewObject(publisher);
         model.addAttribute("publisher", publisherVo);
 
-        return "publisher-detail";
+        return PUBLISHER_DETAIL_PAGE;
     }
 
     @GetMapping("/{id}/edit")
@@ -86,14 +90,14 @@ public class PublisherController {
         final PublisherForm publisherForm = publisherTransformer.toFormObject(publisher);
         model.addAttribute("publisher", publisherForm);
 
-        return "publisher-edit";
+        return PUBLISHER_EDIT_PAGE;
     }
 
     @PostMapping
     public String saveOrUpdatePublisher(Model model, @ModelAttribute("publisher") @Valid PublisherForm publisherForm, BindingResult result, Errors errors, RedirectAttributes redirectAttributes) {
         if (result.hasErrors()) {
             errors.reject("validation.error.global");
-            return "publisher-edit";
+            return PUBLISHER_EDIT_PAGE;
         }
 
         Publisher publisher = publisherService.getByIdentifier(publisherForm.getIdentifier());
@@ -107,7 +111,7 @@ public class PublisherController {
         } catch (Exception e) {
             model.addAttribute("error");
             logger.error(String.format("Error saving publisher [%s]: ", publisher), e);
-            return "publisher-edit";
+            return PUBLISHER_EDIT_PAGE;
         }
     }
 
