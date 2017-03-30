@@ -32,9 +32,11 @@
         <div class="media m-b-3">
             <div class="media-body">
                 <h3 class="f-w-300 m-b-0 m-t-1">
-                    <a th:href="@{/publishers/{id}(id=${publisher.identifier})}"><span th:text="${publisher.fullName}">John DOE</span></a> 
-                    <span class="text-muted"> <span class="m-r-1 m-l-1">/</span></span> 
-                    <span th:text="#{page.publisher.edit.header.title}">Title</span>
+                    <span th:if="${newPublisher}" th:text="#{page.publisher.edit.new}" >New publisher</span>
+                    
+                    <a th:if="${newPublisher} == null" th:href="@{/publishers/{id}(id=${publisher.identifier})}"><span th:text="${publisher.fullName}">John DOE</span></a> 
+                    <span th:if="${newPublisher} == null" class="text-muted"> <span class="m-r-1 m-l-1">/</span></span> 
+                    <span th:if="${newPublisher} == null" th:text="#{page.publisher.edit.header.title}">Title</span>
                 </h3>
                 <p class="m-t-0">
                     <span class="label label-warning label-outline text-uppercase m-r-1">Premium</span> 

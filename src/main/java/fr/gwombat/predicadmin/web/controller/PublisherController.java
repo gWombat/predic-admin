@@ -55,9 +55,20 @@ public class PublisherController {
             }
 
             model.addAttribute("publishers", publisherVOS);
+            model.addAttribute("nbPublishers", publisherVOS.size());
         }
 
         return "publishers";
+    }
+    
+    @GetMapping("/add")
+    public String showAddPublisherForm(Model model){
+        final PublisherForm publisherForm = new PublisherForm();
+        
+        model.addAttribute("publisher", publisherForm);
+        model.addAttribute("newPublisher", true);
+        
+        return "publisher-edit";
     }
 
     @GetMapping("/{id}")
