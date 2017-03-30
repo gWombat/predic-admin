@@ -56,17 +56,17 @@ public class SetupListener {
         publisher.setFirstName("Guillaume");
         publisher.setGender(Gender.MALE);
         publisher.setBirthDate(LocalDate.of(1989, 5, 11));
-        //publisher.setBaptismDate(LocalDate.of(2008, 12, 6));
+        publisher.setBaptismDate(LocalDate.of(2008, 12, 6));
         publisher.setCongregation(congreg);
         
-        final Address address = new Address();
+        Address address = new Address();
         address.setCity("Paris");
         address.setCountry("FRANCE");
         address.setStreet1("1 rue de la gare");
         address.setZip("75002");
         publisher.setAddress(address);
         
-        final ContactDetail contactDetail = new ContactDetail();
+        ContactDetail contactDetail = new ContactDetail();
         contactDetail.setEmail("gwombat.fake@email.com");
         contactDetail.setMobilePhone("0623456789");
         contactDetail.setPhone("0123456789");
@@ -74,6 +74,29 @@ public class SetupListener {
         
         publisher = publisherRepository.save(publisher);
         logger.debug("new publisher saved: " + publisher.toString());
+        
+        publisher = new Publisher();
+        publisher.setName("Fabbi");
+        publisher.setFirstName("Jérémie");
+        publisher.setGender(Gender.MALE);
+        publisher.setBirthDate(LocalDate.of(1992, 8, 21));
+        publisher.setCongregation(congreg);
+        
+        address = new Address();
+        address.setCity("Paris");
+        address.setCountry("FRANCE");
+        address.setStreet1("1 rue de l'église");
+        address.setZip("75003");
+        publisher.setAddress(address);
+        
+        contactDetail = new ContactDetail();
+        contactDetail.setEmail("jeremie.fake@email.com");
+        contactDetail.setMobilePhone("0632547698");
+        contactDetail.setPhone("0132547698");
+        publisher.setContactDetail(contactDetail);
+        
+        publisher = publisherRepository.save(publisher);
+        
 
         setUp = true;
     }
