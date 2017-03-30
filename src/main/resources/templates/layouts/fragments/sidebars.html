@@ -19,48 +19,17 @@
     <div class="sidebar-content">
         <!-- START Tree -->
         <ul class="side-menu m-t-2">
-            <li class="Dashboards">
-                <a href="#" title="Dashboards">
-                    <i class="fa  fa-folder-open-o fa-lg fa-fw"></i>
-                    <span class="nav-label">Folder</span>
-                    <i class="fa arrow"></i>
-                </a>
-                <ul>
-                    <li class='active'>
-                        <a href="#">
-                            <span class="nav-label">Starter HTML/CSS</span>
-                        </a>
-                    </li>
-                </ul>
-            </li>
-            <li>
-                <a href="#" title="Page">
-                    <i class="fa fa-lg fa-file-o fa-fw"></i>
-                    <span class="nav-label">Page</span>
-                    <span class="pull-right label label-primary label-outline text-uppercase">New</span>
+            <li th:class="${#httpServletRequest.getRequestURL().toString().contains('/home') ? 'active' : ''}">
+                <a href="#" th:title="#{general.home}">
+                    <i class="fa fa-lg fa-home fa-fw"></i>
+                    <span class="nav-label" th:text="#{general.home}">Page</span>
                 </a>
             </li>
-            <li>
-                <a href="#" title="Apps">
-                    <i class="fa fa-files-o fa-fw fa-lg"></i>
-                    <span class="nav-label">Levels</span>
-                    <i class="fa arrow"></i>
+            <li th:class="${#httpServletRequest.getRequestURL().toString().contains('/publishers') ? 'active' : ''}">
+                <a th:href="@{/publishers}" th:title="#{general.publishers}">
+                    <i class="fa fa-lg fa-users fa-fw"></i>
+                    <span class="nav-label" th:text="#{general.publishers}">Page</span>
                 </a>
-                <ul>
-                    <li>
-                        <a href="#">
-                            <span class="nav-label">Level One</span>
-                            <i class="fa arrow"></i>
-                        </a>
-                        <ul>
-                            <li>
-                                <a href="#">
-                                    <span class="nav-label">Sub-level</span>
-                                </a>
-                            </li>
-                        </ul>
-                    </li>
-                </ul>
             </li>
         </ul>
         <!-- END Tree  -->
