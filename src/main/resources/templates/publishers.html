@@ -11,7 +11,7 @@
             <div class="row">
                 <div class="col-lg-12 sub-navbar-column">
                     <div class="sub-navbar-header">
-                        <h3 th:text="#{general.publishers}">Fiche proclamateur</h3>
+                        <h3 th:text="#{general.publishers}">Publisher file</h3>
                     </div>
                     <ol class="breadcrumb navbar-text navbar-right no-bg">
                         <li class="current-parent">
@@ -30,16 +30,39 @@
 
     <div layout:fragment="content">
         <div class="row">
+            <div class="col-lg-3">
+                <div class="panel panel-default no-bg b-a-2 b-primary">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <i class="fa fa-users fa-2x fa-fw text-primary"></i>
+                            </div>
+                            <div class="col-lg-6 text-right">
+                                <p class="m-b-0" th:text="#{general.publishers}">Publishers</p>
+                                <h1 class="f-w-300 m-t-0 m-b-0" th:text="${nbPublishers}"></h1>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- START Footer -->
+                    <div class="panel-footer">
+                        <i class="m-r-1 fa fa-home"></i>
+                        Verneuil-sur-Seine
+                    </div>
+                    <!-- END Footer -->
+                </div>
+            </div>
+        </div>
+        <div class="row">
             <div class="col-lg-12">
                 <p>Voici la liste des proclamateurs de la congrégation de ...</p>
 
-                <table class="display table">
+                <table id="table_publishers" class="display table table-hover">
                     <thead>
                         <tr>
-                            <th>Nom</th>
-                            <th>Prénom</th>
-                            <th>Date de naissance</th>
-                            <th>Date de baptême</th>
+                            <th th:text="#{general.name}">Name</th>
+                            <th th:text="#{general.firstname}">First name</th>
+                            <th th:text="#{general.birthdate}">Birth date</th>
+                            <th th:text="#{general.baptism.date}">Baptism date</th>
                             <th></th>
                         </tr>
                     </thead>
@@ -62,7 +85,7 @@
                             <td class="text-right v-a-m">
                                 <div class="btn-group" role="group">
                                     <a th:type="button" th:href="@{/publishers/{id}(id=${publisher.identifier})}"
-                                        class="btn btn-default" th:text="#{general.detail}">Détails</a>
+                                        class="btn btn-sm btn-default" th:text="#{general.detail}">Detail</a>
                                 </div>
                             </td>
                         </tr>
@@ -70,6 +93,19 @@
                 </table>
             </div>
         </div>
-    </div>
+        <script th:inline="javascript">
+      	//<![CDATA[
+        $(document).ready(function () {
+        	$('#table_publishers').DataTable({
+        		columnDefs: [{
+        			targets: [4],
+        			orderable: false,
+                    searchable: false
+        		}]
+        	});
+        });
+        //]]>
+		</script>
+	</div>
 </body>
 </html>
