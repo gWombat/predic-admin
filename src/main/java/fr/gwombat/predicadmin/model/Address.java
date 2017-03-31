@@ -9,7 +9,6 @@ import javax.persistence.Table;
 
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Length;
-import org.hibernate.validator.constraints.NotBlank;
 
 @Entity
 @Table(name = "addresses")
@@ -22,9 +21,8 @@ public class Address extends AuditableEntity {
     @Column(name = "address_id")
     private Long              id;
 
-    @NotBlank
     @Length(max = 255)
-    @Column(name = "street_1", nullable = false, length = 255)
+    @Column(name = "street_1", length = 255)
     private String            street1;
 
     @Length(max = 255)

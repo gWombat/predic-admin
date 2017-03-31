@@ -99,17 +99,25 @@ public class PublisherController {
             errors.reject("validation.error.global");
             return PUBLISHER_EDIT_PAGE;
         }
+        
+        boolean isNew = false;
 
         Publisher publisher = publisherService.getByIdentifier(publisherForm.getIdentifier());
+        if(publisher == null)
+            isNew = true;
+        
         publisher = publisherTransformer.toEntity(publisherForm, publisher);
 
         try {
             publisherService.save(publisher);
-            redirectAttributes.addFlashAttribute("success", "page.profile.detail.update.success");
+            if(isNew)
+                redirectAttributes.addFlashAttribute("success", "page.profile.detail.creation.success");
+            else
+                redirectAttributes.addFlashAttribute("success", "page.profile.detail.update.success");
 
             return "redirect:/publishers/" + publisher.getIdentifier();
         } catch (Exception e) {
-            model.addAttribute("error");
+            model.addAttribute("error", "validation.error.internal");
             logger.error(String.format("Error saving publisher [%s]: ", publisher), e);
             return PUBLISHER_EDIT_PAGE;
         }
