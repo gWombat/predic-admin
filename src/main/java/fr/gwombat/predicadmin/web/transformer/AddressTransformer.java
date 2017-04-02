@@ -13,11 +13,11 @@ class AddressTransformer extends AbstractEntityTransformer<Address, AddressForm,
 
     @Override
     public Address toEntity(final AddressForm addressForm, Address address) {
-        if (addressForm != null) {
-            if (addressForm.isAllFieldsNull())
+        if(addressForm != null) {
+            if(addressForm.isAllFieldsNull())
                 address = null;
             else {
-                if (address == null)
+                if(address == null)
                     address = new Address();
 
                 address.setCity(WordUtils.capitalizeFully(addressForm.getCity()));
@@ -33,7 +33,7 @@ class AddressTransformer extends AbstractEntityTransformer<Address, AddressForm,
 
     @Override
     public AddressForm toFormObject(final Address address) {
-        if (address != null) {
+        if(address != null) {
             final AddressForm addressForm = new AddressForm();
             addressForm.setCity(address.getCity());
             addressForm.setCountry(address.getCountry());
@@ -41,7 +41,7 @@ class AddressTransformer extends AbstractEntityTransformer<Address, AddressForm,
             addressForm.setStreet2(address.getStreet2());
             addressForm.setZip(address.getZip());
 
-            if (addressForm.getCountry() == null)
+            if(addressForm.getCountry() == null)
                 addressForm.setCountry(StringUtils.upperCase(LocaleContextHolder.getLocale().getDisplayCountry()));
 
             return addressForm;
@@ -51,8 +51,12 @@ class AddressTransformer extends AbstractEntityTransformer<Address, AddressForm,
 
     @Override
     public AddressVO toViewObject(final Address address) {
-        if (address != null) {
-            final AddressVoBuilder builder = AddressVoBuilder.begin().city(address.getCity()).country(address.getCountry()).street(computeAddress(address)).zip(address.getZip());
+        if(address != null) {
+            final AddressVoBuilder builder = AddressVoBuilder.begin()
+                                                             .city(address.getCity())
+                                                             .country(address.getCountry())
+                                                             .street(computeAddress(address))
+                                                             .zip(address.getZip());
 
             return builder.build();
         }
@@ -60,13 +64,16 @@ class AddressTransformer extends AbstractEntityTransformer<Address, AddressForm,
     }
 
     private static String computeAddress(final Address address) {
+        if(address == null)
+            return null;
+
         final StringBuilder builder = new StringBuilder();
-        if (address.getStreet1() != null) {
+        if(!StringUtils.isBlank(address.getStreet1())) {
             builder.append(address.getStreet1());
-            if (address.getStreet2() != null)
+            if(!StringUtils.isBlank(address.getStreet2()))
                 builder.append(", ");
         }
-        if (address.getStreet2() != null)
+        if(address.getStreet2() != null)
             builder.append(address.getStreet2());
         return builder.toString();
     }

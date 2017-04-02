@@ -1,5 +1,6 @@
 package fr.gwombat.predicadmin.web.transformer;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -59,7 +60,7 @@ public class ContactDetailTransformer extends AbstractEntityTransformer<ContactD
     }
 
     private static String formatPhoneNumber(final String strNumber) {
-        if (strNumber != null) {
+        if (!StringUtils.isBlank(strNumber)) {
             try {
                 PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
                 final Phonenumber.PhoneNumber mobilePhoneNumber = phoneNumberUtil.parse(strNumber, "FR");
