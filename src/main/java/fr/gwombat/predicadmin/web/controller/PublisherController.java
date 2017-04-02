@@ -20,6 +20,7 @@ import org.springframework.validation.Errors;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.util.ArrayList;
 import java.util.List;
@@ -84,11 +85,11 @@ public class PublisherController {
     }
 
     @GetMapping("/{id}")
-    public String detailPublisherPage(@PathVariable("id") final String identifier, Model model) {
+    public String detailPublisherPage(@PathVariable("id") final String identifier, Model model, HttpServletRequest request) {
         final Publisher publisher = publisherService.getByIdentifier(identifier);
 
         if(publisher == null)
-            throw new ResourceNotFoundException(identifier,"/publisher/id");
+            throw new ResourceNotFoundException(identifier, request.getRequestURI());
 
         final PublisherVO publisherVo = publisherTransformer.toViewObject(publisher);
         model.addAttribute("publisher", publisherVo);

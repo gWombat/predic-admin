@@ -36,4 +36,9 @@ public class PublisherServiceImpl implements PublisherService {
         return publisherRepository.findByCongregation(congregation);
     }
 
+    @Override
+    public void delete(final Publisher publisher) {
+        publisherRepository.delete(publisher);
+    }
+
 }
