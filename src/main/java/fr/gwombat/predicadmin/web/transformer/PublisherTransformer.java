@@ -120,7 +120,7 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
             try {
                 date = LocalDate.parse(parsedDate, dateTimeFormatter);
             } catch (DateTimeException e) {
-                logger.warn("", e);
+                logger.warn(e.getMessage());
             }
         }
         return date;
