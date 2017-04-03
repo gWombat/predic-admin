@@ -11,15 +11,15 @@ public class AddressForm {
     private String country;
 
     public boolean isAllFieldsNull() {
-        if (StringUtils.isBlank(street1))
+        if (!StringUtils.isBlank(street1))
             return false;
-        if (StringUtils.isBlank(street2))
+        if (!StringUtils.isBlank(street2))
             return false;
-        if (StringUtils.isBlank(zip))
+        if (!StringUtils.isBlank(zip))
             return false;
-        if (StringUtils.isBlank(city))
+        if (!StringUtils.isBlank(city))
             return false;
-        if (StringUtils.isBlank(country))
+        if (!StringUtils.isBlank(country))
             return false;
         return true;
     }
