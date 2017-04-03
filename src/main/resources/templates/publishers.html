@@ -30,6 +30,16 @@
 
     <div layout:fragment="content">
     
+        <div th:class="'alert alert-' + ${message.messageLevel}" role="alert" th:if="${message}">
+            <button type="button" class="close success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <span class="fa-stack fa-lg m-r-1">
+                <i class="fa fa-circle-thin fa-stack-2x" th:classappend="'text-' + ${message.messageLevel}"></i>
+                <i th:class="'fa ' + ${message.icon} + ' fa-stack-1x text-' + ${message.messageLevel}"></i>
+            </span>
+            <strong th:text="#{${message.levelTextCode}} + '!'">Well Done!</strong> 
+            <span th:text="#{${message.labelCode}}">You successfully read this important alert message.</span>
+        </div>
+    
         <div class="row">
             <div class="col-lg-3">
                 <div class="panel panel-default no-bg b-a-2 b-primary">

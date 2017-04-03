@@ -146,13 +146,18 @@ public class PublisherController {
     }
     
     @PostMapping("/{id}/delete")
-    public String deletePublisher(@PathVariable("id") final String identifier, RedirectAttributes redirectAttributes){
+    public String deletePublisher(@PathVariable("id") final String identifier, Model model, RedirectAttributes redirectAttributes){
         try{
+            AlertMessage message = new SuccessAlertMessage();
+            
             publisherService.deleteByIdentifier(identifier);
-            redirectAttributes.addFlashAttribute("delete_success", "");
+            message.setLabelCode("page.profile.detail.delete.success");
+            redirectAttributes.addFlashAttribute("message", message);
         }
         catch(Exception e){
-            
+            model.addAttribute("error", "validation.error.internal");
+            logger.error(String.format("Error deleting publisher [%s]: ", identifier), e);
+            return PUBLISHER_EDIT_PAGE;
         }
         
         return "redirect:/publishers";

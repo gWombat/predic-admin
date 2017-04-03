@@ -1,6 +1,7 @@
 package fr.gwombat.predicadmin.web.form;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.context.i18n.LocaleContextHolder;
 
 public class AddressForm {
 
@@ -9,6 +10,14 @@ public class AddressForm {
     private String zip;
     private String city;
     private String country;
+    
+    public AddressForm() {
+        populateDefaultCountry();
+    }
+
+    private void populateDefaultCountry() {
+        country = LocaleContextHolder.getLocale().getDisplayCountry().toUpperCase();
+    }
 
     public boolean isAllFieldsNull() {
         if (!StringUtils.isBlank(street1))
@@ -62,6 +71,9 @@ public class AddressForm {
 
     public void setCountry(String country) {
         this.country = country;
+        
+        if(StringUtils.isBlank(country))
+            populateDefaultCountry();
     }
 
 }

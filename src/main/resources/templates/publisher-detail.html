@@ -37,7 +37,7 @@
         <div th:class="'alert alert-' + ${message.messageLevel}" role="alert" th:if="${message}">
             <button type="button" class="close success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
             <span class="fa-stack fa-lg m-r-1">
-                <i class="fa fa-circle-thin fa-stack-2x"></i>
+                <i class="fa fa-circle-thin fa-stack-2x" th:classappend="'text-' + ${message.messageLevel}"></i>
                 <i th:class="'fa ' + ${message.icon} + ' fa-stack-1x text-' + ${message.messageLevel}"></i>
             </span>
             <strong th:text="#{${message.levelTextCode}} + '!'">Well Done!</strong> 
@@ -158,17 +158,19 @@
         <div id="modal_delete_publisher" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title" th:text="#{page.profile.detail.modal.delete.title}">Delete a publisher</h4>
-                    </div>
-                    <div class="modal-body">
-                        <p th:text="#{page.profile.detail.modal.delete.question}">Are you sure?</p>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{general.close}">Close</button>
-                        <a type="submit" class="btn btn-primary" th:href="@{/publishers/{id}/delete(id=${publisher.identifier})}" th:text="#{general.continue}">Save changes</a>
-                    </div>
+                    <form th:action="@{/publishers/{id}/delete(id=${publisher.identifier})}" method="post">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                            <h4 class="modal-title" th:text="#{page.profile.detail.modal.delete.title}">Delete a publisher</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p th:text="#{page.profile.detail.modal.delete.question}">Are you sure?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{general.close}">Close</button>
+                            <button type="submit" class="btn btn-primary" th:text="#{general.continue}">Save changes</button>
+                        </div>
+                    </form>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->

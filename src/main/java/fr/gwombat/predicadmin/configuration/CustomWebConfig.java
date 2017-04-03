@@ -22,7 +22,7 @@ public class CustomWebConfig extends WebMvcConfigurerAdapter {
     @Bean
     public LocaleResolver localeResolver() {
         SessionLocaleResolver localeResolver = new SessionLocaleResolver();
-        localeResolver.setDefaultLocale(Locale.FRENCH);
+        localeResolver.setDefaultLocale(new Locale("fr", "FR"));
         return localeResolver;
     }
 
