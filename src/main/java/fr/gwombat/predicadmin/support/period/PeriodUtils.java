@@ -36,7 +36,7 @@ final class PeriodUtils {
         final DecimalFormat formMonth = new DecimalFormat("00");
 
         final String str = formYear.format(year) + formMonth.format(month);
-        int res = Integer.valueOf(str).intValue();
+        int res = Integer.valueOf(str);
         return res;
     }
 

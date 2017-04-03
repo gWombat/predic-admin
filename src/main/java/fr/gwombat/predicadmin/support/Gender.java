@@ -9,7 +9,7 @@ public enum Gender {
 
     private final String labelCode;
 
-    private Gender(final String labelCode) {
+    Gender(final String labelCode) {
         this.labelCode = labelCode;
     }
 

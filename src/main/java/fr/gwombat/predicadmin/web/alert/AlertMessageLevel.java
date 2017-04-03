@@ -7,7 +7,7 @@ enum AlertMessageLevel {
     private final String icon;
     private final String textCode;
 
-    private AlertMessageLevel(String icon, String textCode) {
+    AlertMessageLevel(String icon, String textCode) {
         this.icon = icon;
         this.textCode = textCode;
     }
