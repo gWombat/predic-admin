@@ -34,13 +34,14 @@
 
     <div layout:fragment="content">
     
-        <div class="alert alert-success" role="alert" th:if="${success}">
+        <div th:class="'alert alert-' + ${message.messageLevel}" role="alert" th:if="${message}">
             <button type="button" class="close success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
             <span class="fa-stack fa-lg m-r-1">
-                <i class="fa fa-circle-thin fa-stack-2x text-success"></i>
-                <i class="fa fa-check fa-stack-1x text-success"></i>
+                <i class="fa fa-circle-thin fa-stack-2x"></i>
+                <i th:class="'fa ' + ${message.icon} + ' fa-stack-1x text-' + ${message.messageLevel}"></i>
             </span>
-            <strong th:text="#{general.success} + '!'">Well Done!</strong> <span th:text="#{${success}}">You successfully read this important alert message.</span>
+            <strong th:text="#{${message.levelTextCode}} + '!'">Well Done!</strong> 
+            <span th:text="#{${message.labelCode}}">You successfully read this important alert message.</span>
         </div>
     
         <!-- START EDIT CONTENT -->
@@ -146,30 +147,32 @@
                             </div>
                             <!-- END Tab: Detail Contact -->
                         </div>
-                        <!-- ENDTabs Content -->
+                        <!-- END Tabs Content -->
                     </div>
                 </div>
             </div>
         </div>
         <!-- END EDIT CONTENT -->
 
+        <!-- START Modal Delete Publisher -->
         <div id="modal_delete_publisher" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                        <h4 class="modal-title">Modal title</h4>
+                        <h4 class="modal-title" th:text="#{page.profile.detail.modal.delete.title}">Delete a publisher</h4>
                     </div>
                     <div class="modal-body">
-                        <p>One fine body&hellip;</p>
+                        <p th:text="#{page.profile.detail.modal.delete.question}">Are you sure?</p>
                     </div>
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-                        <button type="button" class="btn btn-primary">Save changes</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{general.close}">Close</button>
+                        <a type="submit" class="btn btn-primary" th:href="@{/publishers/{id}/delete(id=${publisher.identifier})}" th:text="#{general.continue}">Save changes</a>
                     </div>
                 </div><!-- /.modal-content -->
             </div><!-- /.modal-dialog -->
         </div><!-- /.modal -->
+        <!-- END Modal Delete Publisher -->
 
     </div>
 </body>

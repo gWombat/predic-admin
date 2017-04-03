@@ -6,10 +6,13 @@ import fr.gwombat.predicadmin.model.Publisher;
 import fr.gwombat.predicadmin.service.CongregationService;
 import fr.gwombat.predicadmin.service.PublisherService;
 import fr.gwombat.predicadmin.support.Gender;
+import fr.gwombat.predicadmin.web.alert.AlertMessage;
+import fr.gwombat.predicadmin.web.alert.SuccessAlertMessage;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.session.SessionBean;
 import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +25,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -125,10 +129,13 @@ public class PublisherController {
 
         try {
             publisherService.save(publisher);
+            
+            final AlertMessage message = new SuccessAlertMessage();
             if(isNew)
-                redirectAttributes.addFlashAttribute("success", "page.profile.detail.creation.success");
+                message.setLabelCode("page.profile.detail.creation.success");
             else
-                redirectAttributes.addFlashAttribute("success", "page.profile.detail.update.success");
+                message.setLabelCode("page.profile.detail.update.success");
+            redirectAttributes.addFlashAttribute("message", message);
 
             return "redirect:/publishers/" + publisher.getIdentifier();
         } catch(Exception e) {
@@ -136,6 +143,19 @@ public class PublisherController {
             logger.error(String.format("Error saving publisher [%s]: ", publisher), e);
             return PUBLISHER_EDIT_PAGE;
         }
+    }
+    
+    @PostMapping("/{id}/delete")
+    public String deletePublisher(@PathVariable("id") final String identifier, RedirectAttributes redirectAttributes){
+        try{
+            publisherService.deleteByIdentifier(identifier);
+            redirectAttributes.addFlashAttribute("delete_success", "");
+        }
+        catch(Exception e){
+            
+        }
+        
+        return "redirect:/publishers";
     }
 
     @ModelAttribute("genders")
