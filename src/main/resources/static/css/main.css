@@ -1,4 +1,9 @@
 /* date time picker */
+
+.bootstrap-datetimepicker-widget table {
+	color: #b3b3b3 !important;
+}
+
 .bootstrap-datetimepicker-widget table td.today:before {
     border-bottom-color: #2d99dc !important;
 }
@@ -6,6 +11,10 @@
 .bootstrap-datetimepicker-widget table td.active,
 .bootstrap-datetimepicker-widget table td.active:hover {
     background-color: #2d99dc !important;
+}
+
+.bootstrap-datetimepicker-widget table td.day:hover {
+	color: #4d4d4d !important;
 }
 
 .bootstrap-datetimepicker-widget table td span.active {
@@ -16,6 +25,11 @@
 .bootstrap-datetimepicker-widget table th,
 .bootstrap-datetimepicker-widget table td span {
 	border-radius: 0px !important;
+}
+
+.bootstrap-datetimepicker-widget table td.old,
+.bootstrap-datetimepicker-widget table td.new {
+	color: #4d4d4d !important;
 }
 
 .bootstrap-datetimepicker-widget table td span.active,
