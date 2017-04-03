@@ -51,16 +51,14 @@ class AddressTransformer extends AbstractEntityTransformer<Address, AddressForm,
 
     @Override
     public AddressVO toViewObject(final Address address) {
-        if(address != null) {
-            final AddressVoBuilder builder = AddressVoBuilder.begin()
-                                                             .city(address.getCity())
-                                                             .country(address.getCountry())
-                                                             .street(computeAddress(address))
-                                                             .zip(address.getZip());
-
-            return builder.build();
-        }
-        return null;
+        AddressVoBuilder builder = AddressVoBuilder.begin();
+        if(address != null)
+            builder = AddressVoBuilder.begin()
+                    .city(address.getCity())
+                    .country(address.getCountry())
+                    .street(computeAddress(address))
+                    .zip(address.getZip());  
+        return builder.build();
     }
 
     private static String computeAddress(final Address address) {

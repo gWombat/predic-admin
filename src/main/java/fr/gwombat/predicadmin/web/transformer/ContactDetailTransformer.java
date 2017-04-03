@@ -48,15 +48,13 @@ public class ContactDetailTransformer extends AbstractEntityTransformer<ContactD
 
     @Override
     public ContactDetailVO toViewObject(final ContactDetail contactDetail) {
-        if (contactDetail != null) {
-            ContactDetailVoBuilder builder = ContactDetailVoBuilder.begin()
+        ContactDetailVoBuilder builder = ContactDetailVoBuilder.begin();
+        if (contactDetail != null)
+            builder = ContactDetailVoBuilder.begin()
                     .email(contactDetail.getEmail())
                     .mobilePhone(formatPhoneNumber(contactDetail.getMobilePhone()))
                     .phone(formatPhoneNumber(contactDetail.getPhone()));
-
-            return builder.build();
-        }
-        return null;
+        return builder.build();
     }
 
     private static String formatPhoneNumber(final String strNumber) {
