@@ -14,7 +14,7 @@
             <div class="row">
                 <div class="col-lg-12 sub-navbar-column">
                     <div class="sub-navbar-header">
-                        <h3 th:text="#{page.profile.detail.header.title}">Fiche proclamateur</h3>
+                        <h3 th:text="#{page.publisher.detail.header.title}">Fiche proclamateur</h3>
                     </div>
                     <ol class="breadcrumb navbar-text navbar-right no-bg">
                         <li class="current-parent">
@@ -23,7 +23,7 @@
                             </a>
                         </li>
                         <li><a th:href="@{/publishers}" th:text="#{general.publishers}"> Proclamateurs </a></li>
-                        <li class="active" th:text="#{page.profile.detail.breadcrumb}">Détail d'une fiche</li>
+                        <li class="active" th:text="#{page.publisher.detail.breadcrumb}">Détail d'une fiche</li>
                     </ol>
                 </div>
             </div>
@@ -89,10 +89,10 @@
                         <!-- Tabs Buttons -->
                         <ul class="nav nav-tabs">
                             <li role="presentation">
-                                <a aria-expanded="true" data-toggle="tab" href="#tab-detail-profile" role="tab" th:text="#{page.profile.detail.tab.profile}">Profile</a>
+                                <a aria-expanded="true" data-toggle="tab" href="#tab-detail-profile" role="tab" th:text="#{page.publisher.detail.tab.profile}">Profile</a>
                             </li>
                             <li role="presentation" class="active">
-                                <a aria-expanded="true" data-toggle="tab" href="#tab-detail-contact" role="tab" th:text="#{page.profile.detail.tab.contact}">Contact details</a>
+                                <a aria-expanded="true" data-toggle="tab" href="#tab-detail-contact" role="tab" th:text="#{page.publisher.detail.tab.contact}">Contact details</a>
                             </li>
                         </ul>
 
@@ -101,7 +101,7 @@
                             <!-- START Tab: Profile -->
                             <div class="tab-pane fade in p-r-1" id="tab-detail-profile" role="tabpanel">
                                 <div class="hr-text hr-text-left m-t-1">
-                                    <h6 class="text-white"><strong th:text="#{page.profile.detail.block.details}">Dates</strong></h6>
+                                    <h6 class="text-white"><strong th:text="#{page.publisher.detail.block.details}">Dates</strong></h6>
                                 </div>
                                 <dl class="dl-horizontal text-left">
                                     <dt class="text-left" th:text="#{general.birthdate}">Birthdate</dt>
@@ -121,7 +121,7 @@
                             <!-- START Tab: Detail Contact -->
                             <div class="tab-pane fade in p-r-1 active" id="tab-detail-contact" role="tabpanel">
                                 <div class="hr-text hr-text-left m-t-1">
-                                    <h6 class="text-white"><strong th:text="#{page.profile.detail.block.contact}">Contact</strong></h6>
+                                    <h6 class="text-white"><strong th:text="#{page.publisher.detail.block.contact}">Contact</strong></h6>
                                 </div>
                                 <dl class="dl-horizontal text-left">
                                     <dt class="text-left" th:text="#{general.phone}">Phone</dt>
@@ -161,10 +161,10 @@
                     <form th:action="@{/publishers/{id}/delete(id=${publisher.identifier})}" method="post">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" th:text="#{page.profile.detail.modal.delete.title}">Delete a publisher</h4>
+                            <h4 class="modal-title" th:text="#{page.publisher.detail.modal.delete.title}">Delete a publisher</h4>
                         </div>
                         <div class="modal-body">
-                            <p th:text="#{page.profile.detail.modal.delete.question}">Are you sure?</p>
+                            <p th:text="#{page.publisher.detail.modal.delete.question}">Are you sure?</p>
                         </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{general.close}">Close</button>
