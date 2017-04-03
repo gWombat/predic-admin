@@ -14,5 +14,7 @@ public interface PublisherService {
     List<Publisher> getByCongregation(Congregation congregation);
 
     void delete(Publisher publisher);
+    
+    void deleteByIdentifier(String identifier);
 
 }

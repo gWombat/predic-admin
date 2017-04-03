@@ -4,6 +4,7 @@ import fr.gwombat.predicadmin.model.Congregation;
 import fr.gwombat.predicadmin.model.Publisher;
 import fr.gwombat.predicadmin.repository.PublisherRepository;
 import fr.gwombat.predicadmin.service.PublisherService;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -39,6 +40,13 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public void delete(final Publisher publisher) {
         publisherRepository.delete(publisher);
+    }
+
+    @Override
+    public void deleteByIdentifier(String identifier) {
+        final Publisher publisher = getByIdentifier(identifier);
+        if(publisher != null)
+            delete(publisher);
     }
 
 }
