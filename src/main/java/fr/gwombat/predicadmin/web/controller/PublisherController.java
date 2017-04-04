@@ -1,17 +1,10 @@
 package fr.gwombat.predicadmin.web.controller;
 
-import fr.gwombat.predicadmin.exception.ResourceNotFoundException;
-import fr.gwombat.predicadmin.model.Congregation;
-import fr.gwombat.predicadmin.model.Publisher;
-import fr.gwombat.predicadmin.service.CongregationService;
-import fr.gwombat.predicadmin.service.PublisherService;
-import fr.gwombat.predicadmin.support.Gender;
-import fr.gwombat.predicadmin.web.alert.AlertMessage;
-import fr.gwombat.predicadmin.web.alert.SuccessAlertMessage;
-import fr.gwombat.predicadmin.web.form.PublisherForm;
-import fr.gwombat.predicadmin.web.session.SessionBean;
-import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
-import fr.gwombat.predicadmin.web.vo.PublisherVO;
+import java.util.ArrayList;
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,14 +13,24 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.validation.Valid;
-
-import java.util.ArrayList;
-import java.util.List;
+import fr.gwombat.predicadmin.exception.ResourceNotFoundException;
+import fr.gwombat.predicadmin.model.Publisher;
+import fr.gwombat.predicadmin.service.CongregationService;
+import fr.gwombat.predicadmin.service.PublisherService;
+import fr.gwombat.predicadmin.support.Gender;
+import fr.gwombat.predicadmin.web.alert.AlertMessage;
+import fr.gwombat.predicadmin.web.alert.DangerAlertMessage;
+import fr.gwombat.predicadmin.web.alert.SuccessAlertMessage;
+import fr.gwombat.predicadmin.web.form.PublisherForm;
+import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
+import fr.gwombat.predicadmin.web.vo.PublisherVO;
 
 @Controller
 @RequestMapping("/publishers")
@@ -42,26 +45,20 @@ public class PublisherController {
     private PublisherService     publisherService;
     private PublisherTransformer publisherTransformer;
     private CongregationService  congregationService;
-    private SessionBean          sessionBean;
 
     @Autowired
     public PublisherController(final PublisherService publisherService,
                                final PublisherTransformer publisherTransformer,
-                               final CongregationService congregationService,
-                               final SessionBean sessionBean) {
+                               final CongregationService congregationService) {
         this.publisherService = publisherService;
         this.publisherTransformer = publisherTransformer;
         this.congregationService = congregationService;
-        this.sessionBean = sessionBean;
     }
 
     @GetMapping
     public String allCongregationPublishers(Model model) {
 
-        final List<Congregation> congregations = congregationService.getAllCongregations();
-        sessionBean.setCongregation(congregations.get(0));
-
-        final List<Publisher> publishers = publisherService.getByCongregation(sessionBean.getCongregation());
+        final List<Publisher> publishers = publisherService.getByCongregation(congregationService.getCurrentCongregation());
 
         if(publishers != null) {
             final List<PublisherVO> publisherVOS = new ArrayList<>(publishers.size());
@@ -70,7 +67,7 @@ public class PublisherController {
                 publisherVOS.add(publisherVo);
             }
 
-            model.addAttribute("congregation", sessionBean.getCongregation());
+            model.addAttribute("congregation", congregationService.getCurrentCongregation());
             model.addAttribute("publishers", publisherVOS);
             model.addAttribute("nbPublishers", publisherVOS.size());
         }
@@ -125,12 +122,13 @@ public class PublisherController {
 
         publisher = publisherTransformer.toEntity(publisherForm, publisher);
         if(isNew)
-            publisher.setCongregation(sessionBean.getCongregation());
+            publisher.setCongregation(congregationService.getCurrentCongregation());
 
+        AlertMessage message = null;
         try {
             publisherService.save(publisher);
             
-            final AlertMessage message = new SuccessAlertMessage();
+            message = new SuccessAlertMessage();
             if(isNew)
                 message.setLabelCode("page.profile.detail.creation.success");
             else
@@ -139,7 +137,10 @@ public class PublisherController {
 
             return "redirect:/publishers/" + publisher.getIdentifier();
         } catch(Exception e) {
-            model.addAttribute("error", "validation.error.internal");
+            message = new DangerAlertMessage();
+            message.setLabelCode("validation.error.internal");
+            model.addAttribute("message", message);
+            
             logger.error(String.format("Error saving publisher [%s]: ", publisher), e);
             return PUBLISHER_EDIT_PAGE;
         }
@@ -147,15 +148,19 @@ public class PublisherController {
     
     @PostMapping("/{id}/delete")
     public String deletePublisher(@PathVariable("id") final String identifier, Model model, RedirectAttributes redirectAttributes){
+        AlertMessage message = null;
         try{
-            AlertMessage message = new SuccessAlertMessage();
+            message = new SuccessAlertMessage();
             
             publisherService.deleteByIdentifier(identifier);
             message.setLabelCode("page.profile.detail.delete.success");
             redirectAttributes.addFlashAttribute("message", message);
         }
         catch(Exception e){
-            model.addAttribute("error", "validation.error.internal");
+            message = new DangerAlertMessage();
+            message.setLabelCode("validation.error.internal");
+            model.addAttribute("message", message);
+            
             logger.error(String.format("Error deleting publisher [%s]: ", identifier), e);
             return PUBLISHER_EDIT_PAGE;
         }

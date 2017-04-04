@@ -47,14 +47,23 @@
         <!-- END Avatar with Name -->
         
         <!-- START Errors banner -->
-        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('${publisher}') or error != null}">
+        <div class="alert alert-danger" role="alert" th:if="${#fields.hasErrors('${publisher}')}">
             <span class="fa-stack fa-lg m-r-1">
                 <i class="fa fa-circle-thin fa-stack-2x text-danger"></i>
                 <i class="fa fa-close fa-stack-1x text-danger"></i>
             </span>
             <strong th:text="#{general.error} + '!'">Oh Snap!</strong> 
-            <span th:if="${#fields.hasErrors('${publisher}')}" th:text="#{validation.error.global}">Change a few things up and try submitting again.</span>
-            <span th:if="${error != null}" th:text="#{${error}}">Change a few things up and try submitting again.</span>
+            <span th:text="#{validation.error.global}">Change a few things up and try submitting again.</span>
+        </div>
+        
+        <div th:class="'alert alert-' + ${message.messageLevel}" role="alert" th:if="${message}">
+            <button type="button" class="close success" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+            <span class="fa-stack fa-lg m-r-1">
+                <i class="fa fa-circle-thin fa-stack-2x" th:classappend="'text-' + ${message.messageLevel}"></i>
+                <i th:class="'fa ' + ${message.icon} + ' fa-stack-1x text-' + ${message.messageLevel}"></i>
+            </span>
+            <strong th:text="#{${message.levelTextCode}} + '!'">Well Done!</strong> 
+            <span th:text="#{${message.labelCode}}">You successfully read this important alert message.</span>
         </div>
         <!-- END Errors banner -->
 

@@ -2,8 +2,11 @@ package fr.gwombat.predicadmin.web.alert;
 
 enum AlertMessageLevel {
 
-    SUCCESS("fa-check", "general.success");
-
+    SUCCESS("fa-check", "general.success"),
+    DANGER("fa-close", "general.error")
+    
+    ;
+    
     private final String icon;
     private final String textCode;
 

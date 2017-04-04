@@ -25,6 +25,11 @@ public class CongregationServiceImpl implements CongregationService {
     public List<Congregation> getAllCongregations() {
         return congregationRepository.findAll();
     }
+    
+    @Override
+    public Congregation getCurrentCongregation() {
+        return getAllCongregations().get(0);
+    }
 
     @Override
     public Congregation getCongregationByName(final String name) {

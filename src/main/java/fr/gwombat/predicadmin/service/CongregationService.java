@@ -8,6 +8,8 @@ public interface CongregationService {
     
     List<Congregation> getAllCongregations();
     
+    Congregation getCurrentCongregation();
+    
     Congregation getCongregationByName(String name);
 
 }
