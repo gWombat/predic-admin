@@ -53,7 +53,7 @@ class AddressTransformer extends AbstractEntityTransformer<Address, AddressForm,
     public AddressVO toViewObject(final Address address) {
         AddressVoBuilder builder = AddressVoBuilder.begin();
         if(address != null)
-            builder = AddressVoBuilder.begin()
+            builder = builder
                     .city(address.getCity())
                     .country(address.getCountry())
                     .street(computeAddress(address))

@@ -19,10 +19,6 @@ public class PublisherVoBuilder {
     private ContactDetailVO contactDetail;
     private AddressVO       address;
 
-    private PublisherVoBuilder() {
-
-    }
-
     public static PublisherVoBuilder begin(final ContactDetailVO contactDetail, final AddressVO address) {
         final PublisherVoBuilder builder = new PublisherVoBuilder();
         builder.address = address;

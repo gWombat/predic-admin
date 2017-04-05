@@ -16,7 +16,7 @@ import javax.validation.constraints.NotNull;
 
 @Entity
 @Table(name = "meetings_attendances")
-public class MeetingAttendance extends AuditableEntity {
+public class MeetingAttendance extends AuditableEntity implements Comparable<MeetingAttendance> {
 
     private static final long serialVersionUID = 1L;
 
@@ -37,6 +37,11 @@ public class MeetingAttendance extends AuditableEntity {
     @Min(0)
     @Column(name = "attendance", nullable = false)
     private int               attendance;
+    
+    @Override
+    public int compareTo(MeetingAttendance other) {
+        return date.compareTo(other.date);
+    }
 
     public Long getId() {
         return id;
@@ -69,5 +74,6 @@ public class MeetingAttendance extends AuditableEntity {
     public void setAttendance(int attendance) {
         this.attendance = attendance;
     }
+    
 
 }

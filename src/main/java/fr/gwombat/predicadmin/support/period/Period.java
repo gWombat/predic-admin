@@ -1,8 +1,10 @@
 package fr.gwombat.predicadmin.support.period;
 
 import java.io.Serializable;
+import java.time.LocalDateTime;
 import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
+import java.time.temporal.TemporalAdjusters;
 
 public final class Period implements Serializable, Comparable<Period> {
 
@@ -45,6 +47,15 @@ public final class Period implements Serializable, Comparable<Period> {
 
     public boolean isCurrentPeriode() {
         return this.toInt() == PeriodUtils.currentPeriodValue();
+    }
+    
+    public LocalDateTime getStart(){
+        return LocalDateTime.of(getYear(), getMonth(), 1, 0, 0, 0, 0);
+    }
+    
+    public LocalDateTime getEnd(){
+        final LocalDateTime date = LocalDateTime.of(getYear(), getMonth(), 15, 23, 59, 59, 999);
+        return date.with(TemporalAdjusters.lastDayOfMonth());
     }
 
     @Override
