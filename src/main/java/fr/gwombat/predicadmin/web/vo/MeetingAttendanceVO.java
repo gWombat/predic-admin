@@ -1,18 +1,20 @@
 package fr.gwombat.predicadmin.web.vo;
 
-import java.time.LocalDate;
-
 import fr.gwombat.predicadmin.web.vo.builder.MeetingAttendanceVoBuilder;
+
+import java.time.LocalDate;
 
 public class MeetingAttendanceVO {
 
     private final LocalDate date;
     private final int       attendance;
-    private boolean         maxOfmonth;
+    private final String    identifier;
+    private       boolean   maxOfMonth;
 
     public MeetingAttendanceVO(MeetingAttendanceVoBuilder builder) {
         this.date = builder.getDate();
         this.attendance = builder.getAttendance();
+        this.identifier = builder.getIdentifier();
     }
 
     public LocalDate getDate() {
@@ -23,12 +25,15 @@ public class MeetingAttendanceVO {
         return attendance;
     }
 
-    public boolean isMaxOfmonth() {
-        return maxOfmonth;
+    public boolean isMaxOfMonth() {
+        return maxOfMonth;
     }
 
-    public void setMaxOfmonth(boolean maxOfmonth) {
-        this.maxOfmonth = maxOfmonth;
+    public void setMaxOfMonth(boolean maxOfMonth) {
+        this.maxOfMonth = maxOfMonth;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
 }

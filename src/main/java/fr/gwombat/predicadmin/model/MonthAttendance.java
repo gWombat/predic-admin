@@ -2,6 +2,7 @@ package fr.gwombat.predicadmin.model;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -22,6 +23,7 @@ public class MonthAttendance implements Serializable {
 
     private void initAttendances(final List<MeetingAttendance> attendances) {
         if (attendances != null) {
+            this.attendances = new HashMap<>(attendances.size());
             for (MeetingAttendance attendance : attendances) {
                 if (attendance != null) {
                     this.attendances.put(attendance.getDate(), attendance);

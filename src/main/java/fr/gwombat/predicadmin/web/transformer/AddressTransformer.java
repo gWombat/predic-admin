@@ -2,6 +2,7 @@ package fr.gwombat.predicadmin.web.transformer;
 
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
+import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
 import fr.gwombat.predicadmin.model.Address;
@@ -10,6 +11,10 @@ import fr.gwombat.predicadmin.web.vo.AddressVO;
 import fr.gwombat.predicadmin.web.vo.builder.AddressVoBuilder;
 
 class AddressTransformer extends AbstractEntityTransformer<Address, AddressForm, AddressVO> {
+
+    AddressTransformer(MessageSource messageSource) {
+        super(messageSource);
+    }
 
     @Override
     public Address toEntity(final AddressForm addressForm, Address address) {

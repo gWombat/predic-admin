@@ -1,19 +1,20 @@
 package fr.gwombat.predicadmin.web.form;
 
-import javax.validation.constraints.Min;
-
 import org.apache.commons.lang3.StringUtils;
+
+import javax.validation.constraints.Min;
 
 public class MeetingAttendanceForm {
 
     private String  date;
     @Min(0)
     private Integer attendance;
+    private String  identifier;
 
     public boolean isAllFieldsNull() {
-        if (!StringUtils.isBlank(date))
+        if(!StringUtils.isBlank(date))
             return false;
-        if (attendance != null)
+        if(attendance != null)
             return false;
         return true;
     }
@@ -34,4 +35,11 @@ public class MeetingAttendanceForm {
         this.attendance = attendance;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
 }

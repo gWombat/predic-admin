@@ -1,50 +1,36 @@
 package fr.gwombat.predicadmin.web.transformer;
 
-import java.time.DateTimeException;
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
-import org.springframework.stereotype.Component;
-
 import fr.gwombat.predicadmin.model.Publisher;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.vo.AddressVO;
 import fr.gwombat.predicadmin.web.vo.ContactDetailVO;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
 import fr.gwombat.predicadmin.web.vo.builder.PublisherVoBuilder;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Component;
 
 @Component
 public class PublisherTransformer extends AbstractEntityTransformer<Publisher, PublisherForm, PublisherVO> {
 
-    private static final Logger      logger             = LoggerFactory.getLogger(PublisherTransformer.class);
-
-    private static final String      DATE_FORMAT_CODE   = "format.date";
-    private static final String      DEFAULT_DATE_VALUE = "N/A";
-
-    private MessageSource            messageSource;
     private AddressTransformer       addressTransformer;
     private ContactDetailTransformer contactDetailTransformer;
 
     @Autowired
     public PublisherTransformer(final MessageSource messageSource) {
-        this.messageSource = messageSource;
-        this.addressTransformer = new AddressTransformer();
-        this.contactDetailTransformer = new ContactDetailTransformer();
+        super(messageSource);
+        this.addressTransformer = new AddressTransformer(messageSource);
+        this.contactDetailTransformer = new ContactDetailTransformer(messageSource);
     }
 
     @Override
     public Publisher toEntity(PublisherForm publisherForm, Publisher publisher) {
-        if (publisher == null)
+        if(publisher == null)
             publisher = new Publisher();
 
-        if (publisherForm != null) {
+        if(publisherForm != null) {
             publisher.setName(StringUtils.upperCase(publisherForm.getName()));
             publisher.setFirstName(WordUtils.capitalizeFully(publisherForm.getFirstName()));
             publisher.setGender(publisherForm.getGender());
@@ -61,7 +47,7 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
 
     @Override
     public PublisherForm toFormObject(Publisher publisher) {
-        if (publisher != null) {
+        if(publisher != null) {
             final PublisherForm publisherForm = new PublisherForm();
 
             publisherForm.setBaptismDate(formatDate(publisher.getBaptismDate()));
@@ -83,47 +69,21 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
 
     @Override
     public PublisherVO toViewObject(Publisher publisher) {
-        if (publisher != null) {
+        if(publisher != null) {
             final AddressVO addressVo = addressTransformer.toViewObject(publisher.getAddress());
             final ContactDetailVO contactDetailVo = contactDetailTransformer.toViewObject(publisher.getContactDetail());
 
-            final PublisherVoBuilder builder = PublisherVoBuilder.begin(contactDetailVo, addressVo).fullName(publisher.getFullName()).identifier(publisher.getIdentifier()).birthDate(publisher.getBirthDate()).name(publisher.getName()).firstName(publisher.getFirstName()).baptismDate(publisher.getBaptismDate());
+            final PublisherVoBuilder builder = PublisherVoBuilder.begin(contactDetailVo, addressVo)
+                                                                 .fullName(publisher.getFullName())
+                                                                 .identifier(publisher.getIdentifier())
+                                                                 .birthDate(publisher.getBirthDate())
+                                                                 .name(publisher.getName())
+                                                                 .firstName(publisher.getFirstName())
+                                                                 .baptismDate(publisher.getBaptismDate());
 
             return builder.build();
         }
         return null;
-    }
-
-    private String formatDate(LocalDate date) {
-        return formatDateToString(date, DATE_FORMAT_CODE);
-    }
-
-    private String formatDateToString(LocalDate date, String format) {
-        String result = DEFAULT_DATE_VALUE;
-        if (date != null) {
-            final String dateFormat = messageSource.getMessage(format, null, LocaleContextHolder.getLocale());
-            final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat);
-            try {
-                result = dateTimeFormatter.format(date);
-            } catch (DateTimeException e) {
-                logger.warn("", e);
-            }
-        }
-        return result;
-    }
-
-    private LocalDate formatDate(String parsedDate) {
-        LocalDate date = null;
-        if (!StringUtils.isBlank(parsedDate)) {
-            final String dateFormat = messageSource.getMessage(DATE_FORMAT_CODE, null, LocaleContextHolder.getLocale());
-            final DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(dateFormat);
-            try {
-                date = LocalDate.parse(parsedDate, dateTimeFormatter);
-            } catch (DateTimeException e) {
-                logger.warn(e.getMessage());
-            }
-        }
-        return date;
     }
 
 }

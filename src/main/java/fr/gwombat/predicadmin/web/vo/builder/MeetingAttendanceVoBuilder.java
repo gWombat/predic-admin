@@ -1,13 +1,14 @@
 package fr.gwombat.predicadmin.web.vo.builder;
 
-import java.time.LocalDate;
-
 import fr.gwombat.predicadmin.web.vo.MeetingAttendanceVO;
+
+import java.time.LocalDate;
 
 public class MeetingAttendanceVoBuilder {
 
     private LocalDate date;
     private int       attendance;
+    private String    identifier;
 
     private MeetingAttendanceVoBuilder() {
 
@@ -17,17 +18,22 @@ public class MeetingAttendanceVoBuilder {
         return new MeetingAttendanceVoBuilder();
     }
 
-    public MeetingAttendanceVoBuilder date(LocalDate date) {
+    public MeetingAttendanceVoBuilder date(final LocalDate date) {
         this.date = date;
         return this;
     }
 
-    public MeetingAttendanceVoBuilder attendance(int attendance) {
+    public MeetingAttendanceVoBuilder attendance(final int attendance) {
         this.attendance = attendance;
         return this;
     }
-    
-    public MeetingAttendanceVO build(){
+
+    public MeetingAttendanceVoBuilder identifier(final String identifier) {
+        this.identifier = identifier;
+        return this;
+    }
+
+    public MeetingAttendanceVO build() {
         return new MeetingAttendanceVO(this);
     }
 
@@ -39,4 +45,7 @@ public class MeetingAttendanceVoBuilder {
         return attendance;
     }
 
+    public String getIdentifier() {
+        return identifier;
+    }
 }

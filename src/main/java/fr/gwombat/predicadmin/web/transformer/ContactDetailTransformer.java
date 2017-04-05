@@ -12,10 +12,15 @@ import fr.gwombat.predicadmin.model.ContactDetail;
 import fr.gwombat.predicadmin.web.form.ContactDetailForm;
 import fr.gwombat.predicadmin.web.vo.ContactDetailVO;
 import fr.gwombat.predicadmin.web.vo.builder.ContactDetailVoBuilder;
+import org.springframework.context.MessageSource;
 
 public class ContactDetailTransformer extends AbstractEntityTransformer<ContactDetail, ContactDetailForm, ContactDetailVO> {
 
     private static final Logger logger = LoggerFactory.getLogger(ContactDetailTransformer.class);
+
+    ContactDetailTransformer(MessageSource messageSource) {
+        super(messageSource);
+    }
 
     @Override
     public ContactDetail toEntity(final ContactDetailForm contactDetailForm, ContactDetail contactDetail) {
