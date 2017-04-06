@@ -26,7 +26,7 @@ public class MeetingAttendanceTransformer extends AbstractEntityTransformer<Meet
                     existingEntity = new MeetingAttendance();
 
                 existingEntity.setAttendance(formObject.getAttendance());
-                existingEntity.setDate(existingEntity.getDate());
+                existingEntity.setDate(formatDate(formObject.getDate()));
             }
         }
 

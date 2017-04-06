@@ -18,12 +18,22 @@ import fr.gwombat.predicadmin.support.period.Period;
 public class MeetingAttendanceServiceImpl implements MeetingAttendanceService {
 
     private MeetingAttendanceRepository attendanceRepository;
-    
+
     @Autowired
     public MeetingAttendanceServiceImpl(final MeetingAttendanceRepository attendanceRepository) {
         this.attendanceRepository = attendanceRepository;
     }
-    
+
+    @Override
+    public MeetingAttendance getByIdentifier(final String identifier) {
+        return attendanceRepository.findByIdentifier(identifier);
+    }
+
+    @Override
+    public MeetingAttendance save(MeetingAttendance meetingAttendance) {
+        return attendanceRepository.save(meetingAttendance);
+    }
+
     @Override
     public List<MeetingAttendance> getByCongregation(final Congregation congregation) {
         return attendanceRepository.findByCongregation(congregation);
@@ -31,12 +41,12 @@ public class MeetingAttendanceServiceImpl implements MeetingAttendanceService {
 
     @Override
     public List<MeetingAttendance> getAttendanceForPeriod(final Congregation congregation, final Period period) {
-        if(congregation == null || period == null)
+        if (congregation == null || period == null)
             return null;
-        
+
         final LocalDate startDate = period.getStart().toLocalDate();
         final LocalDate endDate = period.getEnd().toLocalDate();
-        return attendanceRepository.findByCongregationAndDateBetween(congregation, startDate, endDate);
+        return attendanceRepository.findByCongregationAndDateBetweenOrderByDateAsc(congregation, startDate, endDate);
     }
 
 }

@@ -11,11 +11,18 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
 @Entity
-@Table(name = "meetings_attendances")
+@Table(name = "meetings_attendances",
+uniqueConstraints = {
+        @UniqueConstraint(columnNames = {
+                "meeting_attendance_id",
+                "date"
+        })
+})
 public class MeetingAttendance extends AuditableEntity implements Comparable<MeetingAttendance> {
 
     private static final long serialVersionUID = 1L;

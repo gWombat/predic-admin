@@ -15,8 +15,11 @@
                         <h3 th:text="#{page.publisher.edit.subnav.title}">Edition d'une fiche proclamateur</h3>
                     </div>
                     <ol class="breadcrumb navbar-text navbar-right no-bg">
-                        <li class="current-parent"><a class="current-parent" th:href="@{/}"> <i class="fa fa-fw fa-home"></i>
-                        </a></li>
+                        <li class="current-parent">
+                            <a class="current-parent" th:href="@{/}">
+                                <i class="fa fa-fw fa-home"></i>
+                            </a>
+                        </li>
                         <li><a th:href="@{/publishers}" th:text="#{general.publishers}"> Publishers </a></li>
                         <li class="active" th:text="#{page.publisher.edit.breadcrumb}">Edition d'une fiche</li>
                     </ol>
@@ -125,7 +128,7 @@
                                         <label for="profile-edit-birthdate" class="col-sm-3 control-label"> <span th:text="#{general.birthdate}"></span>
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control date-range-picker" id="profile-edit-birthdate" 
+                                            <input type="text" class="form-control date-picker" id="profile-edit-birthdate" 
                                             th:placeholder="#{page.publisher.edit.form.placeholder.birthdate}" 
                                             th:field="*{birthDate}">
                                         </div>
@@ -149,7 +152,7 @@
                                         <label for="profile-edit-baptism-date" class="col-sm-3 control-label"> <span th:text="#{general.baptism.date}"></span>
                                         </label>
                                         <div class="col-sm-3">
-                                            <input type="text" class="form-control date-range-picker" id="profile-edit-baptism-date" 
+                                            <input type="text" class="form-control date-picker" id="profile-edit-baptism-date" 
                                             th:placeholder="#{page.publisher.edit.form.placeholder.baptismdate}" 
                                             th:field="*{baptismDate}">
                                         </div>
@@ -310,9 +313,9 @@
                 }
         	});
         	
-			$('.date-range-picker').datetimepicker({
+			$('.date-picker').datetimepicker({
 				locale : 'fr',
-				format : 'DD/MM/YYYY',
+				format : /*[[${#strings.toUpperCase(format.date)}]]*/'',
 				showClear : true,
 				icons : {
 					time : "fa fa-clock-o",

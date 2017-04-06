@@ -12,8 +12,10 @@ import fr.gwombat.predicadmin.model.MeetingAttendance;
 @Repository
 public interface MeetingAttendanceRepository extends JpaRepository<MeetingAttendance, Long> {
     
+    MeetingAttendance findByIdentifier(String identifier);
+    
     List<MeetingAttendance> findByCongregation(Congregation congregation);
     
-    List<MeetingAttendance> findByCongregationAndDateBetween(Congregation congregation, LocalDate startDate, LocalDate endDate);
+    List<MeetingAttendance> findByCongregationAndDateBetweenOrderByDateAsc(Congregation congregation, LocalDate startDate, LocalDate endDate);
 
 }

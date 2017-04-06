@@ -12,7 +12,7 @@
             <div class="row">
                 <div class="col-lg-12 sub-navbar-column">
                     <div class="sub-navbar-header">
-                        <h3>Title</h3>
+                        <h3 th:text="#{page.meeting.attendance}">Meetings attendance</h3>
                     </div>
                     <ol class="breadcrumb navbar-text navbar-right no-bg">
                         <li class="current-parent">
@@ -20,7 +20,7 @@
                                 <i class="fa fa-fw fa-home"></i>
                             </a>
                         </li>
-                        <li class="active">Meetings attendance</li>
+                        <li class="active" th:text="#{page.meeting.attendance}">Meetings attendance</li>
                     </ol>
                 </div>
             </div>
@@ -39,6 +39,25 @@
             </div>
         </div>
         
+        <div class="row">
+            <div class="col-sm-2">
+                <h5 class="m-t-3">Avril</h5>
+                <ul class="list-group">
+                    <li class="list-group-item" th:each="attendance : ${monthAttendance.attendances}">
+                        <div class="media">
+                            <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
+                            <div class="media-body text-right">
+                                <span class="label label-outline label-success" th:if="${attendance.maxOfMonth}">
+                                    <i class="fa fa-arrow-up"></i>
+                                </span> &#160;
+                                <span th:text="${attendance.attendance}"></span>
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+        </div>
+        
         <!-- START Modal Add Attendance -->
         <div id="modal_add_attendance" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
@@ -46,24 +65,23 @@
                     <form th:action="@{/attendance}" method="post" th:object="${attendance}">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" th:text="Add_attendance">Add attendance</h4>
+                            <h4 class="modal-title" th:text="#{page.meeting.attendance.add.entry}">Add attendance</h4>
                         </div>
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="attendanceDate" th:text="Date">Date</label>
+                                        <label for="attendanceDate" th:text="#{page.meeting.attendance.date}">Date</label>
                                         <input type="text" class="form-control date-picker" id="attendanceDate" 
-                                            placeholder="Date de la réunion" 
+                                            th:placeholder="#{format.date}" 
                                             th:field="*{date}">
                                     </div>
                                 </div>
                                 <div class="col-md-6">
                                     <div class="form-group">
-                                        <label for="attendance" th:text="Assistance">Assistance</label>
+                                        <label for="attendance" th:text="#{page.meeting.attendance.count}">Attendance</label>
                                         <input type="text" class="form-control touchspin" id="attendance" 
-                                            placeholder="Assistance pour la réunion" 
-                                            th:field="*{attendance}">
+                                           th:field="*{attendance}">
                                     </div>
                                 </div>
                             </div>

@@ -14,7 +14,7 @@ import fr.gwombat.predicadmin.web.vo.ContactDetailVO;
 import fr.gwombat.predicadmin.web.vo.builder.ContactDetailVoBuilder;
 import org.springframework.context.MessageSource;
 
-public class ContactDetailTransformer extends AbstractEntityTransformer<ContactDetail, ContactDetailForm, ContactDetailVO> {
+class ContactDetailTransformer extends AbstractEntityTransformer<ContactDetail, ContactDetailForm, ContactDetailVO> {
 
     private static final Logger logger = LoggerFactory.getLogger(ContactDetailTransformer.class);
 
