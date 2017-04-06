@@ -19,7 +19,7 @@ import javax.validation.constraints.NotNull;
 @Table(name = "meetings_attendances",
 uniqueConstraints = {
         @UniqueConstraint(columnNames = {
-                "meeting_attendance_id",
+                "congregation_id",
                 "date"
         })
 })
