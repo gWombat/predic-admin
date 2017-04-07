@@ -15,5 +15,7 @@ public interface MeetingAttendanceService {
     List<MeetingAttendance> getByCongregation(Congregation congregation);
     
     List<MeetingAttendance> getAttendanceForPeriod(Congregation congregation, Period period);
+    
+    void deleteByIdentifier(String identifier);
 
 }

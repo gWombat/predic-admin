@@ -16,7 +16,7 @@ import fr.gwombat.predicadmin.support.period.Period;
 @Service
 @Transactional
 public class MeetingAttendanceServiceImpl implements MeetingAttendanceService {
-
+    
     private MeetingAttendanceRepository attendanceRepository;
 
     @Autowired
@@ -47,6 +47,13 @@ public class MeetingAttendanceServiceImpl implements MeetingAttendanceService {
         final LocalDate startDate = period.getStart().toLocalDate();
         final LocalDate endDate = period.getEnd().toLocalDate();
         return attendanceRepository.findByCongregationAndDateBetweenOrderByDateAsc(congregation, startDate, endDate);
+    }
+
+    @Override
+    public void deleteByIdentifier(final String identifier) {
+        final MeetingAttendance attendance = attendanceRepository.findByIdentifier(identifier);
+        if(attendance != null)
+            attendanceRepository.delete(attendance);
     }
 
 }
