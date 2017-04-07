@@ -48,11 +48,13 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
     }
 
     private static MeetingAttendanceVO evaluateMaxAttendance(final List<MeetingAttendanceVO> attendances) {
+        MeetingAttendanceVO maxAttendance = null;
         if (attendances != null && !attendances.isEmpty()) {
             attendances.sort((MeetingAttendanceVO o1, MeetingAttendanceVO o2) -> o2.getAttendance() - o1.getAttendance());
-            return attendances.get(0);
+            maxAttendance = attendances.get(0);
+            attendances.sort((MeetingAttendanceVO o1, MeetingAttendanceVO o2) -> o1.getDate().compareTo(o2.getDate()));
         }
-        return null;
+        return maxAttendance;
     }
 
     private static int calculateAverageAttendance(final List<MeetingAttendanceVO> attendances) {
