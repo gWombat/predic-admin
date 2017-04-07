@@ -37,3 +37,11 @@
 .bootstrap-datetimepicker-widget table td.active:hover {
   text-shadow: none !important;
 }
+
+.media-body button.close {
+	padding-top: 3px;
+}
+
+.font-sm {
+	font-size: 0.9em;
+}
