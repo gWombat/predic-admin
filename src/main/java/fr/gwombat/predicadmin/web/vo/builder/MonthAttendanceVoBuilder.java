@@ -16,6 +16,7 @@ public class MonthAttendanceVoBuilder {
 
     private Period                    period;
     private MeetingAttendanceVO       maxAttendance;
+    private int                       averageAttendance;
     private List<MeetingAttendanceVO> attendances;
 
     private MonthAttendanceVoBuilder() {
@@ -32,14 +33,20 @@ public class MonthAttendanceVoBuilder {
     }
 
     public MonthAttendanceVoBuilder addAttendance(MeetingAttendanceVO attendance) {
-        if (attendance != null) {
-            if (maxAttendance == null || attendance.getAttendance() > maxAttendance.getAttendance()) {
-                attendance.setMaxOfMonth(true);
-                maxAttendance = attendance;
-            }
+        if (attendance != null)
             attendances.add(attendance);
-        }
+        return this;
+    }
 
+    public MonthAttendanceVoBuilder maxAttendance(MeetingAttendanceVO maxAttendance) {
+        this.maxAttendance = maxAttendance;
+        if (this.maxAttendance != null)
+            this.maxAttendance.setMaxOfMonth(true);
+        return this;
+    }
+
+    public MonthAttendanceVoBuilder averageAttendance(int averageAttendance) {
+        this.averageAttendance = averageAttendance;
         return this;
     }
 
@@ -57,5 +64,9 @@ public class MonthAttendanceVoBuilder {
 
     public List<MeetingAttendanceVO> getAttendances() {
         return attendances;
+    }
+
+    public int getAverageAttendance() {
+        return averageAttendance;
     }
 }

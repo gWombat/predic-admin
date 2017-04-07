@@ -13,9 +13,9 @@ import fr.gwombat.predicadmin.web.vo.builder.MonthAttendanceVoBuilder;
 
 @Component
 public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendance, MonthAttendanceVO> {
-    
+
     private MeetingAttendanceTransformer meetingAttendanceTransformer;
-    
+
     @Autowired
     public MonthAttendanceTransformer(final MeetingAttendanceTransformer meetingAttendanceTransformer) {
         this.meetingAttendanceTransformer = meetingAttendanceTransformer;
@@ -24,22 +24,45 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
     @Override
     public MonthAttendanceVO toViewObject(MonthAttendance entity) {
         MonthAttendanceVO attendanceVo = null;
-        if(entity != null){
-            MonthAttendanceVoBuilder builder = MonthAttendanceVoBuilder.begin()
-                    .period(entity.getPeriod());
-            
+        if (entity != null) {
+            MonthAttendanceVoBuilder builder = MonthAttendanceVoBuilder.begin().period(entity.getPeriod());
+
             final List<MeetingAttendance> originalAttendances = entity.getAttendances();
-            if(originalAttendances != null){
-                for(MeetingAttendance originalAttendance : originalAttendances){
+            if (originalAttendances != null) {
+                for (MeetingAttendance originalAttendance : originalAttendances) {
                     final MeetingAttendanceVO meetingAttendanceVo = meetingAttendanceTransformer.toViewObject(originalAttendance);
                     builder = builder.addAttendance(meetingAttendanceVo);
                 }
             }
-            
+
+            final int averageAttendance = calculateAverageAttendance(builder.getAttendances());
+            builder = builder.averageAttendance(averageAttendance);
+
+            final MeetingAttendanceVO maxAttendance = evaluateMaxAttendance(builder.getAttendances());
+            builder = builder.maxAttendance(maxAttendance);
+
             attendanceVo = builder.build();
-            
+
         }
         return attendanceVo;
+    }
+
+    private static MeetingAttendanceVO evaluateMaxAttendance(final List<MeetingAttendanceVO> attendances) {
+        if (attendances != null && !attendances.isEmpty()) {
+            attendances.sort((MeetingAttendanceVO o1, MeetingAttendanceVO o2) -> o2.getAttendance() - o1.getAttendance());
+            return attendances.get(0);
+        }
+        return null;
+    }
+
+    private static int calculateAverageAttendance(final List<MeetingAttendanceVO> attendances) {
+        int result = 0;
+        if (attendances != null) {
+            for (MeetingAttendanceVO attendance : attendances)
+                result += attendance.getAttendance();
+            result = result / Math.max(attendances.size(), 1);
+        }
+        return result;
     }
 
 }

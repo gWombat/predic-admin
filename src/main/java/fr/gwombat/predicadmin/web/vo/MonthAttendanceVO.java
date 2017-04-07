@@ -9,12 +9,14 @@ public class MonthAttendanceVO {
 
     private final Period                    period;
     private final MeetingAttendanceVO       maxAttendance;
+    private final int                       averageAttendance;
     private final List<MeetingAttendanceVO> attendances;
 
     public MonthAttendanceVO(MonthAttendanceVoBuilder builder) {
         this.period = builder.getPeriod();
         this.attendances = builder.getAttendances();
         this.maxAttendance = builder.getMaxAttendance();
+        this.averageAttendance = builder.getAverageAttendance();
     }
 
     public Period getPeriod() {
@@ -27,6 +29,10 @@ public class MonthAttendanceVO {
 
     public List<MeetingAttendanceVO> getAttendances() {
         return attendances;
+    }
+
+    public int getAverageAttendance() {
+        return averageAttendance;
     }
 
 }

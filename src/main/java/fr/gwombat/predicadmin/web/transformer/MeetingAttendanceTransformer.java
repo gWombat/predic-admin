@@ -48,7 +48,9 @@ public class MeetingAttendanceTransformer extends AbstractEntityTransformer<Meet
     public MeetingAttendanceVO toViewObject(final MeetingAttendance entity) {
         MeetingAttendanceVoBuilder builder = MeetingAttendanceVoBuilder.begin();
         if(entity != null)
-            builder = builder.attendance(entity.getAttendance()).date(entity.getDate());
+            builder = builder.attendance(entity.getAttendance())
+                .date(entity.getDate())
+                .identifier(entity.getIdentifier());
 
         return builder.build();
     }
