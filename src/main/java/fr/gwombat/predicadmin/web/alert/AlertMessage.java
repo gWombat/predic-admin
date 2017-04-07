@@ -6,11 +6,13 @@ public abstract class AlertMessage {
     private String                  icon;
     private String                  levelTextCode;
     private final AlertMessageLevel messageLevel;
+    private boolean                 closable;
 
     AlertMessage(final AlertMessageLevel messageLevel) {
         this.messageLevel = messageLevel;
         icon = messageLevel.getIcon();
         levelTextCode = messageLevel.getTextCode();
+        closable = true;
     }
 
     public String getLabelCode() {
@@ -39,6 +41,14 @@ public abstract class AlertMessage {
 
     public String getMessageLevel() {
         return messageLevel.getLevel();
+    }
+
+    public boolean isClosable() {
+        return closable;
+    }
+
+    public void setClosable(boolean closable) {
+        this.closable = closable;
     }
 
 }
