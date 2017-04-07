@@ -1,8 +1,8 @@
 package fr.gwombat.predicadmin.web.form;
 
-import org.apache.commons.lang3.StringUtils;
-
 import javax.validation.constraints.Min;
+
+import org.apache.commons.lang3.StringUtils;
 
 public class MeetingAttendanceForm {
 
