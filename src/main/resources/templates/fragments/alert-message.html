@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org">
+
+<body>
+
+<div th:fragment="alert-simple" th:class="'alert alert-' + ${message.messageLevel} + ' fade in'" role="alert" th:if="${message}">
+    <button th:if="#{message.closable}" type="button" class="close text-gray-darker" data-dismiss="alert" aria-label="Close">
+        <span aria-hidden="true">×</span>
+    </button>
+    <span class="fa-stack fa-lg m-r-1" th:classappend="'text-' + ${message.messageLevel}">
+        <i class="fa fa-circle-thin fa-stack-2x"></i>
+        <i th:class="'fa ' + ${message.icon} + ' fa-stack-1x'"></i>
+    </span>
+    <strong th:text="#{${message.levelTextCode}} + '!'">Well Done!</strong> 
+    <span th:text="#{${message.labelCode}}">You successfully read this important alert message.</span>
+</div>
+
+</body>
+</html>
