@@ -15,6 +15,8 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
 
+import fr.gwombat.predicadmin.support.validation.PastDate;
+
 @Entity
 @Table(name = "meetings_attendances",
 uniqueConstraints = {
@@ -38,6 +40,7 @@ public class MeetingAttendance extends AuditableEntity implements Comparable<Mee
     private Congregation      congregation;
 
     @NotNull
+    @PastDate
     @Column(name = "date", nullable = false)
     private LocalDate         date;
 
