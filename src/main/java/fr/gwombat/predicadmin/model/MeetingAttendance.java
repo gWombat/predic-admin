@@ -49,6 +49,11 @@ public class MeetingAttendance extends AuditableEntity implements Comparable<Mee
     public int compareTo(MeetingAttendance other) {
         return date.compareTo(other.date);
     }
+    
+    @Override
+    public String toString() {
+        return String.format("%s - %s (%s)", congregation, date, attendance);
+    }
 
     public Long getId() {
         return id;
