@@ -57,8 +57,10 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
             for (MonthAttendanceVO currentAttendance : attendances)
                 allAttendances.addAll(currentAttendance.getAttendances());
 
-            allAttendances.sort((MeetingAttendanceVO o1, MeetingAttendanceVO o2) -> o2.getAttendance() - o1.getAttendance());
-            maxAttendance = allAttendances.get(0);
+            if (allAttendances != null && !allAttendances.isEmpty()) {
+                allAttendances.sort((MeetingAttendanceVO o1, MeetingAttendanceVO o2) -> o2.getAttendance() - o1.getAttendance());
+                maxAttendance = allAttendances.get(0);
+            }
             allAttendances.sort((MeetingAttendanceVO o1, MeetingAttendanceVO o2) -> o1.getDate().compareTo(o2.getDate()));
         }
 

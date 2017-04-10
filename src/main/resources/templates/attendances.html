@@ -45,6 +45,44 @@
             </ul>
         </div>
         
+        <div class="row">
+            <div class="col-lg-3">
+                <div class="panel panel-default no-bg b-a-2 b-primary">
+                    <div class="panel-body">
+                        <div class="row">
+                            <div class="col-lg-6">
+                                <i class="fa fa-university fa-2x fa-fw text-primary"></i>
+                            </div>
+                            <div class="col-lg-6 text-right">
+                                <p class="m-b-0" th:text="#{general.average}">Capacity</p>
+                                <h1 class="f-w-300 m-t-0 m-b-0" th:text="${yearAttendance.averageAttendance}">100 </h1>
+                            </div>
+                        </div>
+                    </div>
+    
+                    <!-- START Footer -->
+                    <div class="panel-footer">
+                        <i class="m-r-1 fa fa-history"></i> Global
+                    </div>
+                    <!-- END Footer -->
+    
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-xs-12">
+                <div class="panel panel-default no-bg b-dark-gray b-a-2">
+                    <div class="panel-heading">
+                        Attendance charts
+                    </div>
+                    <div id="container" class="panel-body chart">
+                        
+                    </div>
+                </div> 
+            </div>
+        </div>
+        
         <div class="row text-center">
             <div class="col-sm-12">
                 <p>
@@ -66,9 +104,9 @@
                             <div class="panel-heading">
                                 <span th:text="${#strings.capitalize(#temporals.format(monthAttendance.period.start, 'MMMM', #locale))}"></span>
                             </div>
-                            <div class="panel-body p-t-0 p-b-0 p-l-0 p-r-0">
+                            <div class="panel-body p-a-0">
                                 <ul class="list-group m-b-0">
-                                    <li class="list-group-item">
+                                    <li class="list-group-item p-tb-px-5">
                                         <div class="media">
                                             <div class="media-body">
                                                 <i><span th:text="#{general.average}">Average</span></i>
@@ -78,12 +116,12 @@
                                             </div>
                                         </div>
                                     </li>
-                                    <li class="list-group-item" th:each="attendance : ${monthAttendance.attendances}">
+                                    <li class="list-group-item p-tb-px-5" th:each="attendance : ${monthAttendance.attendances}">
                                         <form th:action="@{/attendance/{id}/delete(id=${attendance.identifier})}" method="post">
                                             <div class="media">
                                                 <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
                                                 <div class="media-body text-right">
-                                                    <span class="text-success" data-toggle="tooltip" data-placement="bottom" title="maximum du mois" th:if="${attendance.maxOfMonth}">
+                                                    <span class="text-success" data-toggle="tooltip" data-placement="bottom" title="max of month" th:if="${attendance.maxOfMonth}">
                                                         <small><i class="fa fa-arrow-up"></i></small>
                                                     </span> &#160;
                                                     <span class="text-white" th:text="${attendance.attendance}"></span> &#160;
@@ -170,6 +208,46 @@
         		min: 0,
                 max: 1000,
                 step: 1
+        	});
+        	
+        	Highcharts.chart('container', {
+        	    title: {
+        	        text: 'Solar Employment Growth by Sector, 2010-2016'
+        	    },
+        	    subtitle: {
+        	        text: 'Source: thesolarfoundation.com'
+        	    },
+        	    yAxis: {
+        	        title: {
+        	            text: 'Number of Employees'
+        	        }
+        	    },
+        	    legend: {
+        	        layout: 'vertical',
+        	        align: 'right',
+        	        verticalAlign: 'middle'
+        	    },
+        	    plotOptions: {
+        	        series: {
+        	            pointStart: 2010
+        	        }
+        	    },
+        	    series: [{
+        	        name: 'Installation',
+        	        data: [43934, 52503, 57177, 69658, 97031, 119931, 137133, 154175]
+        	    }, {
+        	        name: 'Manufacturing',
+        	        data: [24916, 24064, 29742, 29851, 32490, 30282, 38121, 40434]
+        	    }, {
+        	        name: 'Sales & Distribution',
+        	        data: [11744, 17722, 16005, 19771, 20185, 24377, 32147, 39387]
+        	    }, {
+        	        name: 'Project Development',
+        	        data: [null, null, 7988, 12169, 15112, 22452, 34400, 34227]
+        	    }, {
+        	        name: 'Other',
+        	        data: [12908, 5948, 8105, 11248, 8989, 11816, 18274, 18111]
+        	    }]
         	});
         });
         //]]>

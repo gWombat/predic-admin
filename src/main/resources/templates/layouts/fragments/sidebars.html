@@ -31,6 +31,12 @@
                     <span class="nav-label" th:text="#{general.publishers}">Page</span>
                 </a>
             </li>
+            <li th:class="${#httpServletRequest.getRequestURL().toString().contains('/attendance') ? 'active' : ''}">
+                <a th:href="@{/attendance}" th:title="#{page.meeting.attendance}">
+                    <i class="fa fa-lg fa-university fa-fw"></i>
+                    <span class="nav-label" th:text="#{general.attendance}">Page</span>
+                </a>
+            </li>
         </ul>
         <!-- END Tree  -->
 

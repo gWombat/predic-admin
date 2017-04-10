@@ -45,3 +45,12 @@
 .font-sm {
 	font-size: 0.9em;
 }
+
+.p-tb-px-5 {
+	padding-top: 5px !important;
+	padding-bottom: 5px !important;
+}
+
+.chart {
+	height: 400px;
+}
