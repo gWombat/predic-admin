@@ -1,80 +1,57 @@
 package fr.gwombat.predicadmin.model;
 
-import java.time.LocalDateTime;
-import java.time.temporal.TemporalAdjusters;
+import java.io.Serializable;
+import java.time.Year;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.Transient;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotNull;
+import fr.gwombat.predicadmin.support.period.Period;
+import fr.gwombat.predicadmin.support.period.PeriodBuilder;
 
-@Entity
-@Table(name = "theocratic_years")
-public class TheocraticYear extends AuditableEntity {
+public class TheocraticYear implements Serializable, Comparable<TheocraticYear> {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "year_id")
-    private Long              id;
+    private Year              year;
 
-    @Min(1950)
-    @Column(name = "year")
-    private int               year;
+    private Period            start;
+    private Period            end;
 
-    @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "congregation_id", nullable = false)
-    private Congregation      congregation;
+    public TheocraticYear() {
+    }
 
-    @Transient
-    private LocalDateTime     start;
+    public TheocraticYear(int year) {
+        initDatesFromYear(year);
+    }
 
-    @Transient
-    private LocalDateTime     end;
-
-    private void initDatesFromYear() {
-        start = LocalDateTime.of(year - 1, 9, 1, 0, 0, 0);
-        end = LocalDateTime.of(year, 8, 15, 23, 59, 59).with(TemporalAdjusters.lastDayOfMonth());
+    private void initDatesFromYear(int yearValue) {
+        year = Year.of(yearValue);
+        start = PeriodBuilder.init().year(yearValue - 1).month(9).build();
+        end = PeriodBuilder.init().year(yearValue).month(8).build();
     }
 
     @Override
     public String toString() {
-        return String.format("%s-%s", year - 1, year);
+        return String.format("%s-%s", year.getValue() - 1, year.getValue());
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public int getYear() {
+    public Year getYear() {
         return year;
     }
 
-    public void setYear(int year) {
-        this.year = year;
-        initDatesFromYear();
+    public void setYear(int yearValue) {
+        initDatesFromYear(yearValue);
     }
 
-    public LocalDateTime getStart() {
+    public Period getStart() {
         return start;
     }
 
-    public LocalDateTime getEnd() {
+    public Period getEnd() {
         return end;
+    }
+
+    @Override
+    public int compareTo(TheocraticYear o) {
+        return year.compareTo(o.year);
     }
 
 }

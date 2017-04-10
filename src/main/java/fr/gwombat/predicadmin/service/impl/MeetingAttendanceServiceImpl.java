@@ -40,13 +40,18 @@ public class MeetingAttendanceServiceImpl implements MeetingAttendanceService {
     }
 
     @Override
-    public List<MeetingAttendance> getAttendanceForPeriod(final Congregation congregation, final Period period) {
+    public List<MeetingAttendance> getAttendancesBetween(final Congregation congregation, final LocalDate startDate, final LocalDate endDate) {
+        return attendanceRepository.findByCongregationAndDateBetweenOrderByDateAsc(congregation, startDate, endDate);
+    }
+    
+    @Override
+    public List<MeetingAttendance> getAttendancesForPeriod(final Congregation congregation, final Period period) {
         if (congregation == null || period == null)
             return null;
 
         final LocalDate startDate = period.getStart().toLocalDate();
         final LocalDate endDate = period.getEnd().toLocalDate();
-        return attendanceRepository.findByCongregationAndDateBetweenOrderByDateAsc(congregation, startDate, endDate);
+        return getAttendancesBetween(congregation, startDate, endDate);
     }
 
     @Override

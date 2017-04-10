@@ -58,22 +58,23 @@
         
         <div class="row">
             <div class="panel panel-default no-bg b-a-2 b-gray-dark">
-                <div class="panel-heading">Monthly results</div>
+                <div class="panel-heading" th:text="#{page.meeting.attendance.result.monthly}">Monthly results</div>
                 <div class="panel-body">
-                    <div class="col-lg-3 col-md-4 col-sm-6">
-                        <div class="panel panel-default no-bg b-l-2 b-l-primary b-t-gray b-r-gray b-b-gray">
+                    <div class="col-lg-3 col-md-4 col-sm-6" th:each="monthAttendance : ${yearAttendance.attendances}">
+                        <div class="panel no-bg" 
+                            th:classappend="${monthAttendance.period.currentPeriod} ? 'panel-primary b-primary' : 'panel-info'">
                             <div class="panel-heading">
-                                April
+                                <span th:text="${#strings.capitalize(#temporals.format(monthAttendance.period.start, 'MMMM', #locale))}"></span>
                             </div>
-                            <div class="panel-body">
-                                <ul class="list-group">
-                                    <li class="list-group-item list-group-item-info">
+                            <div class="panel-body p-t-0 p-b-0 p-l-0 p-r-0">
+                                <ul class="list-group m-b-0">
+                                    <li class="list-group-item">
                                         <div class="media">
                                             <div class="media-body">
-                                                Average
+                                                <i><span th:text="#{general.average}">Average</span></i>
                                             </div>
                                             <div class="media-body text-right">
-                                                <span th:text="${monthAttendance.averageAttendance}"></span>
+                                                <i><span th:text="${monthAttendance.averageAttendance}"></span></i>
                                             </div>
                                         </div>
                                     </li>
@@ -82,9 +83,9 @@
                                             <div class="media">
                                                 <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
                                                 <div class="media-body text-right">
-                                            <span class="text-success" data-toggle="tooltip" data-placement="bottom" title="maximum du mois" th:if="${attendance.maxOfMonth}">
-                                                <small><i class="fa fa-arrow-up"></i></small>
-                                            </span> &#160;
+                                                    <span class="text-success" data-toggle="tooltip" data-placement="bottom" title="maximum du mois" th:if="${attendance.maxOfMonth}">
+                                                        <small><i class="fa fa-arrow-up"></i></small>
+                                                    </span> &#160;
                                                     <span class="text-white" th:text="${attendance.attendance}"></span> &#160;
                                                     <button data-toggle="confirmation" type="submit" class="close font-sm"><i class="fa fa-times"></i></button>
                                                 </div>

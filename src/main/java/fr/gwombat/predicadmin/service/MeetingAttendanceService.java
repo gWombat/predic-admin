@@ -1,5 +1,6 @@
 package fr.gwombat.predicadmin.service;
 
+import java.time.LocalDate;
 import java.util.List;
 
 import fr.gwombat.predicadmin.model.Congregation;
@@ -14,7 +15,9 @@ public interface MeetingAttendanceService {
     
     List<MeetingAttendance> getByCongregation(Congregation congregation);
     
-    List<MeetingAttendance> getAttendanceForPeriod(Congregation congregation, Period period);
+    List<MeetingAttendance> getAttendancesBetween(Congregation congregation, LocalDate startDate, LocalDate endDate);
+    
+    List<MeetingAttendance> getAttendancesForPeriod(Congregation congregation, Period period);
     
     void deleteByIdentifier(String identifier);
 

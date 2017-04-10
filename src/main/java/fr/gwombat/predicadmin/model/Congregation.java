@@ -40,8 +40,8 @@ public class Congregation extends AuditableEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
     private List<Publisher> publishers;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
-    private List<TheocraticYear>        years;
+    /*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
+    private List<TheocraticYear>        years;*/
     
     @Override
     public String toString() {
@@ -80,11 +80,11 @@ public class Congregation extends AuditableEntity {
         this.publishers = publishers;
     }
 
-    public List<TheocraticYear> getYears() {
+    /*public List<TheocraticYear> getYears() {
         return years;
     }
 
     public void setYears(List<TheocraticYear> years) {
         this.years = years;
-    }
+    }*/
 }

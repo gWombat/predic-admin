@@ -6,6 +6,9 @@ import java.time.YearMonth;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.TemporalAdjusters;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+
 public final class Period implements Serializable, Comparable<Period> {
 
     private static final long              serialVersionUID = 1L;
@@ -45,26 +48,40 @@ public final class Period implements Serializable, Comparable<Period> {
         return yearMonth.getYear();
     }
 
-    public boolean isCurrentPeriode() {
+    public boolean isCurrentPeriod() {
         return this.toInt() == PeriodUtils.currentPeriodValue();
     }
-    
-    public LocalDateTime getStart(){
+
+    public LocalDateTime getStart() {
         return LocalDateTime.of(getYear(), getMonth(), 1, 0, 0, 0, 0);
     }
-    
-    public LocalDateTime getEnd(){
+
+    public LocalDateTime getEnd() {
         final LocalDateTime date = LocalDateTime.of(getYear(), getMonth(), 15, 23, 59, 59, 999);
         return date.with(TemporalAdjusters.lastDayOfMonth());
     }
 
     @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj instanceof Period) {
+            Period other = (Period) obj;
+            return new EqualsBuilder().append(this.getPeriodValue(), other.getPeriodValue()).build();
+        }
+
+        return false;
+    }
+    
+    @Override
+    public int hashCode() {
+        return new HashCodeBuilder().append(this.getPeriodValue()).build();
+    }
+
+    @Override
     public int compareTo(Period o) {
-        if (yearMonth.isAfter(o.yearMonth))
-            return 1;
-        else if (yearMonth.isBefore(o.yearMonth))
-            return -1;
-        return 0;
+        return yearMonth.compareTo(o.yearMonth);
     }
 
     @Override

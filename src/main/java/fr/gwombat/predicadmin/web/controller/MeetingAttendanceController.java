@@ -20,20 +20,20 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.gwombat.predicadmin.model.MeetingAttendance;
-import fr.gwombat.predicadmin.model.MonthAttendance;
+import fr.gwombat.predicadmin.model.TheocraticYear;
+import fr.gwombat.predicadmin.model.YearAttendance;
 import fr.gwombat.predicadmin.service.CongregationService;
 import fr.gwombat.predicadmin.service.MeetingAttendanceService;
 import fr.gwombat.predicadmin.service.MonthAttendanceService;
-import fr.gwombat.predicadmin.support.period.Period;
-import fr.gwombat.predicadmin.support.period.PeriodBuilder;
+import fr.gwombat.predicadmin.service.YearAttendanceService;
 import fr.gwombat.predicadmin.web.alert.AlertMessage;
 import fr.gwombat.predicadmin.web.alert.DangerAlertMessage;
 import fr.gwombat.predicadmin.web.alert.SuccessAlertMessage;
 import fr.gwombat.predicadmin.web.form.MeetingAttendanceForm;
 import fr.gwombat.predicadmin.web.transformer.MeetingAttendanceTransformer;
-import fr.gwombat.predicadmin.web.transformer.MonthAttendanceTransformer;
+import fr.gwombat.predicadmin.web.transformer.YearAttendanceTransformer;
 import fr.gwombat.predicadmin.web.validator.MeetingAttendanceValidator;
-import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
+import fr.gwombat.predicadmin.web.vo.YearAttendanceVO;
 
 @Controller
 @RequestMapping("/attendance")
@@ -42,44 +42,43 @@ public class MeetingAttendanceController {
     private static final Logger                logger = LoggerFactory.getLogger(MeetingAttendanceController.class);
 
     private final MeetingAttendanceService     meetingAttendanceService;
-    private final MonthAttendanceService       monthAttendanceService;
+    private final YearAttendanceService        yearAttendanceService;
     private final CongregationService          congregationService;
 
     private final MeetingAttendanceTransformer meetingAttendanceTransformer;
-    private final MonthAttendanceTransformer   monthAttendanceTransformer;
+    private final YearAttendanceTransformer    yearAttendanceTransformer;
 
     private final MessageSource                messageSource;
 
     @Autowired
-    public MeetingAttendanceController(final MeetingAttendanceService meetingAttendanceService, final MeetingAttendanceTransformer meetingAttendancetransformer, final CongregationService congregationService, final MonthAttendanceService monthAttendanceService, final MonthAttendanceTransformer monthAttendanceTransformer, final MessageSource messageSource) {
+    public MeetingAttendanceController(final MeetingAttendanceService meetingAttendanceService, final MeetingAttendanceTransformer meetingAttendancetransformer, final YearAttendanceService yearAttendanceService, final CongregationService congregationService, final MonthAttendanceService monthAttendanceService, final YearAttendanceTransformer yearAttendanceTransformer, final MessageSource messageSource) {
 
         this.meetingAttendanceService = meetingAttendanceService;
         this.meetingAttendanceTransformer = meetingAttendancetransformer;
         this.congregationService = congregationService;
-        this.monthAttendanceService = monthAttendanceService;
-        this.monthAttendanceTransformer = monthAttendanceTransformer;
+        this.yearAttendanceService = yearAttendanceService;
+        this.yearAttendanceTransformer = yearAttendanceTransformer;
         this.messageSource = messageSource;
     }
-    
-    @ModelAttribute("monthAttendance")
-    public MonthAttendanceVO getMonthAttendance(){
-        final Period period = PeriodBuilder.init().month(4).year(2017).build();
-        final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(congregationService.getCurrentCongregation(), period);
-        final MonthAttendanceVO monthAttendanceVo = monthAttendanceTransformer.toViewObject(monthAttendance);
-        return monthAttendanceVo;
+
+    @ModelAttribute("yearAttendance")
+    public YearAttendanceVO getYearAttendance() {
+        final TheocraticYear year = new TheocraticYear(2017);
+        final YearAttendance yearAttendance = yearAttendanceService.getAttendanceForYear(congregationService.getCurrentCongregation(), year);
+        final YearAttendanceVO yearAttendanceVo = yearAttendanceTransformer.toViewObject(yearAttendance);
+        return yearAttendanceVo;
     }
 
     @GetMapping
     public String attendancePage(Model model) {
         final MeetingAttendanceForm meetingAttendance = new MeetingAttendanceForm();
         model.addAttribute("attendance", meetingAttendance);
-        
+
         return "attendances";
     }
 
     @PostMapping
-    public String saveOrUpdateMeetingAttendance(@ModelAttribute("attendance") @Valid MeetingAttendanceForm attendanceForm, 
-            BindingResult result, Errors errors, RedirectAttributes redirectAttributes) {
+    public String saveOrUpdateMeetingAttendance(@ModelAttribute("attendance") @Valid MeetingAttendanceForm attendanceForm, BindingResult result, Errors errors, RedirectAttributes redirectAttributes) {
 
         Validator validator = new MeetingAttendanceValidator(messageSource);
         validator.validate(attendanceForm, errors);
