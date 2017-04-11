@@ -1,11 +1,11 @@
 package fr.gwombat.predicadmin.web.vo.builder;
 
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.gwombat.predicadmin.support.period.Period;
 import fr.gwombat.predicadmin.web.vo.MeetingAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by gWombat.
@@ -16,7 +16,7 @@ public class MonthAttendanceVoBuilder {
 
     private Period                    period;
     private MeetingAttendanceVO       maxAttendance;
-    private int                       averageAttendance;
+    private Integer                   averageAttendance;
     private List<MeetingAttendanceVO> attendances;
 
     private MonthAttendanceVoBuilder() {
@@ -45,7 +45,7 @@ public class MonthAttendanceVoBuilder {
         return this;
     }
 
-    public MonthAttendanceVoBuilder averageAttendance(int averageAttendance) {
+    public MonthAttendanceVoBuilder averageAttendance(Integer averageAttendance) {
         this.averageAttendance = averageAttendance;
         return this;
     }
@@ -66,7 +66,7 @@ public class MonthAttendanceVoBuilder {
         return attendances;
     }
 
-    public int getAverageAttendance() {
+    public Integer getAverageAttendance() {
         return averageAttendance;
     }
 }

@@ -37,7 +37,7 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
                 }
             }
 
-            final int averageAttendance = calculateAverageAttendance(builder.getAttendances());
+            final Integer averageAttendance = calculateAverageAttendance(builder.getAttendances());
             builder = builder.averageAttendance(averageAttendance);
 
             final MeetingAttendanceVO maxAttendance = evaluateMaxAttendance(builder.getAttendances());
@@ -57,7 +57,7 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
             for (MonthAttendanceVO currentAttendance : attendances)
                 allAttendances.addAll(currentAttendance.getAttendances());
 
-            if (allAttendances != null && !allAttendances.isEmpty()) {
+            if (!allAttendances.isEmpty()) {
                 allAttendances.sort((MeetingAttendanceVO o1, MeetingAttendanceVO o2) -> o2.getAttendance() - o1.getAttendance());
                 maxAttendance = allAttendances.get(0);
             }
@@ -67,12 +67,22 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
         return maxAttendance;
     }
 
-    private static int calculateAverageAttendance(final List<MonthAttendanceVO> attendances) {
-        int result = 0;
+    private static Integer calculateAverageAttendance(final List<MonthAttendanceVO> attendances) {
+        Integer result = null;
+        int nbMonthsPassed = 0;
         if (attendances != null) {
-            for (MonthAttendanceVO attendance : attendances)
-                result += attendance.getAverageAttendance();
-            result = result / Math.max(attendances.size(), 1);
+            for (MonthAttendanceVO attendance : attendances){
+                if(attendance != null) {
+                    if (attendance.getPeriod().isBeforeNow())
+                        nbMonthsPassed++;
+                    if (result == null)
+                        result = 0;
+                    if(attendance.getAverageAttendance() != null)
+                        result += attendance.getAverageAttendance();
+                }
+            }
+            if(result != null)
+                result = result / Math.max(nbMonthsPassed, 1);
         }
         return result;
     }

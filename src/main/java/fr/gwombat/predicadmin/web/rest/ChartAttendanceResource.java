@@ -1,21 +1,25 @@
 package fr.gwombat.predicadmin.web.rest;
 
 import fr.gwombat.predicadmin.highchart.HighchartSerie;
-import fr.gwombat.predicadmin.highchart.transformer.HighchartTransformer;
-import fr.gwombat.predicadmin.model.Congregation;
-import fr.gwombat.predicadmin.model.MonthAttendance;
+import fr.gwombat.predicadmin.highchart.transformer.GlobalAttendanceTransformer;
+import fr.gwombat.predicadmin.highchart.transformer.HighchartMonthAttendanceTransformer;
+import fr.gwombat.predicadmin.highchart.transformer.YearAverageAttendanceTransformer;
+import fr.gwombat.predicadmin.model.*;
 import fr.gwombat.predicadmin.service.CongregationService;
+import fr.gwombat.predicadmin.service.MeetingAttendanceService;
 import fr.gwombat.predicadmin.service.MonthAttendanceService;
+import fr.gwombat.predicadmin.service.YearAttendanceService;
 import fr.gwombat.predicadmin.support.period.Period;
 import fr.gwombat.predicadmin.support.period.PeriodBuilder;
 import fr.gwombat.predicadmin.web.transformer.MonthAttendanceTransformer;
+import fr.gwombat.predicadmin.web.transformer.YearAttendanceTransformer;
 import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
+import fr.gwombat.predicadmin.web.vo.YearAttendanceVO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.text.DateFormatSymbols;
 import java.util.List;
 
 /**
@@ -27,18 +31,43 @@ import java.util.List;
 @RequestMapping("/rest/chart/attendance")
 public class ChartAttendanceResource {
 
-    private MonthAttendanceTransformer monthAttendanceTransformer;
-    private MonthAttendanceService     monthAttendanceService;
-    private CongregationService        congregationService;
-    private HighchartTransformer       highchartTransformer;
+    private MonthAttendanceTransformer          monthAttendanceTransformer;
+    private YearAttendanceTransformer           yearAttendanceTransformer;
+    private YearAverageAttendanceTransformer    yearAverageAttendanceTransformer;
+    private HighchartMonthAttendanceTransformer highchartTransformer;
+    private GlobalAttendanceTransformer         globalAttendanceTransformer;
 
-    @GetMapping
+    private YearAttendanceService    yearAttendanceService;
+    private MonthAttendanceService   monthAttendanceService;
+    private CongregationService      congregationService;
+    private MeetingAttendanceService meetingAttendanceService;
+
+
+    @GetMapping("/month")
     public List<HighchartSerie> chartResultMonthAttendance() {
         final Congregation currentCongregation = congregationService.getCurrentCongregation();
         final Period currentPeriod = PeriodBuilder.init().build();
         final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(currentCongregation, currentPeriod);
         final MonthAttendanceVO monthAttendanceVo = monthAttendanceTransformer.toViewObject(monthAttendance);
-        final List<HighchartSerie> series = highchartTransformer.toSeries(monthAttendanceVo);
+        final List<HighchartSerie> series = highchartTransformer.convertToSeries(monthAttendanceVo);
+
+        return series;
+    }
+
+    @GetMapping("/year")
+    public List<HighchartSerie> chartAverageAttendanceYear() {
+        final TheocraticYear year = new TheocraticYear(2017);
+        final YearAttendance yearAttendance = yearAttendanceService.getAttendanceForYear(congregationService.getCurrentCongregation(), year);
+        final YearAttendanceVO yearAttendanceVo = yearAttendanceTransformer.toViewObject(yearAttendance);
+        final List<HighchartSerie> series = yearAverageAttendanceTransformer.convertToSeries(yearAttendanceVo);
+
+        return series;
+    }
+
+    @GetMapping
+    public List<HighchartSerie> chartGlobalAttendance() {
+        final List<MeetingAttendance> attendances = meetingAttendanceService.getByCongregation(congregationService.getCurrentCongregation());
+        final List<HighchartSerie> series = globalAttendanceTransformer.convertToSeries(attendances);
 
         return series;
     }
@@ -59,7 +88,32 @@ public class ChartAttendanceResource {
     }
 
     @Autowired
-    public void setHighchartTransformer(HighchartTransformer highchartTransformer) {
+    public void setHighchartTransformer(HighchartMonthAttendanceTransformer highchartTransformer) {
         this.highchartTransformer = highchartTransformer;
+    }
+
+    @Autowired
+    public void setYearAverageAttendanceTransformer(YearAverageAttendanceTransformer yearAverageAttendanceTransformer) {
+        this.yearAverageAttendanceTransformer = yearAverageAttendanceTransformer;
+    }
+
+    @Autowired
+    public void setYearAttendanceService(YearAttendanceService yearAttendanceService) {
+        this.yearAttendanceService = yearAttendanceService;
+    }
+
+    @Autowired
+    public void setYearAttendanceTransformer(YearAttendanceTransformer yearAttendanceTransformer) {
+        this.yearAttendanceTransformer = yearAttendanceTransformer;
+    }
+
+    @Autowired
+    public void setMeetingAttendanceService(MeetingAttendanceService meetingAttendanceService) {
+        this.meetingAttendanceService = meetingAttendanceService;
+    }
+
+    @Autowired
+    public void setGlobalAttendanceTransformer(GlobalAttendanceTransformer globalAttendanceTransformer) {
+        this.globalAttendanceTransformer = globalAttendanceTransformer;
     }
 }

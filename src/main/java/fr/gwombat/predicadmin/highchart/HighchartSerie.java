@@ -16,6 +16,13 @@ public class HighchartSerie {
     private String               name;
     private List<HighchartPoint> data;
 
+    public HighchartSerie() {
+    }
+
+    public HighchartSerie(String name) {
+        this.name = name;
+    }
+
     public String getName() {
         return name;
     }

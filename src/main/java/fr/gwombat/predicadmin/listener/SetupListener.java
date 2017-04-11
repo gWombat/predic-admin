@@ -2,8 +2,8 @@ package fr.gwombat.predicadmin.listener;
 
 import fr.gwombat.predicadmin.model.*;
 import fr.gwombat.predicadmin.repository.CongregationRepository;
+import fr.gwombat.predicadmin.repository.MeetingAttendanceRepository;
 import fr.gwombat.predicadmin.repository.PublisherRepository;
-import fr.gwombat.predicadmin.service.MeetingAttendanceService;
 import fr.gwombat.predicadmin.support.Gender;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -14,17 +14,20 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
 
 @Component
 public class SetupListener {
 
     private static final Logger logger = LoggerFactory.getLogger(SetupListener.class);
 
-    private Environment              env;
-    private PublisherRepository      publisherRepository;
-    private CongregationRepository   congregationRepository;
-
-    private MeetingAttendanceService attendanceService;
+    private Environment                 env;
+    private PublisherRepository         publisherRepository;
+    private CongregationRepository      congregationRepository;
+    private MeetingAttendanceRepository attendanceRepository;
 
     private boolean setUp = false;
 
@@ -37,14 +40,14 @@ public class SetupListener {
 
     @EventListener
     public void handleRefreshContext(ContextRefreshedEvent event) {
-        if(env.acceptsProfiles("default", "dev") && !setUp)
+        if (env.acceptsProfiles("default", "dev") && !setUp)
             setUp();
     }
 
     private void setUp() {
 
         Congregation congreg = congregationRepository.findByName("Verneuil-sur-Seine");
-        if(congreg == null) {
+        if (congreg == null) {
             congreg = new Congregation();
             congreg.setName("Verneuil-sur-Seine");
             congreg = congregationRepository.save(congreg);
@@ -103,21 +106,42 @@ public class SetupListener {
     }
 
     private void initAttendance(final Congregation congregation) {
-        MeetingAttendance meetingAttendance = new MeetingAttendance();
-        meetingAttendance.setAttendance(87);
-        meetingAttendance.setDate(LocalDate.of(2017,4,4));
-        meetingAttendance.setCongregation(congregation);
-        attendanceService.save(meetingAttendance);
+        int bound = 150;
 
-        meetingAttendance = new MeetingAttendance();
-        meetingAttendance.setAttendance(76);
-        meetingAttendance.setDate(LocalDate.of(2017,4,9));
-        meetingAttendance.setCongregation(congregation);
-        attendanceService.save(meetingAttendance);
+        final Map<LocalDate, MeetingAttendance> attendances = new HashMap<>(bound);
+        final int[] months = {9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8};
+        int startYear = 2017;
+
+        for (int i = 0; i < bound; i++) {
+            MeetingAttendance meetingAttendance = new MeetingAttendance();
+            meetingAttendance.setCongregation(congregation);
+            meetingAttendance.setAttendance(new Random().nextInt(120));
+
+            int year = startYear;
+            int month;
+            if (i < bound / 3) {
+                year = startYear - 1;
+                month = months[new Random().nextInt(4)];
+            } else if (i < (2 * bound) / 3)
+                month = months[new Random().nextInt(4) + 4];
+            else
+                month = months[new Random().nextInt(4) + 8];
+
+
+            final LocalDate date = LocalDate.of(year, month, Math.max(new Random().nextInt(25), 1));
+            meetingAttendance.setDate(date);
+            attendances.put(date, meetingAttendance);
+        }
+
+        attendanceRepository.save(attendances.entrySet()
+                .stream()
+                .map(Map.Entry::getValue)
+                .filter(attendance -> LocalDate.now().isAfter(attendance.getDate()))
+                .collect(Collectors.toList()));
     }
 
     @Autowired
-    public void setAttendanceService(MeetingAttendanceService attendanceService) {
-        this.attendanceService = attendanceService;
+    public void setAttendanceRepository(MeetingAttendanceRepository attendanceRepository) {
+        this.attendanceRepository = attendanceRepository;
     }
 }

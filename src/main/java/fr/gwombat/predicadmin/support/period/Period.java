@@ -90,4 +90,12 @@ public final class Period implements Serializable, Comparable<Period> {
         return String.format("%s (%s)", yearMonth.format(format), toInt());
     }
 
+    public boolean isBefore(final Period otherPeriod){
+        return compareTo(otherPeriod) < 0;
+    }
+
+    public boolean isBeforeNow(){
+        return isBefore(PeriodBuilder.init().build());
+    }
+
 }

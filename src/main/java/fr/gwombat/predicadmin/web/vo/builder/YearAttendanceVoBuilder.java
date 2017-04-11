@@ -34,7 +34,7 @@ public class YearAttendanceVoBuilder {
         return this;
     }
 
-    public YearAttendanceVoBuilder averageAttendance(final int averageAttendance) {
+    public YearAttendanceVoBuilder averageAttendance(final Integer averageAttendance) {
         this.averageAttendance = averageAttendance;
         return this;
     }

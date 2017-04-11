@@ -69,17 +69,40 @@
                 </div>
             </div>
         </div>
-        
+
         <div class="row">
-            <div class="col-xs-12">
+            <div class="col-sm-12">
                 <div class="panel panel-default no-bg b-dark-gray b-a-2">
                     <div class="panel-heading">
-                        Attendance charts
+                        Year average attendance
+                    </div>
+                    <div id="container_global" class="panel-body chart">
+
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="row">
+            <div class="col-lg-7">
+                <div class="panel panel-default no-bg b-dark-gray b-a-2">
+                    <div class="panel-heading">
+                        Year average attendance
+                    </div>
+                    <div id="container_year" class="panel-body chart">
+
+                    </div>
+                </div>
+            </div>
+            <div class="col-lg-5">
+                <div class="panel panel-default no-bg b-dark-gray b-a-2">
+                    <div class="panel-heading">
+                        Month attendance
                     </div>
                     <div id="container" class="panel-body chart">
-                        
+
                     </div>
-                </div> 
+                </div>
             </div>
         </div>
         
@@ -216,14 +239,101 @@
                     renderTo: 'container',
                     type: 'column'
                 },
+                title: null,
                 xAxis: {
-                    type: 'datetime'
+                    type: 'datetime',
+                    crosshair: true,
+                    title: null
+                },
+                yAxis: {
+                    title: null
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                plotOptions: {
+                    column: {
+                        pointPadding: 0.3,
+                        groupPadding: 0.3,
+                        borderWidth: 0
+                    }
+                },
+                series: []
+            };
+            $.getJSON('/rest/chart/attendance/month', function(list){
+                options.series = list;
+                var chart = new Highcharts.Chart(options);
+            });
+
+            optionsYear = {
+                chart: {
+                    renderTo: 'container_year',
+                    type: 'line'
+                },
+                title: null,
+                xAxis: {
+                    type: 'datetime',
+                    crosshair: true,
+                    title: null
+                },
+                yAxis: {
+                    title: null
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
+                },
+                series: []
+            };
+            $.getJSON('/rest/chart/attendance/year', function(list){
+                optionsYear.series = list;
+                var chart = new Highcharts.Chart(optionsYear);
+            });
+
+            optionsGlobal = {
+                chart: {
+                    renderTo: 'container_global',
+                    type: 'line'
+                },
+                plotOptions: {
+                    series: {
+                        connectNulls: true
+                    }
+                },
+                title: null,
+                xAxis: {
+                    type: 'datetime',
+                    crosshair: true,
+                    title: null
+                },
+                yAxis: {
+                    title: null
+                },
+                credits: {
+                    enabled: false
+                },
+                legend: {
+                    enabled: false
+                },
+                exporting: {
+                    enabled: false
                 },
                 series: []
             };
             $.getJSON('/rest/chart/attendance', function(list){
-                options.series = list;
-                var chart = new Highcharts.Chart(options);
+                optionsGlobal.series = list;
+                var chart = new Highcharts.Chart(optionsGlobal);
             });
         });
         //]]>

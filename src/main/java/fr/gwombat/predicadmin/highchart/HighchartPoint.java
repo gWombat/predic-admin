@@ -2,8 +2,6 @@ package fr.gwombat.predicadmin.highchart;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 
-import java.time.LocalDateTime;
-
 /**
  * Created by gWombat.
  *
@@ -12,10 +10,10 @@ import java.time.LocalDateTime;
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
 public class HighchartPoint {
 
-    private String        name;
-    private String        color;
-    private Long x;
-    private Number        y;
+    private String name;
+    private String color;
+    private Number x;
+    private Number y;
 
     public String getName() {
         return name;
@@ -33,11 +31,11 @@ public class HighchartPoint {
         this.color = color;
     }
 
-    public Long getX() {
+    public Number getX() {
         return x;
     }
 
-    public void setX(Long x) {
+    public void setX(Number x) {
         this.x = x;
     }
 

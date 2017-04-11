@@ -36,7 +36,7 @@ public class MeetingAttendanceServiceImpl implements MeetingAttendanceService {
 
     @Override
     public List<MeetingAttendance> getByCongregation(final Congregation congregation) {
-        return attendanceRepository.findByCongregation(congregation);
+        return attendanceRepository.findByCongregationOrderByDateAsc(congregation);
     }
 
     @Override

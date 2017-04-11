@@ -1,15 +1,15 @@
 package fr.gwombat.predicadmin.web.vo;
 
-import java.util.List;
-
 import fr.gwombat.predicadmin.support.period.Period;
 import fr.gwombat.predicadmin.web.vo.builder.MonthAttendanceVoBuilder;
+
+import java.util.List;
 
 public class MonthAttendanceVO {
 
     private final Period                    period;
     private final MeetingAttendanceVO       maxAttendance;
-    private final int                       averageAttendance;
+    private final Integer                   averageAttendance;
     private final List<MeetingAttendanceVO> attendances;
 
     public MonthAttendanceVO(MonthAttendanceVoBuilder builder) {
@@ -31,7 +31,7 @@ public class MonthAttendanceVO {
         return attendances;
     }
 
-    public int getAverageAttendance() {
+    public Integer getAverageAttendance() {
         return averageAttendance;
     }
 
