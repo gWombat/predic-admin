@@ -32,9 +32,9 @@ public class YearAttendanceServiceImpl implements YearAttendanceService {
     public YearAttendance getAttendanceForYear(final Congregation congregation, final TheocraticYear year) {
         if (year != null) {
             final Map<Period, MonthAttendance> attendances = new HashMap<>(12);
-            Period currentPeriod = year.getStart();
+            Period startPeriod = year.getStart();
             for(int i = 0; i < 12; i++){
-                currentPeriod = Period.shiftPeriode(currentPeriod, 1);
+                final Period currentPeriod = Period.shiftPeriode(startPeriod, i);
                 attendances.put(currentPeriod, new MonthAttendance(currentPeriod, null));
             }
             
