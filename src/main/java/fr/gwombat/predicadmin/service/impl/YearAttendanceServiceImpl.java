@@ -1,14 +1,5 @@
 package fr.gwombat.predicadmin.service.impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
 import fr.gwombat.predicadmin.model.Congregation;
 import fr.gwombat.predicadmin.model.MonthAttendance;
 import fr.gwombat.predicadmin.model.TheocraticYear;
@@ -16,6 +7,15 @@ import fr.gwombat.predicadmin.model.YearAttendance;
 import fr.gwombat.predicadmin.service.MonthAttendanceService;
 import fr.gwombat.predicadmin.service.YearAttendanceService;
 import fr.gwombat.predicadmin.support.period.Period;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -30,7 +30,7 @@ public class YearAttendanceServiceImpl implements YearAttendanceService {
 
     @Override
     public YearAttendance getAttendanceForYear(final Congregation congregation, final TheocraticYear year) {
-        if (year != null) {
+        if(year != null) {
             final Map<Period, MonthAttendance> attendances = new HashMap<>(12);
             Period startPeriod = year.getStart();
             /*for(int i = 0; i < 12; i++){
@@ -38,14 +38,18 @@ public class YearAttendanceServiceImpl implements YearAttendanceService {
                 attendances.put(currentPeriod, new MonthAttendance(currentPeriod, null));
             }
             */
-            final List<MonthAttendance> attendancesByMonth = monthAttendanceService.getAttendancesBetween(congregation, year.getStart(), year.getEnd());
+            final List<MonthAttendance> attendancesByMonth = monthAttendanceService.getAttendancesBetween(congregation, year
+                    .getStart(), year.getEnd());
             for(MonthAttendance attendance : attendancesByMonth)
                 if(attendance != null)
                     attendances.put(attendance.getPeriod(), attendance);
-            final List<MonthAttendance> finalAttendances = attendances.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
+            final List<MonthAttendance> finalAttendances = attendances.entrySet()
+                                                                      .stream()
+                                                                      .map(Map.Entry::getValue)
+                                                                      .collect(Collectors.toList());
             if(finalAttendances != null)
-                finalAttendances.sort((month1, month2) -> month1.getPeriod().compareTo(month2.getPeriod()));
-            
+                finalAttendances.sort(Comparator.comparing(MonthAttendance::getPeriod));
+
             return new YearAttendance(year, finalAttendances);
         }
 
