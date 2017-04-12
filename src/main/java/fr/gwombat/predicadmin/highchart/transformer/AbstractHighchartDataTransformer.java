@@ -1,6 +1,6 @@
 package fr.gwombat.predicadmin.highchart.transformer;
 
-import fr.gwombat.predicadmin.highchart.HighchartSerie;
+import fr.gwombat.predicadmin.highchart.Serie;
 
 import java.util.List;
 
@@ -11,6 +11,6 @@ import java.util.List;
  */
 public abstract class AbstractHighchartDataTransformer<T> {
 
-    public abstract List<HighchartSerie> convertToSeries(T source);
+    public abstract List<Serie> convertToSeries(T source);
 
 }

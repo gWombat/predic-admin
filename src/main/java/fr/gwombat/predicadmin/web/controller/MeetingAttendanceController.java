@@ -1,11 +1,19 @@
 package fr.gwombat.predicadmin.web.controller;
 
+import java.text.DateFormatSymbols;
+import java.util.Arrays;
+import java.util.List;
+import java.util.Locale;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -69,6 +77,27 @@ public class MeetingAttendanceController {
         return yearAttendanceVo;
     }
 
+    @ModelAttribute("monthNames")
+    public List<String> getMonthsNames() {
+        final Locale locale = LocaleContextHolder.getLocale();
+        final String[] monthNames = DateFormatSymbols.getInstance(locale).getMonths();
+        return convertArrayToList(monthNames);
+    }
+
+    @ModelAttribute("shortMonthNames")
+    public List<String> getShortMonthsNames() {
+        final Locale locale = LocaleContextHolder.getLocale();
+        final String[] monthNames = DateFormatSymbols.getInstance(locale).getShortMonths();
+        return convertArrayToList(monthNames);
+    }
+    
+    @ModelAttribute("weekdaysNames")
+    public List<String> getWeekdaysNames() {
+        final Locale locale = LocaleContextHolder.getLocale();
+        final String[] weekdaysNames = DateFormatSymbols.getInstance(locale).getWeekdays();
+        return convertArrayToList(weekdaysNames);
+    }
+
     @GetMapping
     public String attendancePage(Model model) {
         final MeetingAttendanceForm meetingAttendance = new MeetingAttendanceForm();
@@ -130,6 +159,13 @@ public class MeetingAttendanceController {
         redirectAttributes.addFlashAttribute("message", message);
 
         return "redirect:/attendance";
+    }
+
+    private static List<String> convertArrayToList(final String[] array) {
+        final List<String> values = Arrays.stream(array).collect(Collectors.toList());
+        values.removeIf(String::isEmpty);
+
+        return values.stream().map(item -> StringUtils.capitalize(item)).collect(Collectors.toList());
     }
 
 }

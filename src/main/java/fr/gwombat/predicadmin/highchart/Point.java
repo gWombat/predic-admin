@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude;
  * @since 11/04/2017
  */
 @JsonInclude(JsonInclude.Include.NON_DEFAULT)
-public class HighchartPoint {
+public class Point {
 
     private String name;
     private String color;

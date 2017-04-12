@@ -1,6 +1,7 @@
 package fr.gwombat.predicadmin.web.rest;
 
-import fr.gwombat.predicadmin.highchart.HighchartSerie;
+import fr.gwombat.predicadmin.highchart.HighchartOptions;
+import fr.gwombat.predicadmin.highchart.Serie;
 import fr.gwombat.predicadmin.highchart.transformer.GlobalAttendanceTransformer;
 import fr.gwombat.predicadmin.highchart.transformer.HighchartMonthAttendanceTransformer;
 import fr.gwombat.predicadmin.highchart.transformer.YearAverageAttendanceTransformer;
@@ -15,6 +16,7 @@ import fr.gwombat.predicadmin.web.transformer.MonthAttendanceTransformer;
 import fr.gwombat.predicadmin.web.transformer.YearAttendanceTransformer;
 import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.YearAttendanceVO;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -44,30 +46,33 @@ public class ChartAttendanceResource {
 
 
     @GetMapping("/month")
-    public List<HighchartSerie> chartResultMonthAttendance() {
+    public List<Serie> chartResultMonthAttendance() {
         final Congregation currentCongregation = congregationService.getCurrentCongregation();
         final Period currentPeriod = PeriodBuilder.init().build();
         final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(currentCongregation, currentPeriod);
         final MonthAttendanceVO monthAttendanceVo = monthAttendanceTransformer.toViewObject(monthAttendance);
-        final List<HighchartSerie> series = highchartTransformer.convertToSeries(monthAttendanceVo);
+        final List<Serie> series = highchartTransformer.convertToSeries(monthAttendanceVo);
 
         return series;
     }
 
     @GetMapping("/year")
-    public List<HighchartSerie> chartAverageAttendanceYear() {
+    //public List<Serie> chartAverageAttendanceYear() {
+    public HighchartOptions chartAverageAttendanceYear() {
         final TheocraticYear year = new TheocraticYear(2017);
         final YearAttendance yearAttendance = yearAttendanceService.getAttendanceForYear(congregationService.getCurrentCongregation(), year);
         final YearAttendanceVO yearAttendanceVo = yearAttendanceTransformer.toViewObject(yearAttendance);
-        final List<HighchartSerie> series = yearAverageAttendanceTransformer.convertToSeries(yearAttendanceVo);
+        //final List<Serie> series = yearAverageAttendanceTransformer.convertToSeries(yearAttendanceVo);
+        
+        final HighchartOptions chartOptions = yearAverageAttendanceTransformer.createChartOptions(yearAttendanceVo);
 
-        return series;
+        return chartOptions;
     }
 
     @GetMapping
-    public List<HighchartSerie> chartGlobalAttendance() {
+    public List<Serie> chartGlobalAttendance() {
         final List<MeetingAttendance> attendances = meetingAttendanceService.getByCongregation(congregationService.getCurrentCongregation());
-        final List<HighchartSerie> series = globalAttendanceTransformer.convertToSeries(attendances);
+        final List<Serie> series = globalAttendanceTransformer.convertToSeries(attendances);
 
         return series;
     }
