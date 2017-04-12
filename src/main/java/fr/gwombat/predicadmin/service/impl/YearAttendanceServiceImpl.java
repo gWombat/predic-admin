@@ -33,11 +33,11 @@ public class YearAttendanceServiceImpl implements YearAttendanceService {
         if (year != null) {
             final Map<Period, MonthAttendance> attendances = new HashMap<>(12);
             Period startPeriod = year.getStart();
-            for(int i = 0; i < 12; i++){
+            /*for(int i = 0; i < 12; i++){
                 final Period currentPeriod = Period.shiftPeriode(startPeriod, i);
                 attendances.put(currentPeriod, new MonthAttendance(currentPeriod, null));
             }
-            
+            */
             final List<MonthAttendance> attendancesByMonth = monthAttendanceService.getAttendancesBetween(congregation, year.getStart(), year.getEnd());
             for(MonthAttendance attendance : attendancesByMonth)
                 if(attendance != null)
