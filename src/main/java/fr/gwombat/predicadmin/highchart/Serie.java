@@ -33,7 +33,7 @@ public class Serie {
         this.name = name;
     }
 
-    public void addData(Point point) {
+    public void addDataPoint(Point point) {
         if (data == null)
             data = new ArrayList<>(0);
         data.add(point);

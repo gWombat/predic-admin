@@ -2,6 +2,7 @@ package fr.gwombat.predicadmin.service.impl;
 
 import java.time.LocalDate;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -50,9 +51,9 @@ public class MonthAttendanceServiceImpl implements MonthAttendanceService {
 
         final List<MeetingAttendance> attendances = attendanceService.getAttendancesBetween(congregation, startDate, endDate);
         final List<MonthAttendance> finalAttendances = buildMonthsAttendances(attendances);
-        if(finalAttendances != null && !finalAttendances.isEmpty())
-            finalAttendances.sort((MonthAttendance month1, MonthAttendance month2) -> month1.getPeriod().compareTo(month2.getPeriod()));
-        
+        if (finalAttendances != null && !finalAttendances.isEmpty())
+            finalAttendances.sort(Comparator.comparing(MonthAttendance::getPeriod));
+
         return finalAttendances;
     }
 
@@ -67,7 +68,7 @@ public class MonthAttendanceServiceImpl implements MonthAttendanceService {
                     meetings.add(meetingAttendance);
                     monthAttendance = new MonthAttendance(period, meetings);
                     mapAttendances.put(period, monthAttendance);
-                } else{
+                } else {
                     monthAttendance.addAttendance(meetingAttendance);
                 }
             }

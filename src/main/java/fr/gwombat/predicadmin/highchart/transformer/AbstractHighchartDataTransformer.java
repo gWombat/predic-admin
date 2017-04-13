@@ -1,8 +1,9 @@
 package fr.gwombat.predicadmin.highchart.transformer;
 
-import fr.gwombat.predicadmin.highchart.Serie;
-
 import java.util.List;
+
+import fr.gwombat.predicadmin.highchart.ChartConfiguration;
+import fr.gwombat.predicadmin.highchart.Serie;
 
 /**
  * Created by gWombat
@@ -11,6 +12,8 @@ import java.util.List;
  */
 public abstract class AbstractHighchartDataTransformer<T> {
 
-    public abstract List<Serie> convertToSeries(T source);
+    protected abstract List<Serie> createChartSeries(T source);
+    
+    public abstract ChartConfiguration createChartConfiguration(T source);
 
 }

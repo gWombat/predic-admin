@@ -43,6 +43,10 @@ public class Axis {
     public void setCrosshair(Crosshair crosshair) {
         this.crosshair = crosshair;
     }
+    
+    public void setCrosshair(boolean useCrosshair) {
+        crosshair = useCrosshair ? new Crosshair() : null;
+    }
 
     public Number getTickInterval() {
         return tickInterval;

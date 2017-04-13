@@ -23,7 +23,7 @@ public final class Period implements Serializable, Comparable<Period> {
         return period;
     }
 
-    public static Period shiftPeriode(Period period, int nbMonth) {
+    public static Period shiftPeriod(Period period, int nbMonth) {
         int newVal = PeriodUtils.shiftPeriod(period.yearMonth, nbMonth);
         return parseFromIntValue(newVal);
     }

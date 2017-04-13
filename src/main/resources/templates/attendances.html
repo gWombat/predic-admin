@@ -254,41 +254,12 @@
             	}
             });
 
-            options = {
-                chart: {
-                    renderTo: 'container',
-                    type: 'column'
-                },
-                title: null,
-                xAxis: {
-                    type: 'datetime',
-                    crosshair: true,
-                    title: null
-                },
-                yAxis: {
-                    title: null
-                },
-                credits: {
-                    enabled: false
-                },
-                legend: {
-                    enabled: false
-                },
-                exporting: {
-                    enabled: false
-                },
-                plotOptions: {
-                    column: {
-                        pointPadding: 0.3,
-                        groupPadding: 0.3,
-                        borderWidth: 0
-                    }
-                },
-                series: []
-            };
-            $.getJSON('/rest/chart/attendance/month', function(list){
-                options.series = list;
-                var chart = new Highcharts.Chart(options);
+            /* ****************************************************** */
+            // CHART MONTH MEETINGS ATTENDANCE
+            $.getJSON('/rest/chart/attendance/month', function(config){
+            	options = config;
+            	options.chart.renderTo = 'container';
+            	var chart = new Highcharts.Chart(options);
             });
 
             /* ****************************************************** */
@@ -298,7 +269,7 @@
             	options.chart.renderTo = 'container_year';
             	options.tooltip = {
             			formatter: function(){
-            				return Highcharts.dateFormat('%B', new Date(this.x)) + ': ' + this.y;
+            				return Highcharts.dateFormat('%B %Y', new Date(this.x)) + ': ' + this.y;
             			}
             	};
             	options.series[0].fillColor = {
@@ -311,45 +282,34 @@
                     stops: [
                         [0, 'rgba(45, 153, 220, .4)'],
                         [1, 'rgba(45, 153, 220, 0)']
-                    ]};
+                    ]
+                };
             	var chart = new Highcharts.Chart(options);
             });
 
             /* ****************************************************** */
             // CHART ALL ATTENDANCES
-            optionsGlobal = {
-                chart: {
-                    renderTo: 'container_global',
-                    type: 'line'
-                },
-                plotOptions: {
-                    series: {
-                        connectNulls: true
-                    }
-                },
-                title: null,
-                xAxis: {
-                    type: 'datetime',
-                    crosshair: true,
-                    title: null
-                },
-                yAxis: {
-                    title: null
-                },
-                credits: {
-                    enabled: false
-                },
-                legend: {
-                    enabled: false
-                },
-                exporting: {
-                    enabled: false
-                },
-                series: []
-            };
-            $.getJSON('/rest/chart/attendance', function(list){
-                optionsGlobal.series = list;
-                var chart = new Highcharts.Chart(optionsGlobal);
+            $.getJSON('/rest/chart/attendance', function(config){
+            	options = config;
+            	options.chart.renderTo = 'container_global';
+            	options.tooltip = {
+        			formatter: function(){
+        				return Highcharts.dateFormat('%a %e %b %Y', new Date(this.x)) + ': ' + this.y;
+        			}
+            	};
+            	options.series[0].fillColor = {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, 'rgba(45, 153, 220, .4)'],
+                        [1, 'rgba(45, 153, 220, 0)']
+                    ]
+                };
+            	var chart = new Highcharts.Chart(options);
             });
         });
         //]]>

@@ -1,5 +1,15 @@
 package fr.gwombat.predicadmin.service.impl;
 
+import java.util.Comparator;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
 import fr.gwombat.predicadmin.model.Congregation;
 import fr.gwombat.predicadmin.model.MonthAttendance;
 import fr.gwombat.predicadmin.model.TheocraticYear;
@@ -7,15 +17,6 @@ import fr.gwombat.predicadmin.model.YearAttendance;
 import fr.gwombat.predicadmin.service.MonthAttendanceService;
 import fr.gwombat.predicadmin.service.YearAttendanceService;
 import fr.gwombat.predicadmin.support.period.Period;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Transactional;
-
-import java.util.Comparator;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -32,17 +33,12 @@ public class YearAttendanceServiceImpl implements YearAttendanceService {
     public YearAttendance getAttendanceForYear(final Congregation congregation, final TheocraticYear year) {
         if(year != null) {
             final Map<Period, MonthAttendance> attendances = new HashMap<>(12);
-            Period startPeriod = year.getStart();
-            /*for(int i = 0; i < 12; i++){
-                final Period currentPeriod = Period.shiftPeriode(startPeriod, i);
-                attendances.put(currentPeriod, new MonthAttendance(currentPeriod, null));
-            }
-            */
             final List<MonthAttendance> attendancesByMonth = monthAttendanceService.getAttendancesBetween(congregation, year
                     .getStart(), year.getEnd());
             for(MonthAttendance attendance : attendancesByMonth)
                 if(attendance != null)
                     attendances.put(attendance.getPeriod(), attendance);
+            
             final List<MonthAttendance> finalAttendances = attendances.entrySet()
                                                                       .stream()
                                                                       .map(Map.Entry::getValue)

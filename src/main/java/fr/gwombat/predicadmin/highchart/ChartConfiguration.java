@@ -8,7 +8,7 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 @JsonInclude(value = Include.NON_DEFAULT, content = Include.NON_NULL)
-public class HighchartOptions {
+public class ChartConfiguration {
 
     private Chart       chart;
     private Title       title;
@@ -18,8 +18,14 @@ public class HighchartOptions {
     private Legend      legend;
     private Exporting   exporting;
     private List<Serie> series;
+    private PlotOptions plotOptions;
 
-    public HighchartOptions() {
+    /**
+     * Creates a new Highcharts chart configuration object. The configuration is
+     * initialized with the default chart configuration (it means that all the
+     * fields are not null and "ready-to-use").
+     */
+    public ChartConfiguration() {
         chart = new Chart();
         title = new Title();
         credits = new Credits();
@@ -28,6 +34,7 @@ public class HighchartOptions {
         series = new ArrayList<>(0);
         xAxis = new Axis();
         yAxis = new Axis();
+        plotOptions = new PlotOptions();
     }
 
     public Chart getChart() {
@@ -94,6 +101,14 @@ public class HighchartOptions {
 
     public void setSeries(List<Serie> series) {
         this.series = series;
+    }
+
+    public PlotOptions getPlotOptions() {
+        return plotOptions;
+    }
+
+    public void setPlotOptions(PlotOptions plotOptions) {
+        this.plotOptions = plotOptions;
     }
 
 }

@@ -12,7 +12,7 @@ public enum ChartType {
     BOXPLOT,
     BUBBLE,
     COLUMN,
-    COLLUMNRANGE,
+    COLUMNRANGE,
     ERRORBAR,
     FUNNEL,
     GAUGE,
