@@ -2,215 +2,208 @@
 <html xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout" xmlns:th="http://www.thymeleaf.org" layout:decorate="~{layouts/default_layout}">
 <head>
 
-<title th:text="#{page.meeting.attendance}">Meetings attendance</title>
+    <title th:text="#{page.meeting.attendance}">Meetings attendance</title>
 
 </head>
 <body>
 
-    <div class="sub-navbar sub-navbar__header-breadcrumbs" layout:fragment="content-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 sub-navbar-column">
-                    <div class="sub-navbar-header">
-                        <h3 th:text="#{page.meeting.attendance}">Meetings attendance</h3>
+<div class="sub-navbar sub-navbar__header-breadcrumbs" layout:fragment="content-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 sub-navbar-column">
+                <div class="sub-navbar-header">
+                    <h3 th:text="#{page.meeting.attendance}">Meetings attendance</h3>
+                </div>
+                <ol class="breadcrumb navbar-text navbar-right no-bg">
+                    <li class="current-parent">
+                        <a class="current-parent" th:href="@{/}">
+                            <i class="fa fa-fw fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="active" th:text="#{page.meeting.attendance}">Meetings attendance</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div layout:fragment="content">
+
+    <div th:replace="fragments/alert-message :: alert-simple"></div>
+
+    <div class="alert alert-danger fade in" role="alert" th:if="${#fields.hasErrors('${attendance.*}')}">
+            <span class="fa-stack fa-lg m-r-1 text-danger">
+                <i class="fa fa-circle-thin fa-stack-2x"></i>
+                <i class="fa fa-times fa-stack-1x"></i>
+            </span>
+        <strong th:text="#{general.error}">Well Done!</strong>
+        <ul>
+            <li th:each="error : ${#fields.errors('${attendance.*}')}" th:text="${error}">
+            </li>
+        </ul>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="panel panel-default no-bg b-a-2 b-primary">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-lg-6">
+                            <i class="fa fa-university fa-2x fa-fw text-primary"></i>
+                        </div>
+                        <div class="col-lg-6 text-right">
+                            <p class="m-b-0" th:text="#{general.average}">Capacity</p>
+                            <h1 class="f-w-300 m-t-0 m-b-0" th:text="${yearAttendance.averageAttendance}">100 </h1>
+                        </div>
                     </div>
-                    <ol class="breadcrumb navbar-text navbar-right no-bg">
-                        <li class="current-parent">
-                            <a class="current-parent" th:href="@{/}">
-                                <i class="fa fa-fw fa-home"></i>
-                            </a>
-                        </li>
-                        <li class="active" th:text="#{page.meeting.attendance}">Meetings attendance</li>
-                    </ol>
+                </div>
+
+                <!-- START Footer -->
+                <div class="panel-footer">
+                    <i class="m-r-1 fa fa-history"></i> Global
+                </div>
+                <!-- END Footer -->
+
+            </div>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="panel panel-default no-bg b-dark-gray b-a-2">
+                <div class="panel-heading">
+                    Year average attendance
+                </div>
+                <div id="container_global" class="panel-body chart">
+
                 </div>
             </div>
         </div>
     </div>
 
+    <div class="row">
+        <div class="col-lg-7">
+            <div class="panel panel-default no-bg b-dark-gray b-a-2">
+                <div class="panel-heading">
+                    Year average attendance
+                </div>
+                <div id="container_year" class="panel-body chart">
 
-
-    <div layout:fragment="content">
-        
-        <div th:replace="fragments/alert-message :: alert-simple"></div>
-        
-        <div class="alert alert-danger fade in" role="alert" th:if="${#fields.hasErrors('${attendance.*}')}">
-            <span class="fa-stack fa-lg m-r-1 text-danger">
-                <i class="fa fa-circle-thin fa-stack-2x"></i>
-                <i class="fa fa-times fa-stack-1x"></i>
-            </span>
-            <strong th:text="#{general.error}">Well Done!</strong> 
-            <ul>
-                <li th:each="error : ${#fields.errors('${attendance.*}')}" th:text="${error}">
-                </li>
-            </ul>
-        </div>
-        
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="panel panel-default no-bg b-a-2 b-primary">
-                    <div class="panel-body">
-                        <div class="row">
-                            <div class="col-lg-6">
-                                <i class="fa fa-university fa-2x fa-fw text-primary"></i>
-                            </div>
-                            <div class="col-lg-6 text-right">
-                                <p class="m-b-0" th:text="#{general.average}">Capacity</p>
-                                <h1 class="f-w-300 m-t-0 m-b-0" th:text="${yearAttendance.averageAttendance}">100 </h1>
-                            </div>
-                        </div>
-                    </div>
-    
-                    <!-- START Footer -->
-                    <div class="panel-footer">
-                        <i class="m-r-1 fa fa-history"></i> Global
-                    </div>
-                    <!-- END Footer -->
-    
                 </div>
             </div>
         </div>
+        <div class="col-lg-5">
+            <div class="panel panel-default no-bg b-dark-gray b-a-2">
+                <div class="panel-heading">
+                    Month attendance
+                </div>
+                <div id="container" class="panel-body chart">
 
-        <div class="row">
-            <div class="col-sm-12">
-                <div class="panel panel-default no-bg b-dark-gray b-a-2">
-                    <div class="panel-heading">
-                        Year average attendance
-                    </div>
-                    <div id="container_global" class="panel-body chart">
-
-                    </div>
                 </div>
             </div>
         </div>
-        
-        <div class="row">
-            <div class="col-lg-7">
-                <div class="panel panel-default no-bg b-dark-gray b-a-2">
-                    <div class="panel-heading">
-                        Year average attendance
-                    </div>
-                    <div id="container_year" class="panel-body chart">
+    </div>
 
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-5">
-                <div class="panel panel-default no-bg b-dark-gray b-a-2">
-                    <div class="panel-heading">
-                        Month attendance
-                    </div>
-                    <div id="container" class="panel-body chart">
-
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <div class="row text-center">
-            <div class="col-sm-12">
-                <p>
-                    <button type="button" class="btn btn-outline btn-info" data-toggle="modal"
+    <div class="row text-center">
+        <div class="col-sm-12">
+            <p>
+                <button type="button" class="btn btn-outline btn-info" data-toggle="modal"
                         data-target="#modal_add_attendance">
-                        <span th:text="#{general.add}">Add</span>
-                    </button>
-                </p>
-            </div>
+                    <span th:text="#{general.add}">Add</span>
+                </button>
+            </p>
         </div>
-        
-        <div class="row">
-            <div class="panel panel-default no-bg b-a-2 b-gray-dark">
-                <div class="panel-heading" th:text="#{page.meeting.attendance.result.monthly}">Monthly results</div>
-                <div class="panel-body">
-                    <div class="col-lg-3 col-md-4 col-sm-6" th:each="monthAttendance : ${yearAttendance.attendances}">
-                        <div class="panel no-bg collapsible-panel collapsed" 
-                            th:classappend="${monthAttendance.period.currentPeriod} ? 'panel-primary b-primary' : 'panel-info'">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-lg-9 col-md-9 col-sm-9">
-                                        <span th:text="${#strings.capitalize(#temporals.format(monthAttendance.period.start, 'MMMM', #locale))}"></span>
-                                    </div>
-                                    <div class="col-lg-3 col-md-3 col-sm-4 text-right">
-                                        <a href="#" class="action-panel-collapse">
-                                            <i class="fa fa-fw fa-chevron-up text-muted panel-collapsed-hidden"></i>
-                                            <i class="fa fa-fw fa-chevron-down text-muted panel-collapsed-visible"></i>
-                                        </a>
-                                    </div>
+    </div>
+
+    <div class="row">
+        <div class="panel panel-default no-bg b-a-2 b-gray-dark">
+            <div class="panel-heading" th:text="#{page.meeting.attendance.result.monthly}">Monthly results</div>
+            <div class="panel-body">
+                <div class="col-lg-3 col-md-4 col-sm-6" th:each="monthAttendance : ${yearAttendance.attendances}">
+                    <div class="panel no-bg"
+                         th:classappend="${monthAttendance.period.currentPeriod} ? 'panel-primary b-primary' : 'panel-info'">
+                        <div class="panel-heading">
+                            <div class="row">
+                                <div class="col-lg-9 col-md-9 col-sm-9">
+                                    <span th:text="${#strings.capitalize(#temporals.format(monthAttendance.period.start, 'MMMM', #locale))}"></span>
                                 </div>
                             </div>
-                            <div class="panel-body p-a-0">
-                                <ul class="list-group m-b-0">
-                                    <li class="list-group-item p-tb-px-5">
-                                        <div class="media">
-                                            <div class="media-body">
-                                                <i><span th:text="#{general.average}">Average</span></i>
-                                            </div>
-                                            <div class="media-body text-right">
-                                                <i><span th:text="${monthAttendance.averageAttendance}"></span></i>
-                                            </div>
+                        </div>
+                        <div class="panel-body p-a-0">
+                            <ul class="list-group m-b-0">
+                                <li class="list-group-item p-tb-px-5">
+                                    <div class="media">
+                                        <div class="media-body">
+                                            <i><span th:text="#{general.average}">Average</span></i>
                                         </div>
-                                    </li>
-                                    <li class="list-group-item p-tb-px-5" th:each="attendance : ${monthAttendance.attendances}">
-                                        <form th:action="@{/attendance/{id}/delete(id=${attendance.identifier})}" method="post">
-                                            <div class="media">
-                                                <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
-                                                <div class="media-body text-right">
+                                        <div class="media-body text-right">
+                                            <i><span th:text="${monthAttendance.averageAttendance}"></span></i>
+                                        </div>
+                                    </div>
+                                </li>
+                                <li class="list-group-item p-tb-px-5" th:each="attendance : ${monthAttendance.attendances}">
+                                    <form th:action="@{/attendance/{id}/delete(id=${attendance.identifier})}" method="post">
+                                        <div class="media">
+                                            <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
+                                            <div class="media-body text-right">
                                                     <span class="text-success" data-toggle="tooltip" data-placement="bottom" title="max of month" th:if="${attendance.maxOfMonth}">
                                                         <small><i class="fa fa-arrow-up"></i></small>
                                                     </span> &#160;
-                                                    <span class="text-white" th:text="${attendance.attendance}"></span> &#160;
-                                                    <button data-toggle="confirmation" type="submit" class="close font-sm"><i class="fa fa-times"></i></button>
-                                                </div>
+                                                <span class="text-white" th:text="${attendance.attendance}"></span> &#160;
+                                                <button data-toggle="confirmation" type="submit" class="close font-sm"><i class="fa fa-times"></i></button>
                                             </div>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
+                                        </div>
+                                    </form>
+                                </li>
+                            </ul>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
-        
-        <!-- START Modal Add Attendance -->
-        <div id="modal_add_attendance" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form th:action="@{/attendance}" method="post" th:object="${attendance}">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" th:text="#{page.meeting.attendance.add.entry}">Add attendance</h4>
-                        </div>
-                        <div class="modal-body">
-                            <div class="row">
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="attendanceDate" th:text="#{page.meeting.attendance.date}">Date</label>
-                                        <input type="text" class="form-control date-picker" id="attendanceDate" 
-                                            th:placeholder="#{format.date}" 
-                                            th:field="*{date}">
-                                    </div>
+    </div>
+
+    <!-- START Modal Add Attendance -->
+    <div id="modal_add_attendance" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form th:action="@{/attendance}" method="post" th:object="${attendance}">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title" th:text="#{page.meeting.attendance.add.entry}">Add attendance</h4>
+                    </div>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="attendanceDate" th:text="#{page.meeting.attendance.date}">Date</label>
+                                    <input type="text" class="form-control date-picker" id="attendanceDate"
+                                           th:placeholder="#{format.date}"
+                                           th:field="*{date}">
                                 </div>
-                                <div class="col-md-6">
-                                    <div class="form-group">
-                                        <label for="attendance" th:text="#{page.meeting.attendance.count}">Attendance</label>
-                                        <input type="text" class="form-control touchspin" id="attendance" 
+                            </div>
+                            <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="attendance" th:text="#{page.meeting.attendance.count}">Attendance</label>
+                                    <input type="text" class="form-control touchspin" id="attendance"
                                            th:field="*{attendance}">
-                                    </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{general.close}">Close</button>
-                            <button type="submit" class="btn btn-primary" th:text="#{general.continue}">Save changes</button>
-                        </div>
-                    </form>
-                </div><!-- /.modal-content -->
-            </div><!-- /.modal-dialog -->
-        </div><!-- /.modal -->
-        <!-- END Modal Add attendance -->
-        
-        <script th:inline="javascript">
-      //<![CDATA[
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-default" data-dismiss="modal" th:text="#{general.close}">Close</button>
+                        <button type="submit" class="btn btn-primary" th:text="#{general.continue}">Save changes</button>
+                    </div>
+                </form>
+            </div><!-- /.modal-content -->
+        </div><!-- /.modal-dialog -->
+    </div><!-- /.modal -->
+    <!-- END Modal Add attendance -->
+
+    <script th:inline="javascript">
+        //<![CDATA[
         $(document).ready(function () {
             var options;
             $('[data-toggle="tooltip"]').tooltip();
@@ -243,36 +236,36 @@
                 max: 1000,
                 step: 1
             });
-            
+
             /* ****************************************************** */
             // CHART GLOBAL CONFIGURATION
             Highcharts.setOptions({
-            	lang: {
-            		months: /*[[${monthNames}]]*/'',
-            		shortMonths: /*[[${shortMonthNames}]]*/'',
-            		weekdays: /*[[${weekdaysNames}]]*/''
-            	}
+                lang: {
+                    months: /*[[${monthNames}]]*/'',
+                    shortMonths: /*[[${shortMonthNames}]]*/'',
+                    weekdays: /*[[${weekdaysNames}]]*/''
+                }
             });
 
             /* ****************************************************** */
             // CHART MONTH MEETINGS ATTENDANCE
-            $.getJSON('/rest/chart/attendance/month', function(config){
-            	options = config;
-            	options.chart.renderTo = 'container';
-            	var chart = new Highcharts.Chart(options);
+            $.getJSON('/rest/chart/attendance/month', function (config) {
+                options = config;
+                options.chart.renderTo = 'container';
+                var chart = new Highcharts.Chart(options);
             });
 
             /* ****************************************************** */
             // CHART YEAR AVERAGE ATTENDANCE
-            $.getJSON('/rest/chart/attendance/year', function(config){
-            	options = config;
-            	options.chart.renderTo = 'container_year';
-            	options.tooltip = {
-            			formatter: function(){
-            				return Highcharts.dateFormat('%B %Y', new Date(this.x)) + ': ' + this.y;
-            			}
-            	};
-            	options.series[0].fillColor = {
+            $.getJSON('/rest/chart/attendance/year', function (config) {
+                options = config;
+                options.chart.renderTo = 'container_year';
+                options.tooltip = {
+                    formatter: function () {
+                        return Highcharts.dateFormat('%B %Y', new Date(this.x)) + ': ' + this.y;
+                    }
+                };
+                options.series[0].fillColor = {
                     linearGradient: {
                         x1: 0,
                         y1: 0,
@@ -284,20 +277,20 @@
                         [1, 'rgba(45, 153, 220, 0)']
                     ]
                 };
-            	var chart = new Highcharts.Chart(options);
+                var chart = new Highcharts.Chart(options);
             });
 
             /* ****************************************************** */
             // CHART ALL ATTENDANCES
-            $.getJSON('/rest/chart/attendance', function(config){
-            	options = config;
-            	options.chart.renderTo = 'container_global';
-            	options.tooltip = {
-        			formatter: function(){
-        				return Highcharts.dateFormat('%a %e %b %Y', new Date(this.x)) + ': ' + this.y;
-        			}
-            	};
-            	options.series[0].fillColor = {
+            $.getJSON('/rest/chart/attendance', function (config) {
+                options = config;
+                options.chart.renderTo = 'container_global';
+                options.tooltip = {
+                    formatter: function () {
+                        return Highcharts.dateFormat('%a %e %b %Y', new Date(this.x)) + ': ' + this.y;
+                    }
+                };
+                options.series[0].fillColor = {
                     linearGradient: {
                         x1: 0,
                         y1: 0,
@@ -309,11 +302,11 @@
                         [1, 'rgba(45, 153, 220, 0)']
                     ]
                 };
-            	var chart = new Highcharts.Chart(options);
+                var chart = new Highcharts.Chart(options);
             });
         });
         //]]>
-		</script>
-    </div>
+    </script>
+</div>
 </body>
 </html>
