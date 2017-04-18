@@ -56,8 +56,7 @@ public class ChartGlobalAttendanceCreator extends AbstractHighchartDataTransform
     public ChartConfiguration createChartConfiguration(List<MeetingAttendance> source) {
         final ChartConfiguration chartConfig = new ChartConfiguration();
 
-        chartConfig.getChart().setType(ChartType.AREASPLINE);
-        chartConfig.getChart().setBackgroundColor("transparent");
+        chartConfig.getChart().setType(ChartType.COLUMN);
 
         chartConfig.setTitle(null);
 
@@ -65,6 +64,8 @@ public class ChartGlobalAttendanceCreator extends AbstractHighchartDataTransform
         chartConfig.getxAxis().setTitle(null);
 
         chartConfig.getyAxis().setTitle(null);
+        
+        chartConfig.getPlotOptions().getColumn().setBorderWidth(0);
 
         chartConfig.getExporting().setEnabled(false);
         chartConfig.getCredits().setEnabled(false);

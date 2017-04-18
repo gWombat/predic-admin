@@ -46,60 +46,68 @@
 
     <div class="row">
         <div class="col-lg-3">
-            <div class="panel panel-default no-bg b-a-2 b-primary">
+            <div class="panel panel-default b-a-0 bg-gray-dark">
+                <div class="panel-heading" th:text="#{general.average}">Main Fundings</div>
                 <div class="panel-body">
-                    <div class="row">
-                        <div class="col-lg-6">
-                            <i class="fa fa-university fa-2x fa-fw text-primary"></i>
-                        </div>
-                        <div class="col-lg-6 text-right">
-                            <p class="m-b-0" th:text="#{general.average}">Capacity</p>
-                            <h1 class="f-w-300 m-t-0 m-b-0" th:text="${yearAttendance.averageAttendance}">100 </h1>
-                        </div>
-                    </div>
+                    <h2 class="m-t-0 f-w-300">
+                        <span th:text="${yearAttendance.averageAttendance}">$ 694.00</span>
+                    </h2>
+                    <span>2016-2017</span>
                 </div>
-
-                <!-- START Footer -->
-                <div class="panel-footer">
-                    <i class="m-r-1 fa fa-history"></i> Global
-                </div>
-                <!-- END Footer -->
-
             </div>
         </div>
     </div>
-
+    
     <div class="row">
         <div class="col-sm-12">
-            <div class="panel panel-default no-bg b-dark-gray b-a-2">
-                <div class="panel-heading">
-                    Year average attendance
-                </div>
-                <div id="container_global" class="panel-body chart">
-
-                </div>
-            </div>
-        </div>
-    </div>
-
-    <div class="row">
-        <div class="col-lg-7">
-            <div class="panel panel-default no-bg b-dark-gray b-a-2">
-                <div class="panel-heading">
-                    Year average attendance
-                </div>
-                <div id="container_year" class="panel-body chart">
-
-                </div>
-            </div>
-        </div>
-        <div class="col-lg-5">
-            <div class="panel panel-default no-bg b-dark-gray b-a-2">
-                <div class="panel-heading">
-                    Month attendance
-                </div>
-                <div id="container" class="panel-body chart">
-
+            <div class="tabbable-line">
+                <ul class="nav nav-tabs">
+                    <li role="presentation" class="active">
+                        <a href="#tab_current_month" data-toggle="tab">April 2017</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#tab_current_year" data-toggle="tab">Year 2016-2017</a>
+                    </li>
+                    <li role="presentation">
+                        <a href="#tab_global" data-toggle="tab">Global results</a>
+                    </li>
+                </ul>
+                <div class="tab-content">
+                    <div id="tab_current_month" role="tabpanel" class="tab-pane fade in active panel panel-default no-bg b-dark-gray b-a-2">
+                        <div class="panel-heading">
+                            Month attendance
+                        </div>
+                        <div class="panel-body">
+                            <p class="m-a-2">You can find here the details of the attendance for the current month (April 2017)</p>
+                            <div id="container"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="tab_current_year" role="tabpanel" class="tab-pane fade panel panel-default no-bg b-dark-gray b-a-2">
+                        <div class="panel-heading">
+                            Year average attendance
+                        </div>
+                        <div class="panel-body">
+                            <div id="container_year"></div>
+                        </div>
+                    </div>
+                    
+                    <div id="tab_global" role="tabpanel" class="tab-pane fade panel panel-default no-bg b-dark-gray b-a-2">
+                        <div class="panel-heading">
+                            Year average attendance
+                        </div>
+                        <div class="panel-body">
+                            <div class="row">
+                                <div class="col-lg-10">
+                                    <div id="container_global"></div>
+                                </div>
+                                <div class="col-lg-2">
+                                    <p class="m-b-0 m-t-1 text-gray-lighter">Total Income</p>
+                                    <h2 class="f-w-300 m-t-0">$5,878,00</h2>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -120,45 +128,54 @@
         <div class="panel panel-default no-bg b-a-2 b-gray-dark">
             <div class="panel-heading" th:text="#{page.meeting.attendance.result.monthly}">Monthly results</div>
             <div class="panel-body">
-                <div class="col-lg-3 col-md-4 col-sm-6" th:each="monthAttendance : ${yearAttendance.attendances}">
-                    <div class="panel no-bg"
-                         th:classappend="${monthAttendance.period.currentPeriod} ? 'panel-primary b-primary' : 'panel-info'">
-                        <div class="panel-heading">
-                            <div class="row">
-                                <div class="col-lg-9 col-md-9 col-sm-9">
-                                    <span th:text="${#strings.capitalize(#temporals.format(monthAttendance.period.start, 'MMMM', #locale))}"></span>
+                <div th:each="monthAttendance, status : ${yearAttendance.attendances}">
+                    <div class="col-lg-3 col-md-4 col-sm-6">
+                        <div class="panel no-bg b-a-2 collapsible-panel collapsed"
+                             th:classappend="${monthAttendance.period.currentPeriod} ? 'panel-primary b-primary' : 'panel-info'">
+                            <div class="panel-heading">
+                                <div class="row">
+                                    <div class="col-sm-9">
+                                        <span th:text="${#strings.capitalize(#temporals.format(monthAttendance.period.start, 'MMMM', #locale))}"></span>
+                                    </div>
+                                    <div class="col-sm-3 text-right">
+                                        <a href="#" class="action-panel-collapse">
+                                            <i class="fa fa-fw fa-chevron-up text-muted panel-collapsed-hidden"></i>
+                                            <i class="fa fa-fw fa-chevron-down text-muted panel-collapsed-visible"></i>
+                                        </a>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="panel-body p-a-0">
-                            <ul class="list-group m-b-0">
-                                <li class="list-group-item p-tb-px-5">
-                                    <div class="media">
-                                        <div class="media-body">
-                                            <i><span th:text="#{general.average}">Average</span></i>
-                                        </div>
-                                        <div class="media-body text-right">
-                                            <i><span th:text="${monthAttendance.averageAttendance}"></span></i>
-                                        </div>
-                                    </div>
-                                </li>
-                                <li class="list-group-item p-tb-px-5" th:each="attendance : ${monthAttendance.attendances}">
-                                    <form th:action="@{/attendance/{id}/delete(id=${attendance.identifier})}" method="post">
+                            <div class="panel-body p-a-0">
+                                <ul class="list-group m-b-0">
+                                    <li class="list-group-item p-tb-px-5">
                                         <div class="media">
-                                            <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
+                                            <div class="media-body">
+                                                <i><span th:text="#{general.average}">Average</span></i>
+                                            </div>
                                             <div class="media-body text-right">
-                                                    <span class="text-success" data-toggle="tooltip" data-placement="bottom" title="max of month" th:if="${attendance.maxOfMonth}">
-                                                        <small><i class="fa fa-arrow-up"></i></small>
-                                                    </span> &#160;
-                                                <span class="text-white" th:text="${attendance.attendance}"></span> &#160;
-                                                <button data-toggle="confirmation" type="submit" class="close font-sm"><i class="fa fa-times"></i></button>
+                                                <i><span th:text="${monthAttendance.averageAttendance}"></span></i>
                                             </div>
                                         </div>
-                                    </form>
-                                </li>
-                            </ul>
+                                    </li>
+                                    <li class="list-group-item p-tb-px-5" th:each="attendance : ${monthAttendance.attendances}">
+                                        <form th:action="@{/attendance/{id}/delete(id=${attendance.identifier})}" method="post">
+                                            <div class="media">
+                                                <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
+                                                <div class="media-body text-right">
+                                                        <span class="text-success" data-toggle="tooltip" data-placement="bottom" title="max of month" th:if="${attendance.maxOfMonth}">
+                                                            <small><i class="fa fa-arrow-up"></i></small>
+                                                        </span> &#160;
+                                                    <span class="text-white" th:text="${attendance.attendance}"></span> &#160;
+                                                    <button data-toggle="confirmation" type="submit" class="close font-sm"><i class="fa fa-times"></i></button>
+                                                </div>
+                                            </div>
+                                        </form>
+                                    </li>
+                                </ul>
+                            </div>
                         </div>
                     </div>
+                    <div th:if="${status.index % 4 == 3}" class="clearfix visible-lg-block">&nbsp;</div>
                 </div>
             </div>
         </div>
@@ -246,13 +263,17 @@
                     weekdays: /*[[${weekdaysNames}]]*/''
                 }
             });
+            
+            var chartMonth;
+            var chartYear;
+            var chartGlobal;
 
             /* ****************************************************** */
             // CHART MONTH MEETINGS ATTENDANCE
             $.getJSON('/rest/chart/attendance/month', function (config) {
                 options = config;
                 options.chart.renderTo = 'container';
-                var chart = new Highcharts.Chart(options);
+                chartMonth = new Highcharts.Chart(options);
             });
 
             /* ****************************************************** */
@@ -277,7 +298,7 @@
                         [1, 'rgba(45, 153, 220, 0)']
                     ]
                 };
-                var chart = new Highcharts.Chart(options);
+                chartYear = new Highcharts.Chart(options);
             });
 
             /* ****************************************************** */
@@ -302,7 +323,13 @@
                         [1, 'rgba(45, 153, 220, 0)']
                     ]
                 };
-                var chart = new Highcharts.Chart(options);
+                chartGlobal = new Highcharts.Chart(options);
+            });
+            
+			$('[data-toggle="tab"]').on('shown.bs.tab', function(){
+				chartMonth.reflow();
+				chartYear.reflow();
+				chartGlobal.reflow();
             });
         });
         //]]>

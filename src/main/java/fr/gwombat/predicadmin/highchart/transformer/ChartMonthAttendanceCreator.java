@@ -84,10 +84,12 @@ public class ChartMonthAttendanceCreator extends AbstractHighchartDataTransforme
         chartConfig.setTitle(null);
 
         chartConfig.getxAxis().setType(AxisCategory.DATETIME);
-        chartConfig.getxAxis().setCrosshair(true);
+        chartConfig.getxAxis().setCrosshair(false);
         chartConfig.getxAxis().setTitle(null);
 
         chartConfig.getyAxis().setTitle(null);
+        chartConfig.getyAxis().setCrosshair(false);
+        
         chartConfig.getCredits().setEnabled(false);
         chartConfig.getLegend().setEnabled(false);
         chartConfig.getExporting().setEnabled(false);
