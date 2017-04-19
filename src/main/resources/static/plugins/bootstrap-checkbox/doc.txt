@@ -1,0 +1,3 @@
+url: https://github.com/flatlogic/awesome-bootstrap-checkbox
+
+version: 
