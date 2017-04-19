@@ -47,7 +47,13 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="panel panel-default b-a-0 bg-gray-dark">
-                <div class="panel-heading b-b-primary b-b-2" >Current month average</div>
+                <div class="panel-heading b-b-primary b-b-2" >
+                    <span>Current month average</span>
+                    <span class="pull-right" th:if="${currentMonthAttendance.memorialAttendance} != null"
+                        data-toggle="tooltip" data-placement="bottom" title="Memorial">
+                        <i class="fa fa-star text-danger"></i>
+                    </span>
+                </div>
                 <div class="panel-body">
                     <h2 class="m-t-0 f-w-300">
                         <span th:text="${currentMonthAttendance.averageAttendance}">$ 694.00</span>
@@ -140,6 +146,20 @@
                                     <p class="m-t-0 m-b-1 text-gray-light">
                                         <span th:text="${#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
                                     </p>
+                                    
+                                    <div th:if="${currentMonthAttendance.memorialAttendance} != null">
+                                        <h4 class="f-w-300 m-t-1 m-b-0 text-gray-lighter">
+                                            <span th:text="${currentMonthAttendance.memorialAttendance.attendance}">50</span>
+                                            <small><i class="fa fa-star text-danger"></i></small>
+                                        </h4>
+                                        <p class="m-b-0 m-t-0 text-gray-lighter">
+                                            <span >Memorial</span>
+                                        </p>
+                                        <p class="m-t-0 m-b-1 text-gray-light">
+                                            <span th:text="${#temporals.format(currentMonthAttendance.memorialAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
+                                        </p>
+                                    </div>
+                                    
                                     <button type="button" class="btn m-t-3 btn-default" data-toggle="modal"
                                             data-target="#modal_add_attendance">
                                         <span th:text="#{general.add}">Add</span>&nbsp;
@@ -230,9 +250,15 @@
                                             <div class="media">
                                                 <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
                                                 <div class="media-body text-right">
-                                                        <span class="text-success" data-toggle="tooltip" data-placement="bottom" title="max of month" th:if="${attendance.maxOfMonth}">
-                                                            <small><i class="fa fa-arrow-up"></i></small>
-                                                        </span> &#160;
+                                                    <span class="text-danger" data-toggle="tooltip" data-placement="bottom" title="memorial" th:if="${attendance.memorial}">
+                                                        <small><i class="fa fa-star"></i></small>
+                                                    </span>
+                                                    <span class="text-warning" data-toggle="tooltip" data-placement="bottom" title="special week" th:if="${attendance.specialWeek}">
+                                                        <small><i class="fa fa-star"></i></small>
+                                                    </span>
+                                                    <span class="text-success" data-toggle="tooltip" data-placement="bottom" title="max of month" th:if="${attendance.maxOfMonth}">
+                                                        <small><i class="fa fa-arrow-up"></i></small>
+                                                    </span> &#160;
                                                     <span class="text-white" th:text="${attendance.attendance}"></span> &#160;
                                                     <button data-toggle="confirmation" type="submit" class="close font-sm"><i class="fa fa-times"></i></button>
                                                 </div>
@@ -253,7 +279,7 @@
     <div id="modal_add_attendance" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
-                <form th:action="@{/attendance}" method="post" th:object="${attendance}">
+                <form role="form" th:action="@{/attendance}" method="post" th:object="${attendance}">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title" th:text="#{page.meeting.attendance.add.entry}">Add attendance</h4>
@@ -273,6 +299,20 @@
                                     <label for="attendance" th:text="#{page.meeting.attendance.count}">Attendance</label>
                                     <input type="text" class="form-control touchspin" id="attendance"
                                            th:field="*{attendance}">
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <div class="col-md-6">
+                                <div id="box-memorial" class="checkbox checkbox-danger">
+                                    <input id="memorial" type="checkbox" th:field="*{memorial}"/>
+                                    <label for="memorial" >Memorial</label>
+                                </div>
+                            </div>
+                            <div class="col-md-6">
+                                <div id="box-special-week" class="checkbox checkbox-warning">
+                                    <input id="specialWeek" type="checkbox" th:field="*{specialWeek}"/>
+                                    <label for="specialWeek" >Special week</label>
                                 </div>
                             </div>
                         </div>
@@ -321,6 +361,9 @@
                 max: 1000,
                 step: 1
             });
+            
+            $('#box-memorial input[type="hidden"]').prependTo('#box-memorial');
+            $('#box-special-week input[type="hidden"]').prependTo('#box-special-week');
 
             /* ****************************************************** */
             // CHART GLOBAL CONFIGURATION

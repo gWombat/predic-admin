@@ -1,13 +1,15 @@
 package fr.gwombat.predicadmin.web.vo.builder;
 
-import fr.gwombat.predicadmin.web.vo.MeetingAttendanceVO;
-
 import java.time.LocalDate;
+
+import fr.gwombat.predicadmin.web.vo.MeetingAttendanceVO;
 
 public class MeetingAttendanceVoBuilder {
 
     private LocalDate date;
     private int       attendance;
+    private Boolean   memorial;
+    private Boolean   specialWeek;
     private String    identifier;
 
     private MeetingAttendanceVoBuilder() {
@@ -33,6 +35,16 @@ public class MeetingAttendanceVoBuilder {
         return this;
     }
 
+    public MeetingAttendanceVoBuilder memorial(final Boolean memorial) {
+        this.memorial = memorial;
+        return this;
+    }
+
+    public MeetingAttendanceVoBuilder specialWeek(final Boolean specialWeek) {
+        this.specialWeek = specialWeek;
+        return this;
+    }
+
     public MeetingAttendanceVO build() {
         return new MeetingAttendanceVO(this);
     }
@@ -47,5 +59,13 @@ public class MeetingAttendanceVoBuilder {
 
     public String getIdentifier() {
         return identifier;
+    }
+
+    public Boolean getMemorial() {
+        return memorial;
+    }
+
+    public Boolean getSpecialWeek() {
+        return specialWeek;
     }
 }

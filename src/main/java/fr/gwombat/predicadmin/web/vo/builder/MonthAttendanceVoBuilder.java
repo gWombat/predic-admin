@@ -17,6 +17,7 @@ public class MonthAttendanceVoBuilder {
     private Period                    period;
     private MeetingAttendanceVO       maxAttendance;
     private MeetingAttendanceVO       minAttendance;
+    private MeetingAttendanceVO       memorialAttendance;
     private Integer                   averageAttendance;
     private List<MeetingAttendanceVO> attendances;
 
@@ -34,8 +35,11 @@ public class MonthAttendanceVoBuilder {
     }
 
     public MonthAttendanceVoBuilder addAttendance(MeetingAttendanceVO attendance) {
-        if (attendance != null)
+        if (attendance != null){
             attendances.add(attendance);
+            if(attendance.isMemorial())
+                memorialAttendance = attendance;
+        }
         return this;
     }
 
@@ -48,6 +52,11 @@ public class MonthAttendanceVoBuilder {
 
     public MonthAttendanceVoBuilder minAttendance(MeetingAttendanceVO minAttendance) {
         this.minAttendance = minAttendance;
+        return this;
+    }
+
+    public MonthAttendanceVoBuilder memorialAttendance(MeetingAttendanceVO memorialAttendance) {
+        this.memorialAttendance = memorialAttendance;
         return this;
     }
 
@@ -78,5 +87,9 @@ public class MonthAttendanceVoBuilder {
 
     public MeetingAttendanceVO getMinAttendance() {
         return minAttendance;
+    }
+
+    public MeetingAttendanceVO getMemorialAttendance() {
+        return memorialAttendance;
     }
 }

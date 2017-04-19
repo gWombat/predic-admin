@@ -31,6 +31,9 @@ public class ChartMonthAttendanceCreator extends AbstractHighchartDataTransforme
 
     private MonthAttendanceTransformer monthAttendanceTransformer;
     private MessageSource              messageSource;
+    
+    private static final String COLOR_DANGER = "#cb3e4b";
+    private static final String COLOR_WARNING = "#e66c40";
 
     protected List<Serie> createChartSeries(final MonthAttendance monthAttendance) {
         final List<Serie> series = new ArrayList<>(0);
@@ -64,8 +67,13 @@ public class ChartMonthAttendanceCreator extends AbstractHighchartDataTransforme
                 }
 
                 point.setX(utcDateTime.toInstant().toEpochMilli());
-                if (attendanceToAdd != null)
+                if (attendanceToAdd != null){
                     point.setY(attendanceToAdd.getAttendance());
+                    if(attendanceToAdd.isSpecialWeek())
+                        point.setColor(COLOR_WARNING);
+                    if(attendanceToAdd.isMemorial())
+                        point.setColor(COLOR_DANGER);
+                }
 
                 points.add(point);
             }

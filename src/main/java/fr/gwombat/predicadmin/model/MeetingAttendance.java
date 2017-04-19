@@ -18,13 +18,7 @@ import javax.validation.constraints.NotNull;
 import fr.gwombat.predicadmin.support.validation.PastDate;
 
 @Entity
-@Table(name = "meetings_attendances",
-uniqueConstraints = {
-        @UniqueConstraint(columnNames = {
-                "congregation_id",
-                "date"
-        })
-})
+@Table(name = "meetings_attendances", uniqueConstraints = { @UniqueConstraint(columnNames = { "congregation_id", "date" }) })
 public class MeetingAttendance extends AuditableEntity implements Comparable<MeetingAttendance> {
 
     private static final long serialVersionUID = 1L;
@@ -47,12 +41,18 @@ public class MeetingAttendance extends AuditableEntity implements Comparable<Mee
     @Min(0)
     @Column(name = "attendance", nullable = false)
     private int               attendance;
-    
+
+    @Column(name = "memorial")
+    private Boolean           memorial;
+
+    @Column(name = "special_week")
+    private Boolean           specialWeek;
+
     @Override
     public int compareTo(MeetingAttendance other) {
         return date.compareTo(other.date);
     }
-    
+
     @Override
     public String toString() {
         return String.format("%s - %s (%s)", congregation, date, attendance);
@@ -89,6 +89,21 @@ public class MeetingAttendance extends AuditableEntity implements Comparable<Mee
     public void setAttendance(int attendance) {
         this.attendance = attendance;
     }
-    
+
+    public Boolean getMemorial() {
+        return memorial;
+    }
+
+    public void setMemorial(Boolean memorial) {
+        this.memorial = memorial;
+    }
+
+    public Boolean getSpecialWeek() {
+        return specialWeek;
+    }
+
+    public void setSpecialWeek(Boolean specialWeek) {
+        this.specialWeek = specialWeek;
+    }
 
 }

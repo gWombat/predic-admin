@@ -27,6 +27,8 @@ public class MeetingAttendanceTransformer extends AbstractEntityTransformer<Meet
 
                 existingEntity.setAttendance(formObject.getAttendance());
                 existingEntity.setDate(formatDate(formObject.getDate()));
+                existingEntity.setMemorial(formObject.getMemorial());
+                existingEntity.setSpecialWeek(formObject.getSpecialWeek());
             }
         }
 
@@ -40,6 +42,8 @@ public class MeetingAttendanceTransformer extends AbstractEntityTransformer<Meet
             attendanceForm.setAttendance(entity.getAttendance());
             attendanceForm.setDate(super.formatDate(entity.getDate()));
             attendanceForm.setIdentifier(entity.getIdentifier());
+            attendanceForm.setMemorial(entity.getMemorial());
+            attendanceForm.setSpecialWeek(entity.getSpecialWeek());
         }
         return null;
     }
@@ -50,7 +54,9 @@ public class MeetingAttendanceTransformer extends AbstractEntityTransformer<Meet
         if(entity != null)
             builder = builder.attendance(entity.getAttendance())
                 .date(entity.getDate())
-                .identifier(entity.getIdentifier());
+                .identifier(entity.getIdentifier())
+                .memorial(entity.getMemorial())
+                .specialWeek(entity.getSpecialWeek());
 
         return builder.build();
     }

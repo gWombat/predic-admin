@@ -9,12 +9,14 @@ public class MeetingAttendanceForm {
     private String  date;
     @Min(0)
     private Integer attendance;
+    private Boolean memorial;
+    private Boolean specialWeek;
     private String  identifier;
 
     public boolean isAllFieldsNull() {
-        if(!StringUtils.isBlank(date))
+        if (!StringUtils.isBlank(date))
             return false;
-        if(attendance != null)
+        if (attendance != null)
             return false;
         return true;
     }
@@ -41,5 +43,21 @@ public class MeetingAttendanceForm {
 
     public void setIdentifier(String identifier) {
         this.identifier = identifier;
+    }
+
+    public Boolean getMemorial() {
+        return memorial;
+    }
+
+    public void setMemorial(Boolean memorial) {
+        this.memorial = memorial;
+    }
+
+    public Boolean getSpecialWeek() {
+        return specialWeek;
+    }
+
+    public void setSpecialWeek(Boolean specialWeek) {
+        this.specialWeek = specialWeek;
     }
 }
