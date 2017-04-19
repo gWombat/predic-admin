@@ -28,19 +28,24 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.gwombat.predicadmin.model.MeetingAttendance;
+import fr.gwombat.predicadmin.model.MonthAttendance;
 import fr.gwombat.predicadmin.model.TheocraticYear;
 import fr.gwombat.predicadmin.model.YearAttendance;
 import fr.gwombat.predicadmin.service.CongregationService;
 import fr.gwombat.predicadmin.service.MeetingAttendanceService;
 import fr.gwombat.predicadmin.service.MonthAttendanceService;
 import fr.gwombat.predicadmin.service.YearAttendanceService;
+import fr.gwombat.predicadmin.support.period.Period;
+import fr.gwombat.predicadmin.support.period.PeriodBuilder;
 import fr.gwombat.predicadmin.web.alert.AlertMessage;
 import fr.gwombat.predicadmin.web.alert.DangerAlertMessage;
 import fr.gwombat.predicadmin.web.alert.SuccessAlertMessage;
 import fr.gwombat.predicadmin.web.form.MeetingAttendanceForm;
 import fr.gwombat.predicadmin.web.transformer.MeetingAttendanceTransformer;
+import fr.gwombat.predicadmin.web.transformer.MonthAttendanceTransformer;
 import fr.gwombat.predicadmin.web.transformer.YearAttendanceTransformer;
 import fr.gwombat.predicadmin.web.validator.MeetingAttendanceValidator;
+import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.YearAttendanceVO;
 
 @Controller
@@ -51,10 +56,12 @@ public class MeetingAttendanceController {
 
     private final MeetingAttendanceService     meetingAttendanceService;
     private final YearAttendanceService        yearAttendanceService;
+    private MonthAttendanceService             monthAttendanceService;
     private final CongregationService          congregationService;
 
     private final MeetingAttendanceTransformer meetingAttendanceTransformer;
     private final YearAttendanceTransformer    yearAttendanceTransformer;
+    private MonthAttendanceTransformer         monthAttendanceTransformer;
 
     private final MessageSource                messageSource;
 
@@ -77,6 +84,14 @@ public class MeetingAttendanceController {
         return yearAttendanceVo;
     }
 
+    @ModelAttribute("currentMonthAttendance")
+    public MonthAttendanceVO getCurrentMonthAttendance() {
+        final Period currentPeriod = PeriodBuilder.init().build();
+        final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(congregationService.getCurrentCongregation(), currentPeriod);
+        final MonthAttendanceVO attendanceVO = monthAttendanceTransformer.toViewObject(monthAttendance);
+        return attendanceVO;
+    }
+
     @ModelAttribute("monthNames")
     public List<String> getMonthsNames() {
         final Locale locale = LocaleContextHolder.getLocale();
@@ -90,7 +105,7 @@ public class MeetingAttendanceController {
         final String[] monthNames = DateFormatSymbols.getInstance(locale).getShortMonths();
         return convertArrayToList(monthNames);
     }
-    
+
     @ModelAttribute("weekdaysNames")
     public List<String> getWeekdaysNames() {
         final Locale locale = LocaleContextHolder.getLocale();
@@ -166,6 +181,16 @@ public class MeetingAttendanceController {
         values.removeIf(String::isEmpty);
 
         return values.stream().map(item -> StringUtils.capitalize(item)).collect(Collectors.toList());
+    }
+
+    @Autowired
+    public void setMonthAttendanceService(MonthAttendanceService monthAttendanceService) {
+        this.monthAttendanceService = monthAttendanceService;
+    }
+
+    @Autowired
+    public void setMonthAttendanceTransformer(MonthAttendanceTransformer monthAttendanceTransformer) {
+        this.monthAttendanceTransformer = monthAttendanceTransformer;
     }
 
 }

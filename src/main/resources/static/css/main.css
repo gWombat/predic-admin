@@ -54,3 +54,7 @@
 .chart {
 	height: 400px;
 }
+
+.inline-block {
+	display: inline-block !important;
+}

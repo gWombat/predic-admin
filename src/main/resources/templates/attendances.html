@@ -47,12 +47,40 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="panel panel-default b-a-0 bg-gray-dark">
-                <div class="panel-heading" th:text="#{general.average}">Main Fundings</div>
+                <div class="panel-heading b-b-primary b-b-2" >Current month average</div>
+                <div class="panel-body">
+                    <h2 class="m-t-0 f-w-300">
+                        <span th:text="${currentMonthAttendance.averageAttendance}">$ 694.00</span>
+                    </h2>
+                    <span class="pull-left" th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">April 2017</span>
+                    <span class="pull-right">
+                        <i class="fa fa-caret-up text-success"></i>
+                        <span th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
+                        <i class="fa fa-caret-down text-danger"></i>
+                        <span th:text="${currentMonthAttendance.minAttendance.attendance}">45</span>
+                    </span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="panel panel-default b-a-0 bg-gray-dark">
+                <div class="panel-heading b-b-info b-b-2" >Current year average</div>
                 <div class="panel-body">
                     <h2 class="m-t-0 f-w-300">
                         <span th:text="${yearAttendance.averageAttendance}">$ 694.00</span>
                     </h2>
-                    <span>2016-2017</span>
+                    <span th:text="${yearAttendance}">2016-2017</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="panel panel-default b-a-0 bg-gray-dark">
+                <div class="panel-heading b-b-warning b-b-2" >Global average</div>
+                <div class="panel-body">
+                    <h2 class="m-t-0 f-w-300">
+                        <span>75</span>
+                    </h2>
+                    <span>Global</span>
                 </div>
             </div>
         </div>
@@ -63,7 +91,8 @@
             <div class="tabbable-line">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active">
-                        <a href="#tab_current_month" data-toggle="tab">April 2017</a>
+                        <a href="#tab_current_month" data-toggle="tab"
+                            th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">April 2017</a>
                     </li>
                     <li role="presentation">
                         <a href="#tab_current_year" data-toggle="tab">Year 2016-2017</a>
@@ -73,15 +102,54 @@
                     </li>
                 </ul>
                 <div class="tab-content">
+                    <!--  START TAB CHART MONTH -->
                     <div id="tab_current_month" role="tabpanel" class="tab-pane fade in active panel panel-default no-bg b-dark-gray b-a-2">
-                        <div class="panel-heading">
+                        <div class="panel-heading" th:text="#{page.meeting.attendance.month}">
                             Month attendance
                         </div>
                         <div class="panel-body">
                             <p class="m-a-2">You can find here the details of the attendance for the current month (April 2017)</p>
-                            <div id="container"></div>
+                            <div class="row">
+                                <div class="col-lg-10 col-md-9 col-sm-8">
+                                    <div id="container"></div>
+                                </div>
+                                <div class="col-lg-2 col-md-3 col-sm-4">
+                                    <h3 class="f-w-300 m-t-0" th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">April 2017</h3>
+                                    
+                                    <h3 class="f-w-300 m-t-0 m-b-0 text-primary" th:text="${currentMonthAttendance.averageAttendance}">70</h3>
+                                    <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{page.meeting.attendance.average}">Average attendance</p>
+                                    
+                                    <h3 class="f-w-300 m-t-1 m-b-0">
+                                        <span th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
+                                        <small><i class="fa fa-caret-up text-success"></i></small>
+                                    </h3>
+                                    <p class="m-b-0 m-t-0 text-gray-lighter">
+                                        <span th:text="#{page.meeting.attendance.max}">Max attendance</span>
+                                    </p>
+                                    <p class="m-t-0 m-b-1 text-gray-light">
+                                        <span th:text="${#temporals.format(currentMonthAttendance.maxAttendance.date, #messages.msg('format.date.xl'), #locale)}">Sunday, April 28th</span>
+                                    </p>
+                                    
+                                    <h3 class="f-w-300 m-t-1 m-b-0">
+                                        <span th:text="${currentMonthAttendance.minAttendance.attendance}">50</span>
+                                        <small><i class="fa fa-caret-down text-danger"></i></small>
+                                    </h3>
+                                    <p class="m-b-0 m-t-0 text-gray-lighter">
+                                        <span th:text="#{page.meeting.attendance.min}">Min attendance</span>
+                                    </p>
+                                    <p class="m-t-0 m-b-1 text-gray-light">
+                                        <span th:text="${#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
+                                    </p>
+                                    <button type="button" class="btn m-t-3 btn-default" data-toggle="modal"
+                                            data-target="#modal_add_attendance">
+                                        <span th:text="#{general.add}">Add</span>&nbsp;
+                                        <i class="fa fa-plus circle text-gray"></i>
+                                    </button>
+                                </div>
+                            </div>
                         </div>
                     </div>
+                    <!--  END TAB CHART MONTH -->
                     
                     <div id="tab_current_year" role="tabpanel" class="tab-pane fade panel panel-default no-bg b-dark-gray b-a-2">
                         <div class="panel-heading">
@@ -113,10 +181,10 @@
         </div>
     </div>
 
-    <div class="row text-center">
+    <div class="row text-center m-t-1 m-b-1">
         <div class="col-sm-12">
             <p>
-                <button type="button" class="btn btn-outline btn-info" data-toggle="modal"
+                <button type="button" class="btn btn-default" data-toggle="modal"
                         data-target="#modal_add_attendance">
                     <span th:text="#{general.add}">Add</span>
                 </button>

@@ -40,6 +40,9 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
 
             final MeetingAttendanceVO maxAttendance = evaluateMaxAttendance(builder.getAttendances());
             builder = builder.maxAttendance(maxAttendance);
+            
+            final MeetingAttendanceVO minAttendance = evaluateMinAttendance(builder.getAttendances());
+            builder = builder.minAttendance(minAttendance);
 
             attendanceVo = builder.build();
 
@@ -51,6 +54,16 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
         MeetingAttendanceVO maxAttendance = null;
         if (attendances != null && !attendances.isEmpty()) {
             attendances.sort((o1, o2) -> o2.getAttendance() - o1.getAttendance());
+            maxAttendance = attendances.get(0);
+            attendances.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
+        }
+        return maxAttendance;
+    }
+    
+    private static MeetingAttendanceVO evaluateMinAttendance(final List<MeetingAttendanceVO> attendances) {
+        MeetingAttendanceVO maxAttendance = null;
+        if (attendances != null && !attendances.isEmpty()) {
+            attendances.sort((o1, o2) -> o1.getAttendance() - o2.getAttendance());
             maxAttendance = attendances.get(0);
             attendances.sort((o1, o2) -> o1.getDate().compareTo(o2.getDate()));
         }
