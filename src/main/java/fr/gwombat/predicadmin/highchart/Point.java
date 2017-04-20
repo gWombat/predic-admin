@@ -1,13 +1,14 @@
 package fr.gwombat.predicadmin.highchart;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Created by gWombat.
  *
  * @since 11/04/2017
  */
-@JsonInclude(JsonInclude.Include.NON_DEFAULT)
+@JsonInclude(value = Include.NON_DEFAULT, content = Include.NON_NULL)
 public class Point {
 
     private String name;

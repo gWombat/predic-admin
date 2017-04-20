@@ -60,10 +60,10 @@ public class ChartGlobalAttendanceCreator extends AbstractHighchartDataTransform
 
         chartConfig.setTitle(null);
 
-        chartConfig.getxAxis().setType(AxisCategory.DATETIME);
-        chartConfig.getxAxis().setTitle(null);
+        chartConfig.getXaxis().setType(AxisCategory.DATETIME);
+        chartConfig.getXaxis().setTitle(null);
 
-        chartConfig.getyAxis().setTitle(null);
+        chartConfig.getYaxis().setTitle(null);
         
         chartConfig.getPlotOptions().getColumn().setBorderWidth(0);
 

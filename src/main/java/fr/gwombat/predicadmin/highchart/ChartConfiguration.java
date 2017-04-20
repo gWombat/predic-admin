@@ -54,20 +54,20 @@ public class ChartConfiguration {
     }
 
     @JsonProperty("xAxis")
-    public Axis getxAxis() {
+    public Axis getXaxis() {
         return xAxis;
     }
 
-    public void setxAxis(Axis xAxis) {
+    public void setXaxis(Axis xAxis) {
         this.xAxis = xAxis;
     }
 
     @JsonProperty("yAxis")
-    public Axis getyAxis() {
+    public Axis getYaxis() {
         return yAxis;
     }
 
-    public void setyAxis(Axis yAxis) {
+    public void setYaxis(Axis yAxis) {
         this.yAxis = yAxis;
     }
 

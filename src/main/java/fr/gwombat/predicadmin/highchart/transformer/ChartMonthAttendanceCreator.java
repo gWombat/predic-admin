@@ -17,6 +17,7 @@ import fr.gwombat.predicadmin.highchart.Serie;
 import fr.gwombat.predicadmin.highchart.enums.AxisCategory;
 import fr.gwombat.predicadmin.highchart.enums.ChartType;
 import fr.gwombat.predicadmin.model.MonthAttendance;
+import fr.gwombat.predicadmin.web.design.Color;
 import fr.gwombat.predicadmin.web.transformer.MonthAttendanceTransformer;
 import fr.gwombat.predicadmin.web.vo.MeetingAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
@@ -29,75 +30,86 @@ import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
 @Component
 public class ChartMonthAttendanceCreator extends AbstractHighchartDataTransformer<MonthAttendance> {
 
+    private static final ZoneId        UTC_ZONE = ZoneId.of("UTC");
+
     private MonthAttendanceTransformer monthAttendanceTransformer;
     private MessageSource              messageSource;
-    
-    private static final String COLOR_DANGER = "#cb3e4b";
-    private static final String COLOR_WARNING = "#e66c40";
 
     protected List<Serie> createChartSeries(final MonthAttendance monthAttendance) {
         final List<Serie> series = new ArrayList<>(0);
 
-        if (monthAttendance != null) {
-            MonthAttendanceVO monthAttendanceVo = monthAttendanceTransformer.toViewObject(monthAttendance);
+        if (monthAttendance == null)
+            return series;
+            
+        final MonthAttendanceVO monthAttendanceVo = monthAttendanceTransformer.toViewObject(monthAttendance);
 
-            final Serie serie1 = new Serie();
-            final String serieName = messageSource.getMessage("chart.attendance", null, LocaleContextHolder.getLocale());
-            serie1.setName(serieName);
+        final Serie serie1 = new Serie();
+        final String serieName = messageSource.getMessage("chart.attendance", null, LocaleContextHolder.getLocale());
+        serie1.setName(serieName);
 
-            final int year = monthAttendanceVo.getPeriod().getYear();
-            final int month = monthAttendanceVo.getPeriod().getMonth();
-            final int nbDaysInMonth = monthAttendanceVo.getPeriod().getEnd().getDayOfMonth();
-            final List<Point> points = new ArrayList<>(0);
-            final ZoneId utcZone = ZoneId.of("UTC");
+        final int year = monthAttendanceVo.getPeriod().getYear();
+        final int month = monthAttendanceVo.getPeriod().getMonth();
+        final int nbDaysInMonth = monthAttendanceVo.getPeriod().getEnd().getDayOfMonth();
+        final List<Point> points = new ArrayList<>(0);
 
-            int lastIndexFound = 0;
-            for (int i = 0; i < nbDaysInMonth; i++) {
-                final LocalDate date = LocalDate.of(year, month, i + 1);
-                final Point point = new Point();
-                final ZonedDateTime utcDateTime = ZonedDateTime.of(date.atStartOfDay(), utcZone);
-                MeetingAttendanceVO attendanceToAdd = null;
+        int lastIndexFound = 0;
+        for (int i = 0; i < nbDaysInMonth; i++) {
+            final LocalDate date = LocalDate.of(year, month, i + 1);
+            final Point point = new Point();
+            final ZonedDateTime utcDateTime = ZonedDateTime.of(date.atStartOfDay(), UTC_ZONE);
+            MeetingAttendanceVO attendanceToAdd = null;
 
-                for (int j = lastIndexFound; j < monthAttendanceVo.getAttendances().size(); j++) {
-                    if (monthAttendanceVo.getAttendances().get(j).getDate().equals(date)) {
-                        attendanceToAdd = monthAttendanceVo.getAttendances().get(j);
-                        lastIndexFound = j;
-                        break;
-                    }
+            for (int j = lastIndexFound; j < monthAttendanceVo.getAttendances().size(); j++) {
+                if (monthAttendanceVo.getAttendances().get(j).getDate().equals(date)) {
+                    attendanceToAdd = monthAttendanceVo.getAttendances().get(j);
+                    lastIndexFound = j;
+                    break;
                 }
-
-                point.setX(utcDateTime.toInstant().toEpochMilli());
-                if (attendanceToAdd != null){
-                    point.setY(attendanceToAdd.getAttendance());
-                    if(attendanceToAdd.isSpecialWeek())
-                        point.setColor(COLOR_WARNING);
-                    if(attendanceToAdd.isMemorial())
-                        point.setColor(COLOR_DANGER);
-                }
-
-                points.add(point);
             }
-            serie1.setData(points);
-            series.add(serie1);
+
+            Integer attendance = null;
+            String pointColor = null;
+            if (attendanceToAdd != null) {
+                attendance = attendanceToAdd.getAttendance();
+                pointColor = definePointColor(attendanceToAdd);
+            }
+
+            point.setX(utcDateTime.toInstant().toEpochMilli());
+            point.setY(attendance);
+            point.setColor(pointColor);
+
+            points.add(point);
         }
+        serie1.setData(points);
+        series.add(serie1);
 
         return series;
     }
 
+    private String definePointColor(final MeetingAttendanceVO attendance) {
+        if (attendance != null) {
+            if (attendance.isMemorial())
+                return Color.MEMORIAL.getHexaColor();
+            if (attendance.isSpecialWeek())
+                return Color.SPECIAL_WEEK.getHexaColor();
+        }
+        return null;
+    }
+
     @Override
-    public ChartConfiguration createChartConfiguration(MonthAttendance monthAttendanceVo) {
+    public ChartConfiguration createChartConfiguration(MonthAttendance monthAttendance) {
         final ChartConfiguration chartConfig = new ChartConfiguration();
         chartConfig.getChart().setType(ChartType.COLUMN);
 
         chartConfig.setTitle(null);
 
-        chartConfig.getxAxis().setType(AxisCategory.DATETIME);
-        chartConfig.getxAxis().setCrosshair(false);
-        chartConfig.getxAxis().setTitle(null);
+        chartConfig.getXaxis().setType(AxisCategory.DATETIME);
+        chartConfig.getXaxis().setCrosshair(false);
+        chartConfig.getXaxis().setTitle(null);
 
-        chartConfig.getyAxis().setTitle(null);
-        chartConfig.getyAxis().setCrosshair(false);
-        
+        chartConfig.getYaxis().setTitle(null);
+        chartConfig.getYaxis().setCrosshair(false);
+
         chartConfig.getCredits().setEnabled(false);
         chartConfig.getLegend().setEnabled(false);
         chartConfig.getExporting().setEnabled(false);
@@ -106,7 +118,7 @@ public class ChartMonthAttendanceCreator extends AbstractHighchartDataTransforme
         chartConfig.getPlotOptions().getColumn().setGroupPadding(0.2);
         chartConfig.getPlotOptions().getColumn().setPointPadding(0.2);
 
-        chartConfig.setSeries(createChartSeries(monthAttendanceVo));
+        chartConfig.setSeries(createChartSeries(monthAttendance));
 
         return chartConfig;
     }

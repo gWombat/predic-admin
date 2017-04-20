@@ -94,13 +94,13 @@ public class ChartYearAverageAttendanceCreator extends AbstractHighchartDataTran
         crosshair.setWidth(3);
         crosshair.setColor("#383838");
 
-        chartConfig.getxAxis().setType(AxisCategory.DATETIME);
-        chartConfig.getxAxis().setTitle(null);
-        chartConfig.getxAxis().setCrosshair(crosshair);
-        chartConfig.getxAxis().getDateTimeLabelFormats().setMonth("%b");
+        chartConfig.getXaxis().setType(AxisCategory.DATETIME);
+        chartConfig.getXaxis().setTitle(null);
+        chartConfig.getXaxis().setCrosshair(crosshair);
+        chartConfig.getXaxis().getDateTimeLabelFormats().setMonth("%b");
 
-        chartConfig.getyAxis().setCrosshair(crosshair);
-        chartConfig.getyAxis().setTitle(null);
+        chartConfig.getYaxis().setCrosshair(crosshair);
+        chartConfig.getYaxis().setTitle(null);
 
         chartConfig.getExporting().setEnabled(false);
         chartConfig.getCredits().setEnabled(false);

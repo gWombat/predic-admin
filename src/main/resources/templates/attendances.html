@@ -50,7 +50,7 @@
                 <div class="panel-heading b-b-primary b-b-2" >
                     <span>Current month average</span>
                     <span class="pull-right" th:if="${currentMonthAttendance.memorialAttendance} != null"
-                        data-toggle="tooltip" data-placement="bottom" title="Memorial">
+                        data-toggle="tooltip" data-placement="bottom" th:title="#{general.memorial}">
                         <i class="fa fa-star text-danger"></i>
                     </span>
                 </div>
@@ -153,7 +153,7 @@
                                             <small><i class="fa fa-star text-danger"></i></small>
                                         </h4>
                                         <p class="m-b-0 m-t-0 text-gray-lighter">
-                                            <span >Memorial</span>
+                                            <span th:text="#{general.memorial}">Memorial</span>
                                         </p>
                                         <p class="m-t-0 m-b-1 text-gray-light">
                                             <span th:text="${#temporals.format(currentMonthAttendance.memorialAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
@@ -250,7 +250,7 @@
                                             <div class="media">
                                                 <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
                                                 <div class="media-body text-right">
-                                                    <span class="text-danger" data-toggle="tooltip" data-placement="bottom" title="memorial" th:if="${attendance.memorial}">
+                                                    <span class="text-danger" data-toggle="tooltip" data-placement="bottom" th:title="#{general.memorial}" th:if="${attendance.memorial}">
                                                         <small><i class="fa fa-star"></i></small>
                                                     </span>
                                                     <span class="text-warning" data-toggle="tooltip" data-placement="bottom" title="special week" th:if="${attendance.specialWeek}">
@@ -306,13 +306,13 @@
                             <div class="col-md-6">
                                 <div id="box-memorial" class="checkbox checkbox-danger">
                                     <input id="memorial" type="checkbox" th:field="*{memorial}"/>
-                                    <label for="memorial" >Memorial</label>
+                                    <label for="memorial" th:text="#{general.memorial}">Memorial</label>
                                 </div>
                             </div>
                             <div class="col-md-6">
                                 <div id="box-special-week" class="checkbox checkbox-warning">
                                     <input id="specialWeek" type="checkbox" th:field="*{specialWeek}"/>
-                                    <label for="specialWeek" >Special week</label>
+                                    <label for="specialWeek" th:text="#{general.special.week}">Special week</label>
                                 </div>
                             </div>
                         </div>
@@ -340,8 +340,8 @@
                 singleton: true,
                 popout: true,
                 btnCancelClass: 'btn-xs btn-danger',
-                btnOkLabel: 'oui',
-                btnCancelLabel: 'non'
+                btnOkLabel: /*[[#{general.yes}]]*/'',
+                btnCancelLabel: /*[[#{general.no}]]*/''
             });
 
             $('.date-picker').datetimepicker({
@@ -384,6 +384,11 @@
             $.getJSON('/rest/chart/attendance/month', function (config) {
                 options = config;
                 options.chart.renderTo = 'container';
+                options.tooltip = {
+                	dateTimeLabelFormats : {
+                		day: '%e %B %Y'
+                	}
+                }
                 chartMonth = new Highcharts.Chart(options);
             });
 
