@@ -1,10 +1,15 @@
 package fr.gwombat.predicadmin.web.transformer;
 
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import fr.gwombat.predicadmin.model.MonthAttendance;
 import fr.gwombat.predicadmin.model.YearAttendance;
@@ -15,6 +20,9 @@ import fr.gwombat.predicadmin.web.vo.builder.YearAttendanceVoBuilder;
 
 @Component
 public class YearAttendanceTransformer implements ViewTransformer<YearAttendance, YearAttendanceVO> {
+
+    private static final int           MAX = 0;
+    private static final int           MIN = 1;
 
     private MonthAttendanceTransformer monthAttendanceTransformer;
 
@@ -40,48 +48,93 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
             final Integer averageAttendance = calculateAverageAttendance(builder.getAttendances());
             builder = builder.averageAttendance(averageAttendance);
 
-            final MeetingAttendanceVO maxAttendance = evaluateMaxAttendance(builder.getAttendances());
+            final MeetingAttendanceVO maxAttendance = getMaxOrMinAttendance(builder.getAttendances(), MAX);
             builder = builder.maxAttendance(maxAttendance);
+
+            final MeetingAttendanceVO minAttendance = getMaxOrMinAttendance(builder.getAttendances(), MIN);
+            builder = builder.minAttendance(minAttendance);
+            
+            final MeetingAttendanceVO memorial = getMemorial(builder.getAttendances());
+            builder = builder.memorial(memorial);
+
+            final MonthAttendanceVO maxAverage = getMaxOrMinAverage(builder.getAttendances(), MAX);
+            builder = builder.maxAverage(maxAverage);
+
+            final MonthAttendanceVO minAverage = getMaxOrMinAverage(builder.getAttendances(), MIN);
+            builder = builder.minAverage(minAverage);
 
             yearAttendanceVo = builder.build();
         }
 
         return yearAttendanceVo;
     }
+    
+    private static MeetingAttendanceVO getMemorial(final List<MonthAttendanceVO> attendances){
+        if (CollectionUtils.isEmpty(attendances))
+            return null;
 
-    private static MeetingAttendanceVO evaluateMaxAttendance(final List<MonthAttendanceVO> attendances) {
-        MeetingAttendanceVO maxAttendance = null;
+        final List<MeetingAttendanceVO> allAttendances = new ArrayList<>(0);
+        for (MonthAttendanceVO currentAttendance : attendances)
+            allAttendances.addAll(currentAttendance.getAttendances());
+        
+        final List<MeetingAttendanceVO> memorailAttendances = allAttendances.stream().filter(MeetingAttendanceVO::isMemorial).collect(Collectors.toList());
+        if(!CollectionUtils.isEmpty(memorailAttendances))
+            return memorailAttendances.get(0);
+        
+        return null;
+    }
 
-        if (attendances != null && !attendances.isEmpty()) {
-            final List<MeetingAttendanceVO> allAttendances = new ArrayList<>(0);
-            for (MonthAttendanceVO currentAttendance : attendances)
-                allAttendances.addAll(currentAttendance.getAttendances());
+    private static MeetingAttendanceVO getMaxOrMinAttendance(final List<MonthAttendanceVO> attendances, int maxOrMinAttendance) {
+        if (CollectionUtils.isEmpty(attendances))
+            return null;
 
-            if (!allAttendances.isEmpty()) {
-                allAttendances.sort((MeetingAttendanceVO o1, MeetingAttendanceVO o2) -> o2.getAttendance() - o1.getAttendance());
-                maxAttendance = allAttendances.get(0);
-            }
-            allAttendances.sort((MeetingAttendanceVO o1, MeetingAttendanceVO o2) -> o1.getDate().compareTo(o2.getDate()));
-        }
+        MeetingAttendanceVO result = null;
 
-        return maxAttendance;
+        final List<MeetingAttendanceVO> allAttendances = new ArrayList<>(0);
+        for (MonthAttendanceVO currentAttendance : attendances)
+            allAttendances.addAll(currentAttendance.getAttendances());
+
+        Comparator<MeetingAttendanceVO> comparator = Comparator.comparing(MeetingAttendanceVO::getAttendance);
+        if (maxOrMinAttendance == MAX)
+            comparator = comparator.reversed();
+
+        allAttendances.sort(comparator);
+        result = allAttendances.get(0);
+        allAttendances.sort(Comparator.comparing(MeetingAttendanceVO::getDate));
+        return result;
+    }
+
+    private static MonthAttendanceVO getMaxOrMinAverage(final List<MonthAttendanceVO> attendances, int maxOrMinAttendance) {
+        if (CollectionUtils.isEmpty(attendances))
+            return null;
+
+        MonthAttendanceVO result = null;
+
+        Comparator<MonthAttendanceVO> comparator = Comparator.comparing(MonthAttendanceVO::getAverageAttendance);
+        if (maxOrMinAttendance == MAX)
+            comparator = comparator.reversed();
+
+        attendances.sort(comparator);
+        result = attendances.get(0);
+        attendances.sort(Comparator.comparing(MonthAttendanceVO::getPeriod));
+        return result;
     }
 
     private static Integer calculateAverageAttendance(final List<MonthAttendanceVO> attendances) {
         Integer result = null;
         int nbMonthsPassed = 0;
         if (attendances != null) {
-            for (MonthAttendanceVO attendance : attendances){
-                if(attendance != null) {
+            for (MonthAttendanceVO attendance : attendances) {
+                if (attendance != null) {
                     if (attendance.getPeriod().isBeforeNow())
                         nbMonthsPassed++;
                     if (result == null)
                         result = 0;
-                    if(attendance.getAverageAttendance() != null)
+                    if (attendance.getAverageAttendance() != null)
                         result += attendance.getAverageAttendance();
                 }
             }
-            if(result != null)
+            if (result != null)
                 result = result / Math.max(nbMonthsPassed, 1);
         }
         return result;

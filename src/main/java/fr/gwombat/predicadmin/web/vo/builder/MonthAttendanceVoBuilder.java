@@ -52,6 +52,8 @@ public class MonthAttendanceVoBuilder {
 
     public MonthAttendanceVoBuilder minAttendance(MeetingAttendanceVO minAttendance) {
         this.minAttendance = minAttendance;
+        if(this.minAttendance != null)
+            this.minAttendance.setMinOfMonth(true);
         return this;
     }
 

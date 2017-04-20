@@ -28,7 +28,7 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
             MonthAttendanceVoBuilder builder = MonthAttendanceVoBuilder.begin().period(entity.getPeriod());
 
             final List<MeetingAttendance> originalAttendances = entity.getAttendances();
-            if (originalAttendances != null) {
+            if (!CollectionUtils.isEmpty(originalAttendances)) {
                 for (MeetingAttendance originalAttendance : originalAttendances) {
                     final MeetingAttendanceVO meetingAttendanceVo = meetingAttendanceTransformer.toViewObject(originalAttendance);
                     builder = builder.addAttendance(meetingAttendanceVo);

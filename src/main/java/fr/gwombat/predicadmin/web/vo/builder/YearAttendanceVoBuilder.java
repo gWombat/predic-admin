@@ -13,7 +13,11 @@ public class YearAttendanceVoBuilder {
     private int                     intYear;
     private Year                    year;
     private MeetingAttendanceVO     maxAttendance;
+    private MeetingAttendanceVO     minAttendance;
+    private MeetingAttendanceVO     memorial;
     private int                     averageAttendance;
+    private MonthAttendanceVO       maxAverage;
+    private MonthAttendanceVO       minAverage;
     private List<MonthAttendanceVO> attendances;
 
     private YearAttendanceVoBuilder() {
@@ -34,6 +38,16 @@ public class YearAttendanceVoBuilder {
         return this;
     }
 
+    public YearAttendanceVoBuilder minAttendance(final MeetingAttendanceVO minAttendance) {
+        this.minAttendance = minAttendance;
+        return this;
+    }
+
+    public YearAttendanceVoBuilder memorial(final MeetingAttendanceVO memorial) {
+        this.memorial = memorial;
+        return this;
+    }
+
     public YearAttendanceVoBuilder averageAttendance(final Integer averageAttendance) {
         this.averageAttendance = averageAttendance;
         return this;
@@ -42,6 +56,16 @@ public class YearAttendanceVoBuilder {
     public YearAttendanceVoBuilder addMonthAttendance(final MonthAttendanceVO monthAttendance) {
         if (monthAttendance != null)
             attendances.add(monthAttendance);
+        return this;
+    }
+
+    public YearAttendanceVoBuilder maxAverage(final MonthAttendanceVO maxAverage) {
+        this.maxAverage = maxAverage;
+        return this;
+    }
+
+    public YearAttendanceVoBuilder minAverage(final MonthAttendanceVO minAverage) {
+        this.minAverage = minAverage;
         return this;
     }
 
@@ -64,6 +88,22 @@ public class YearAttendanceVoBuilder {
 
     public List<MonthAttendanceVO> getAttendances() {
         return attendances;
+    }
+
+    public MeetingAttendanceVO getMinAttendance() {
+        return minAttendance;
+    }
+
+    public MonthAttendanceVO getMaxAverage() {
+        return maxAverage;
+    }
+
+    public MonthAttendanceVO getMinAverage() {
+        return minAverage;
+    }
+
+    public MeetingAttendanceVO getMemorial() {
+        return memorial;
     }
 
 }

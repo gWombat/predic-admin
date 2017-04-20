@@ -14,6 +14,7 @@ public class MeetingAttendanceVO {
     private final boolean   memorial;
     private final boolean   specialWeek;
     private boolean         maxOfMonth;
+    private boolean         minOfMonth;
 
     public MeetingAttendanceVO(MeetingAttendanceVoBuilder builder) {
         this.date = builder.getDate();
@@ -49,5 +50,13 @@ public class MeetingAttendanceVO {
 
     public boolean isSpecialWeek() {
         return specialWeek;
+    }
+
+    public boolean isMinOfMonth() {
+        return minOfMonth;
+    }
+
+    public void setMinOfMonth(boolean minOfMonth) {
+        this.minOfMonth = minOfMonth;
     }
 }
