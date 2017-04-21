@@ -11,5 +11,7 @@ public interface MonthAttendanceService {
     MonthAttendance getByPeriod(Congregation congregation, Period period);
     
     List<MonthAttendance> getAttendancesBetween(Congregation congregation, Period startPeriod, Period endperiod);
+    
+    List<MonthAttendance> getAttendances(Congregation congregation);
 
 }

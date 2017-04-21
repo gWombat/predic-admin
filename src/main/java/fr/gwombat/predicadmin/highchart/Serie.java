@@ -1,10 +1,10 @@
 package fr.gwombat.predicadmin.highchart;
 
-import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonInclude.Include;
-
 import java.util.ArrayList;
 import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
 /**
  * Created by gWombat.
@@ -17,6 +17,7 @@ public class Serie {
     private String      name;
     private List<Point> data;
     private Number      pointInterval = 1;
+    private boolean     visible       = true;
 
     public Serie() {
     }
@@ -53,5 +54,13 @@ public class Serie {
 
     public void setPointInterval(Number pointInterval) {
         this.pointInterval = pointInterval;
+    }
+
+    public boolean isVisible() {
+        return visible;
+    }
+
+    public void setVisible(boolean visible) {
+        this.visible = visible;
     }
 }

@@ -3,6 +3,10 @@ package fr.gwombat.predicadmin.model;
 import java.io.Serializable;
 import java.time.Year;
 
+import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.apache.commons.lang3.builder.HashCodeBuilder;
+import org.springframework.util.Assert;
+
 import fr.gwombat.predicadmin.support.period.Period;
 import fr.gwombat.predicadmin.support.period.PeriodBuilder;
 
@@ -16,6 +20,18 @@ public class TheocraticYear implements Serializable, Comparable<TheocraticYear> 
     private Period            end;
 
     public TheocraticYear() {
+    }
+
+    public TheocraticYear(final Period period) {
+        Assert.notNull(period, "The period must not be null");
+
+        int intYear;
+        if (period.getMonth() >= 9)
+            intYear = period.getYear() + 1;
+        else
+            intYear = period.getYear();
+
+        initDatesFromYear(intYear);
     }
 
     public TheocraticYear(int year) {
@@ -54,4 +70,22 @@ public class TheocraticYear implements Serializable, Comparable<TheocraticYear> 
         return year.compareTo(o.year);
     }
 
+    @Override
+    public boolean equals(Object obj) {
+        if (this == obj)
+            return true;
+
+        if (obj instanceof TheocraticYear) {
+            TheocraticYear other = (TheocraticYear) obj;
+            EqualsBuilder builder = new EqualsBuilder().append(this.year, other.year);
+            return builder.build();
+        }
+        return false;
+    }
+
+    @Override
+    public int hashCode() {
+        HashCodeBuilder builder = new HashCodeBuilder().append(year);
+        return builder.build();
+    }
 }

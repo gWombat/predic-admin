@@ -57,6 +57,18 @@ public class MonthAttendanceServiceImpl implements MonthAttendanceService {
         return finalAttendances;
     }
 
+    @Override
+    public List<MonthAttendance> getAttendances(Congregation congregation) {
+        Assert.notNull(congregation, "The congregation must not be null");
+
+        final List<MeetingAttendance> attendances = attendanceService.getByCongregation(congregation);
+        final List<MonthAttendance> finalAttendances = buildMonthsAttendances(attendances);
+        if (finalAttendances != null && !finalAttendances.isEmpty())
+            finalAttendances.sort(Comparator.comparing(MonthAttendance::getPeriod));
+
+        return finalAttendances;
+    }
+
     private static List<MonthAttendance> buildMonthsAttendances(final List<MeetingAttendance> attendances) {
         if (attendances != null) {
             final Map<Period, MonthAttendance> mapAttendances = new HashMap<>(0);

@@ -14,7 +14,6 @@ import fr.gwombat.predicadmin.highchart.transformer.ChartYearAverageAttendanceCr
 import fr.gwombat.predicadmin.model.Congregation;
 import fr.gwombat.predicadmin.model.MeetingAttendance;
 import fr.gwombat.predicadmin.model.MonthAttendance;
-import fr.gwombat.predicadmin.model.TheocraticYear;
 import fr.gwombat.predicadmin.model.YearAttendance;
 import fr.gwombat.predicadmin.service.CongregationService;
 import fr.gwombat.predicadmin.service.MeetingAttendanceService;
@@ -53,9 +52,8 @@ public class ChartAttendanceResource {
 
     @GetMapping("/year")
     public ChartConfiguration chartAverageAttendanceYear() {
-        final TheocraticYear year = new TheocraticYear(2017);
-        final YearAttendance yearAttendance = yearAttendanceService.getAttendanceForYear(congregationService.getCurrentCongregation(), year);
-        final ChartConfiguration chartConfig = chartYearAverageAttendanceCreator.createChartConfiguration(yearAttendance);
+        final List<YearAttendance> yearAttendances = yearAttendanceService.getAttendancesForCongregation(congregationService.getCurrentCongregation());
+        final ChartConfiguration chartConfig = chartYearAverageAttendanceCreator.createChartConfiguration(yearAttendances);
 
         return chartConfig;
     }

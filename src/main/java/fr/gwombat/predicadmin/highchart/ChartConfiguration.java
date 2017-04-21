@@ -19,6 +19,7 @@ public class ChartConfiguration {
     private Exporting   exporting;
     private List<Serie> series;
     private PlotOptions plotOptions;
+    private Tooltip     tooltip;
 
     /**
      * Creates a new Highcharts chart configuration object. The configuration is
@@ -35,6 +36,7 @@ public class ChartConfiguration {
         xAxis = new Axis();
         yAxis = new Axis();
         plotOptions = new PlotOptions();
+        tooltip = new Tooltip();
     }
 
     public Chart getChart() {
@@ -109,6 +111,14 @@ public class ChartConfiguration {
 
     public void setPlotOptions(PlotOptions plotOptions) {
         this.plotOptions = plotOptions;
+    }
+
+    public Tooltip getTooltip() {
+        return tooltip;
+    }
+
+    public void setTooltip(Tooltip tooltip) {
+        this.tooltip = tooltip;
     }
 
 }

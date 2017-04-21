@@ -96,6 +96,17 @@
                 </div>
             </div>
         </div>
+        <div class="col-lg-3" th:if="${yearAttendance.memorial} != null">
+            <div class="panel panel-default b-a-0 bg-gray-dark">
+                <div class="panel-heading b-b-danger b-b-2" th:text="#{general.memorial}">Global average</div>
+                <div class="panel-body">
+                    <h2 class="m-t-0 f-w-300">
+                        <span th:text="${yearAttendance.memorial.attendance}">75</span>
+                    </h2>
+                    <span th:text="${#temporals.format(yearAttendance.memorial.date, 'EEEE d MMMM', #locale)}">Global</span>
+                </div>
+            </div>
+        </div>
     </div>
     
     <div class="row">
@@ -472,11 +483,11 @@
             $.getJSON('/rest/chart/attendance/year', function (config) {
                 options = config;
                 options.chart.renderTo = 'container_year';
-                options.tooltip = {
+                /*options.tooltip = {
                     formatter: function () {
                         return Highcharts.dateFormat('%B %Y', new Date(this.x)) + ': ' + this.y;
                     }
-                };
+                };*/
                 options.series[0].fillColor = {
                     linearGradient: {
                         x1: 0,
@@ -489,6 +500,20 @@
                         [1, 'rgba(45, 153, 220, 0)']
                     ]
                 };
+                if(options.series[1]){
+                    options.series[1].fillColor = {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, 'rgba(59, 189, 168, .2)'],
+                            [1, 'rgba(59, 189, 168, 0)']
+                        ]
+                    };
+                }
                 chartYear = new Highcharts.Chart(options);
             });
 

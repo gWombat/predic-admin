@@ -1,5 +1,7 @@
 package fr.gwombat.predicadmin.highchart;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 
@@ -13,6 +15,7 @@ public class Axis {
     private Crosshair            crosshair;
     private Number               tickInterval;
     private DateTimeLabelFormats dateTimeLabelFormats;
+    private List<String>         categories;
 
     public Axis() {
         title = new AxisTitle();
@@ -43,7 +46,7 @@ public class Axis {
     public void setCrosshair(Crosshair crosshair) {
         this.crosshair = crosshair;
     }
-    
+
     public void setCrosshair(boolean useCrosshair) {
         crosshair = useCrosshair ? new Crosshair() : null;
     }
@@ -62,6 +65,14 @@ public class Axis {
 
     public void setDateTimeLabelFormats(DateTimeLabelFormats dateTimeLabelFormats) {
         this.dateTimeLabelFormats = dateTimeLabelFormats;
+    }
+
+    public List<String> getCategories() {
+        return categories;
+    }
+
+    public void setCategories(List<String> categories) {
+        this.categories = categories;
     }
 
 }
