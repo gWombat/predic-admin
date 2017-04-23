@@ -1,12 +1,12 @@
 package fr.gwombat.predicadmin.web.vo.builder;
 
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
-
 import fr.gwombat.predicadmin.web.vo.MeetingAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.YearAttendanceVO;
+
+import java.time.Year;
+import java.util.ArrayList;
+import java.util.List;
 
 public class YearAttendanceVoBuilder {
 
@@ -49,12 +49,15 @@ public class YearAttendanceVoBuilder {
     }
 
     public YearAttendanceVoBuilder averageAttendance(final Integer averageAttendance) {
-        this.averageAttendance = averageAttendance;
+        if(averageAttendance != null)
+            this.averageAttendance = averageAttendance;
+        else
+            this.averageAttendance = 0;
         return this;
     }
 
     public YearAttendanceVoBuilder addMonthAttendance(final MonthAttendanceVO monthAttendance) {
-        if (monthAttendance != null)
+        if(monthAttendance != null)
             attendances.add(monthAttendance);
         return this;
     }

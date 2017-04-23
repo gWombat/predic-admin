@@ -47,10 +47,10 @@
     <div class="row">
         <div class="col-lg-3">
             <div class="panel panel-default b-a-0 bg-gray-dark">
-                <div class="panel-heading b-b-primary b-b-2" >
+                <div class="panel-heading b-b-primary b-b-2">
                     <span>Current month average</span>
                     <span class="pull-right" th:if="${currentMonthAttendance.memorialAttendance} != null"
-                        data-toggle="tooltip" data-placement="bottom" th:title="#{general.memorial}">
+                          data-toggle="tooltip" data-placement="bottom" th:title="#{general.memorial}">
                         <i class="fa fa-star text-danger"></i>
                     </span>
                 </div>
@@ -70,7 +70,7 @@
         </div>
         <div class="col-lg-3">
             <div class="panel panel-default b-a-0 bg-gray-dark">
-                <div class="panel-heading b-b-info b-b-2" >Current year average</div>
+                <div class="panel-heading b-b-info b-b-2">Current year average</div>
                 <div class="panel-body">
                     <h2 class="m-t-0 f-w-300">
                         <span th:text="${yearAttendance.averageAttendance}">$ 694.00</span>
@@ -87,7 +87,7 @@
         </div>
         <div class="col-lg-3">
             <div class="panel panel-default b-a-0 bg-gray-dark">
-                <div class="panel-heading b-b-warning b-b-2" >Global average</div>
+                <div class="panel-heading b-b-warning b-b-2">Global average</div>
                 <div class="panel-body">
                     <h2 class="m-t-0 f-w-300">
                         <span>75</span>
@@ -103,19 +103,19 @@
                     <h2 class="m-t-0 f-w-300">
                         <span th:text="${yearAttendance.memorial.attendance}">75</span>
                     </h2>
-                    <span th:text="${#temporals.format(yearAttendance.memorial.date, 'EEEE d MMMM', #locale)}">Global</span>
+                    <span th:text="${#temporals.format(yearAttendance.memorial.date, 'EEEE d MMMM yyyy', #locale)}">Global</span>
                 </div>
             </div>
         </div>
     </div>
-    
+
     <div class="row">
         <div class="col-sm-12">
             <div class="tabbable-line">
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active">
                         <a href="#tab_current_month" data-toggle="tab"
-                            th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">April 2017</a>
+                           th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">April 2017</a>
                     </li>
                     <li role="presentation">
                         <a href="#tab_current_year" data-toggle="tab">Year 2016-2017</a>
@@ -137,11 +137,12 @@
                                     <div id="container"></div>
                                 </div>
                                 <div class="col-lg-2 col-md-3 col-sm-4">
-                                    <h3 class="f-w-300 m-t-0" th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">April 2017</h3>
-                                    
+                                    <h3 class="f-w-300 m-t-0" th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">
+                                        April 2017</h3>
+
                                     <h3 class="f-w-300 m-t-0 m-b-0 text-primary" th:text="${currentMonthAttendance.averageAttendance}">70</h3>
                                     <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{page.meeting.attendance.average}">Average attendance</p>
-                                    
+
                                     <h3 class="f-w-300 m-t-1 m-b-0">
                                         <span th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
                                         <small><i class="fa fa-caret-up text-success"></i></small>
@@ -152,7 +153,7 @@
                                     <p class="m-t-0 m-b-1 text-gray-light">
                                         <span th:text="${#temporals.format(currentMonthAttendance.maxAttendance.date, #messages.msg('format.date.xl'), #locale)}">Sunday, April 28th</span>
                                     </p>
-                                    
+
                                     <h3 class="f-w-300 m-t-1 m-b-0">
                                         <span th:text="${currentMonthAttendance.minAttendance.attendance}">50</span>
                                         <small><i class="fa fa-caret-down text-danger"></i></small>
@@ -163,7 +164,7 @@
                                     <p class="m-t-0 m-b-1 text-gray-light">
                                         <span th:text="${#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
                                     </p>
-                                    
+
                                     <div th:if="${currentMonthAttendance.memorialAttendance} != null">
                                         <h4 class="f-w-300 m-t-1 m-b-0 text-gray-lighter">
                                             <span th:text="${currentMonthAttendance.memorialAttendance.attendance}">50</span>
@@ -176,7 +177,7 @@
                                             <span th:text="${#temporals.format(currentMonthAttendance.memorialAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
                                         </p>
                                     </div>
-                                    
+
                                     <button type="button" class="btn m-t-3 btn-default" data-toggle="modal"
                                             data-target="#modal_add_attendance">
                                         <span th:text="#{general.add}">Add</span>&nbsp;
@@ -187,7 +188,7 @@
                         </div>
                     </div>
                     <!--  END TAB CHART MONTH -->
-                    
+
                     <!--  END TAB CHART YEAR AVERAGE -->
                     <div id="tab_current_year" role="tabpanel" class="tab-pane fade panel panel-default no-bg b-dark-gray b-a-2">
                         <div class="panel-heading">
@@ -201,10 +202,10 @@
                                 </div>
                                 <div class="col-lg-2 col-md-3 col-sm-4">
                                     <h3 class="f-w-300 m-t-0" th:text="${yearAttendance}">April 2017</h3>
-                                    
+
                                     <h3 class="f-w-300 m-t-0 m-b-0 text-primary" th:text="${yearAttendance.averageAttendance}">70</h3>
                                     <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{page.meeting.attendance.average}">Average attendance</p>
-                                    
+
                                     <div class="col-sm-6 pull-left p-l-0">
                                         <h3 class="f-w-300 m-t-1 m-b-0">
                                             <span th:text="${yearAttendance.minAverage.averageAttendance}">90</span>
@@ -224,7 +225,7 @@
                                         </p>
                                     </div>
                                     <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{general.average}">Average</p>
-                                    
+
                                     <div class="col-sm-6 pull-left p-l-0">
                                         <h3 class="f-w-300 m-t-1 m-b-0">
                                             <span th:text="${yearAttendance.minAttendance.attendance}">90</span>
@@ -244,7 +245,7 @@
                                         </p>
                                     </div>
                                     <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{general.attendance}">Attendance</p>
-                                    
+
                                     <div th:if="${yearAttendance.memorial} != null">
                                         <h3 class="f-w-300 m-t-1 m-b-0">
                                             <span th:text="${yearAttendance.memorial.attendance}">50</span>
@@ -262,7 +263,7 @@
                         </div>
                     </div>
                     <!--  END TAB CHART YEAR AVERAGE -->
-                    
+
                     <div id="tab_global" role="tabpanel" class="tab-pane fade panel panel-default no-bg b-dark-gray b-a-2">
                         <div class="panel-heading">
                             Year average attendance
@@ -333,7 +334,8 @@
                                             <div class="media">
                                                 <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
                                                 <div class="media-body text-right">
-                                                    <span class="text-danger" data-toggle="tooltip" data-placement="bottom" th:title="#{general.memorial}" th:if="${attendance.memorial}">
+                                                    <span class="text-danger" data-toggle="tooltip" data-placement="bottom" th:title="#{general.memorial}"
+                                                          th:if="${attendance.memorial}">
                                                         <small><i class="fa fa-star"></i></small>
                                                     </span>
                                                     <span class="text-warning" data-toggle="tooltip" data-placement="bottom" title="special week" th:if="${attendance.specialWeek}">
@@ -447,7 +449,7 @@
                 max: 1000,
                 step: 1
             });
-            
+
             $('#box-memorial input[type="hidden"]').prependTo('#box-memorial');
             $('#box-special-week input[type="hidden"]').prependTo('#box-special-week');
 
@@ -460,7 +462,7 @@
                     weekdays: /*[[${weekdaysNames}]]*/''
                 }
             });
-            
+
             var chartMonth;
             var chartYear;
             var chartGlobal;
@@ -471,9 +473,9 @@
                 options = config;
                 options.chart.renderTo = 'container';
                 options.tooltip = {
-                	dateTimeLabelFormats : {
-                		day: '%e %B %Y'
-                	}
+                    dateTimeLabelFormats: {
+                        day: '%e %B %Y'
+                    }
                 }
                 chartMonth = new Highcharts.Chart(options);
             });
@@ -483,11 +485,6 @@
             $.getJSON('/rest/chart/attendance/year', function (config) {
                 options = config;
                 options.chart.renderTo = 'container_year';
-                /*options.tooltip = {
-                    formatter: function () {
-                        return Highcharts.dateFormat('%B %Y', new Date(this.x)) + ': ' + this.y;
-                    }
-                };*/
                 options.series[0].fillColor = {
                     linearGradient: {
                         x1: 0,
@@ -500,7 +497,7 @@
                         [1, 'rgba(45, 153, 220, 0)']
                     ]
                 };
-                if(options.series[1]){
+                if (options.series[1]) {
                     options.series[1].fillColor = {
                         linearGradient: {
                             x1: 0,
@@ -511,6 +508,48 @@
                         stops: [
                             [0, 'rgba(59, 189, 168, .2)'],
                             [1, 'rgba(59, 189, 168, 0)']
+                        ]
+                    };
+                }
+                if (options.series[2]) {
+                    options.series[2].fillColor = {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, 'rgba(134, 179, 77, .2)'],
+                            [1, 'rgba(134, 179, 77, 0)']
+                        ]
+                    };
+                }
+                if (options.series[3]) {
+                    options.series[3].fillColor = {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, 'rgba(230, 108, 64, .2)'],
+                            [1, 'rgba(230, 108, 64, 0)']
+                        ]
+                    };
+                }
+                if (options.series[4]) {
+                    options.series[4].fillColor = {
+                        linearGradient: {
+                            x1: 0,
+                            y1: 0,
+                            x2: 0,
+                            y2: 1
+                        },
+                        stops: [
+                            [0, 'rgba(203, 62, 75, .2)'],
+                            [1, 'rgba(203, 62, 75, 0)']
                         ]
                     };
                 }
@@ -541,11 +580,11 @@
                 };
                 chartGlobal = new Highcharts.Chart(options);
             });
-            
-			$('[data-toggle="tab"]').on('shown.bs.tab', function(){
-				chartMonth.reflow();
-				chartYear.reflow();
-				chartGlobal.reflow();
+
+            $('[data-toggle="tab"]').on('shown.bs.tab', function () {
+                chartMonth.reflow();
+                chartYear.reflow();
+                chartGlobal.reflow();
             });
         });
         //]]>

@@ -14,9 +14,7 @@ import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Random;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Component
@@ -40,14 +38,14 @@ public class SetupListener {
 
     @EventListener
     public void handleRefreshContext(ContextRefreshedEvent event) {
-        if (env.acceptsProfiles("default", "dev") && !setUp)
+        if(env.acceptsProfiles("default", "dev") && !setUp)
             setUp();
     }
 
     private void setUp() {
 
         Congregation congreg = congregationRepository.findByName("Verneuil-sur-Seine");
-        if (congreg == null) {
+        if(congreg == null) {
             congreg = new Congregation();
             congreg.setName("Verneuil-sur-Seine");
             congreg = congregationRepository.save(congreg);
@@ -106,38 +104,32 @@ public class SetupListener {
     }
 
     private void initAttendance(final Congregation congregation) {
-        int bound = 150;
+        int bound = 500;
 
         final Map<LocalDate, MeetingAttendance> attendances = new HashMap<>(bound);
-        final int[] months = {9, 10, 11, 12, 1, 2, 3, 4, 5, 6, 7, 8};
-        int startYear = 2017;
 
-        for (int i = 0; i < bound; i++) {
+        int startYear = LocalDate.now().getYear();
+        final List<Integer> years = new ArrayList<>(0);
+        for(int i = startYear; i > startYear - 5; i--)
+            years.add(i);
+
+        for(int i = 0; i < bound; i++) {
             MeetingAttendance meetingAttendance = new MeetingAttendance();
             meetingAttendance.setCongregation(congregation);
             meetingAttendance.setAttendance(new Random().nextInt(120));
 
-            int year = startYear;
-            int month;
-            if (i < bound / 3) {
-                year = startYear - 1;
-                month = months[new Random().nextInt(4)];
-            } else if (i < (2 * bound) / 3)
-                month = months[new Random().nextInt(4) + 4];
-            else
-                month = months[new Random().nextInt(4) + 8];
-
-
+            int year = years.get(new Random().nextInt(years.size()));
+            int month = Math.max(1, new Random().nextInt(13));
             final LocalDate date = LocalDate.of(year, month, Math.max(new Random().nextInt(25), 1));
             meetingAttendance.setDate(date);
             attendances.put(date, meetingAttendance);
         }
 
         attendanceRepository.save(attendances.entrySet()
-                .stream()
-                .map(Map.Entry::getValue)
-                .filter(attendance -> LocalDate.now().isAfter(attendance.getDate()))
-                .collect(Collectors.toList()));
+                                             .stream()
+                                             .map(Map.Entry::getValue)
+                                             .filter(attendance -> attendance.getDate().isBefore(LocalDate.now()))
+                                             .collect(Collectors.toList()));
     }
 
     @Autowired
