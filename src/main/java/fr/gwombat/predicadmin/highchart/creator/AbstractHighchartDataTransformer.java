@@ -1,9 +1,9 @@
-package fr.gwombat.predicadmin.highchart.transformer;
+package fr.gwombat.predicadmin.highchart.creator;
 
 import java.util.List;
 
 import fr.gwombat.predicadmin.highchart.ChartConfiguration;
-import fr.gwombat.predicadmin.highchart.Serie;
+import fr.gwombat.predicadmin.highchart.serie.Serie;
 
 /**
  * Created by gWombat

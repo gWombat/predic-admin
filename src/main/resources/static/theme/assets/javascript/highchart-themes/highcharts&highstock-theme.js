@@ -2,8 +2,8 @@
 
 Highcharts.theme = {
     //Używane kolory wykresów
-    colors: ["#2D99DC", "#35BDA8", "#86B34D", "#E66C40", "#CB3E4B", "#5C5C5C",
-        "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+    colors: ["#78fd9a", "#f384fc", "#6bc1fd", "#a82084", "#68fee0", "#a072fc",
+        "#732c86", "#5b73fc", "#343286", "#08a5e1"],
     chart: {
         backgroundColor: {
             linearGradient: {x1: 0, y1: 0, x2: 1, y2: 1},

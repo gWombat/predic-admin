@@ -8,15 +8,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.gwombat.predicadmin.highchart.ChartConfiguration;
-import fr.gwombat.predicadmin.highchart.transformer.ChartGlobalAttendanceCreator;
-import fr.gwombat.predicadmin.highchart.transformer.ChartMonthAttendanceCreator;
-import fr.gwombat.predicadmin.highchart.transformer.ChartYearAverageAttendanceCreator;
+import fr.gwombat.predicadmin.highchart.creator.ChartGlobalAttendanceCreator;
+import fr.gwombat.predicadmin.highchart.creator.ChartMonthAttendanceCreator;
+import fr.gwombat.predicadmin.highchart.creator.ChartYearAverageAttendanceCreator;
 import fr.gwombat.predicadmin.model.Congregation;
-import fr.gwombat.predicadmin.model.MeetingAttendance;
 import fr.gwombat.predicadmin.model.MonthAttendance;
 import fr.gwombat.predicadmin.model.YearAttendance;
 import fr.gwombat.predicadmin.service.CongregationService;
-import fr.gwombat.predicadmin.service.MeetingAttendanceService;
 import fr.gwombat.predicadmin.service.MonthAttendanceService;
 import fr.gwombat.predicadmin.service.YearAttendanceService;
 import fr.gwombat.predicadmin.support.period.Period;
@@ -38,7 +36,6 @@ public class ChartAttendanceResource {
     private YearAttendanceService             yearAttendanceService;
     private MonthAttendanceService            monthAttendanceService;
     private CongregationService               congregationService;
-    private MeetingAttendanceService          meetingAttendanceService;
 
     @GetMapping("/month")
     public ChartConfiguration chartResultMonthAttendance() {
@@ -60,7 +57,7 @@ public class ChartAttendanceResource {
 
     @GetMapping
     public ChartConfiguration chartGlobalAttendance() {
-        final List<MeetingAttendance> attendances = meetingAttendanceService.getByCongregation(congregationService.getCurrentCongregation());
+        final List<MonthAttendance> attendances = monthAttendanceService.getAttendances(congregationService.getCurrentCongregation());
         final ChartConfiguration chartConfig = chartGlobalAttendanceCreator.createChartConfiguration(attendances);
 
         return chartConfig;
@@ -89,11 +86,6 @@ public class ChartAttendanceResource {
     @Autowired
     public void setYearAttendanceService(YearAttendanceService yearAttendanceService) {
         this.yearAttendanceService = yearAttendanceService;
-    }
-
-    @Autowired
-    public void setMeetingAttendanceService(MeetingAttendanceService meetingAttendanceService) {
-        this.meetingAttendanceService = meetingAttendanceService;
     }
 
     @Autowired

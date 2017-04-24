@@ -1,10 +1,13 @@
-package fr.gwombat.predicadmin.highchart;
+package fr.gwombat.predicadmin.highchart.serie;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
+
+import fr.gwombat.predicadmin.highchart.Point;
+import fr.gwombat.predicadmin.highchart.enums.ChartType;
 
 /**
  * Created by gWombat.
@@ -14,10 +17,16 @@ import com.fasterxml.jackson.annotation.JsonInclude.Include;
 @JsonInclude(value = Include.NON_DEFAULT, content = Include.NON_NULL)
 public class Serie {
 
-    private String      name;
-    private List<Point> data;
-    private Number      pointInterval = 1;
-    private boolean     visible       = true;
+    protected ChartType   type          = null;
+
+    protected String      name;
+    protected List<Point> data;
+    protected Number      pointInterval = 1;
+    protected boolean     visible       = true;
+
+    protected Serie(final ChartType chartType) {
+        this.type = chartType;
+    }
 
     public Serie() {
     }
@@ -62,5 +71,13 @@ public class Serie {
 
     public void setVisible(boolean visible) {
         this.visible = visible;
+    }
+
+    public ChartType getType() {
+        return type;
+    }
+
+    protected void setType(ChartType type) {
+        this.type = type;
     }
 }

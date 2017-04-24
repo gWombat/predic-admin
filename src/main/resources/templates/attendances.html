@@ -115,7 +115,7 @@
                 <ul class="nav nav-tabs">
                     <li role="presentation" class="active">
                         <a href="#tab_current_month" data-toggle="tab"
-                           th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">April 2017</a>
+                           th:text="#{page.meeting.attendance.month.sm}">month attendance</a>
                     </li>
                     <li role="presentation">
                         <a href="#tab_current_year" data-toggle="tab">Year 2016-2017</a>
@@ -493,8 +493,8 @@
                         y2: 1
                     },
                     stops: [
-                        [0, 'rgba(45, 153, 220, .4)'],
-                        [1, 'rgba(45, 153, 220, 0)']
+                        [0, 'rgba(120, 253, 154, .2)'],
+                        [1, 'rgba(120, 253, 154, 0)']
                     ]
                 };
                 if (options.series[1]) {
@@ -506,8 +506,8 @@
                             y2: 1
                         },
                         stops: [
-                            [0, 'rgba(59, 189, 168, .2)'],
-                            [1, 'rgba(59, 189, 168, 0)']
+                            [0, 'rgba(243, 132, 252, .2)'],
+                            [1, 'rgba(243, 132, 252, 0)']
                         ]
                     };
                 }
@@ -520,8 +520,8 @@
                             y2: 1
                         },
                         stops: [
-                            [0, 'rgba(134, 179, 77, .2)'],
-                            [1, 'rgba(134, 179, 77, 0)']
+                            [0, 'rgba(107, 193, 253, .2)'],
+                            [1, 'rgba(107, 193, 253, 0)']
                         ]
                     };
                 }
@@ -534,8 +534,8 @@
                             y2: 1
                         },
                         stops: [
-                            [0, 'rgba(230, 108, 64, .2)'],
-                            [1, 'rgba(230, 108, 64, 0)']
+                            [0, 'rgba(168, 32, 132, .2)'],
+                            [1, 'rgba(168, 32, 132, 0)']
                         ]
                     };
                 }
@@ -548,8 +548,8 @@
                             y2: 1
                         },
                         stops: [
-                            [0, 'rgba(203, 62, 75, .2)'],
-                            [1, 'rgba(203, 62, 75, 0)']
+                            [0, 'rgba(104, 254, 224, .2)'],
+                            [1, 'rgba(104, 254, 224, 0)']
                         ]
                     };
                 }
@@ -563,20 +563,8 @@
                 options.chart.renderTo = 'container_global';
                 options.tooltip = {
                     formatter: function () {
-                        return Highcharts.dateFormat('%a %e %b %Y', new Date(this.x)) + ': ' + this.y;
+                        return Highcharts.dateFormat('%b %Y', new Date(this.x)) + ': ' + this.y;
                     }
-                };
-                options.series[0].fillColor = {
-                    linearGradient: {
-                        x1: 0,
-                        y1: 0,
-                        x2: 0,
-                        y2: 1
-                    },
-                    stops: [
-                        [0, 'rgba(45, 153, 220, .4)'],
-                        [1, 'rgba(45, 153, 220, 0)']
-                    ]
                 };
                 chartGlobal = new Highcharts.Chart(options);
             });

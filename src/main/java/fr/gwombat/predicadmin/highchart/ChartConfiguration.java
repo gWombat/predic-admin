@@ -7,6 +7,8 @@ import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonInclude.Include;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import fr.gwombat.predicadmin.highchart.serie.Serie;
+
 @JsonInclude(value = Include.NON_DEFAULT, content = Include.NON_NULL)
 public class ChartConfiguration {
 

@@ -1,4 +1,4 @@
-package fr.gwombat.predicadmin.highchart.transformer;
+package fr.gwombat.predicadmin.highchart.creator;
 
 import java.time.LocalDate;
 import java.time.ZoneId;
@@ -13,9 +13,9 @@ import org.springframework.stereotype.Component;
 
 import fr.gwombat.predicadmin.highchart.ChartConfiguration;
 import fr.gwombat.predicadmin.highchart.Point;
-import fr.gwombat.predicadmin.highchart.Serie;
 import fr.gwombat.predicadmin.highchart.enums.AxisCategory;
 import fr.gwombat.predicadmin.highchart.enums.ChartType;
+import fr.gwombat.predicadmin.highchart.serie.Serie;
 import fr.gwombat.predicadmin.model.MonthAttendance;
 import fr.gwombat.predicadmin.web.design.Color;
 import fr.gwombat.predicadmin.web.transformer.MonthAttendanceTransformer;
