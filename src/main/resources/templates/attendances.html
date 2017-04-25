@@ -48,7 +48,7 @@
         <div class="col-lg-3">
             <div class="panel panel-default b-a-0 bg-gray-dark">
                 <div class="panel-heading b-b-primary b-b-2">
-                    <span>Current month average</span>
+                    <span th:text="#{page.meeting.attendance.current.month}">Current month average</span>
                     <span class="pull-right" th:if="${currentMonthAttendance.memorialAttendance} != null"
                           data-toggle="tooltip" data-placement="bottom" th:title="#{general.memorial}">
                         <i class="fa fa-star text-danger"></i>
@@ -70,7 +70,7 @@
         </div>
         <div class="col-lg-3">
             <div class="panel panel-default b-a-0 bg-gray-dark">
-                <div class="panel-heading b-b-info b-b-2">Current year average</div>
+                <div class="panel-heading b-b-info b-b-2" th:text="#{page.meeting.attendance.current.year}">Current year average</div>
                 <div class="panel-body">
                     <h2 class="m-t-0 f-w-300">
                         <span th:text="${yearAttendance.averageAttendance}">$ 694.00</span>
@@ -103,7 +103,7 @@
                     <h2 class="m-t-0 f-w-300">
                         <span th:text="${yearAttendance.memorial.attendance}">75</span>
                     </h2>
-                    <span th:text="${#temporals.format(yearAttendance.memorial.date, 'EEEE d MMMM yyyy', #locale)}">Global</span>
+                    <span th:text="${#temporals.format(yearAttendance.memorial.date, #messages.msg('format.date.xxl'), #locale)}">Global</span>
                 </div>
             </div>
         </div>
@@ -118,7 +118,7 @@
                            th:text="#{page.meeting.attendance.month.sm}">month attendance</a>
                     </li>
                     <li role="presentation">
-                        <a href="#tab_current_year" data-toggle="tab">Year 2016-2017</a>
+                        <a href="#tab_current_year" data-toggle="tab" th:text="#{page.meeting.attendance.year.average}">Year 2016-2017</a>
                     </li>
                     <li role="presentation">
                         <a href="#tab_global" data-toggle="tab">Global results</a>
@@ -131,13 +131,17 @@
                             Month attendance
                         </div>
                         <div class="panel-body">
-                            <p class="m-a-2">You can find here the details of the attendance for the current month (April 2017)</p>
+                            <p class="m-b-2 m-l-2 m-t-1">
+                                <span th:text="${#messages.msg('page.meeting.attendance.chart.month.text', #strings.capitalize(#temporals.format(currentMonthAttendance.period.start, #messages.msg('format.date.month'), #locale)))}">
+                                You can find here the details of the attendance for the current month (April 2017)
+                                </span>
+                            </p>
                             <div class="row">
                                 <div class="col-lg-10 col-md-9 col-sm-8">
                                     <div id="container"></div>
                                 </div>
                                 <div class="col-lg-2 col-md-3 col-sm-4">
-                                    <h3 class="f-w-300 m-t-0" th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">
+                                    <h3 class="f-w-300 m-t-0" th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.month'), #locale))}">
                                         April 2017</h3>
 
                                     <h3 class="f-w-300 m-t-0 m-b-0 text-primary" th:text="${currentMonthAttendance.averageAttendance}">70</h3>
@@ -191,11 +195,18 @@
 
                     <!--  END TAB CHART YEAR AVERAGE -->
                     <div id="tab_current_year" role="tabpanel" class="tab-pane fade panel panel-default no-bg b-dark-gray b-a-2">
-                        <div class="panel-heading">
+                        <div class="panel-heading" th:text="#{page.meeting.attendance.year}">
                             Year average attendance
                         </div>
                         <div class="panel-body">
-                            <p class="m-a-2">You can find here the details of the attendance for the current year (2016-2017)</p>
+                            <p class="m-b-2 m-l-2 m-t-1">
+                                <span th:text="#{page.meeting.attendance.chart.year.text}">You can find here the details of the attendance for the current year (2016-2017)</span>
+                                <i class="fa fa-asterisk" aria-hidden="true"></i>
+                            </p>
+                            <p class="help-block m-l-2 small">
+                                <i class="fa fa-asterisk" aria-hidden="true"></i>
+                                <span th:text="#{page.meeting.attendance.chart.year.text.help}"></span>
+                            </p>
                             <div class="row">
                                 <div class="col-lg-10 col-md-9 col-sm-8">
                                     <div id="container_year"></div>
