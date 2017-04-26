@@ -58,12 +58,13 @@
                     <h2 class="m-t-0 f-w-300">
                         <span th:text="${currentMonthAttendance.averageAttendance}">$ 694.00</span>
                     </h2>
-                    <span class="pull-left" th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">April 2017</span>
+                    <span class="pull-left" th:if="${currentMonthAttendance.minAttendance} != null" 
+                        th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">April 2017</span>
                     <span class="pull-right">
                         <i class="fa fa-caret-up text-success"></i>
-                        <span th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
+                        <span th:if="${currentMonthAttendance.maxAttendance} != null" th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
                         <i class="fa fa-caret-down text-danger"></i>
-                        <span th:text="${currentMonthAttendance.minAttendance.attendance}">45</span>
+                        <span th:if="${currentMonthAttendance.minAttendance} != null" th:text="${currentMonthAttendance.minAttendance.attendance}">45</span>
                     </span>
                 </div>
             </div>
@@ -78,9 +79,9 @@
                     <span class="pull-left" th:text="${yearAttendance}">2016-2017</span>
                     <span class="pull-right">
                         <i class="fa fa-caret-up text-success"></i>
-                        <span th:text="${yearAttendance.maxAverage.averageAttendance}">90</span>
+                        <span th:if="${yearAttendance.maxAverage} != null" th:text="${yearAttendance.maxAverage.averageAttendance}">90</span>
                         <i class="fa fa-caret-down text-danger"></i>
-                        <span th:text="${yearAttendance.minAverage.averageAttendance}">45</span>
+                        <span th:if="${yearAttendance.minAverage} != null" th:text="${yearAttendance.minAverage.averageAttendance}">45</span>
                     </span>
                 </div>
             </div>
@@ -132,7 +133,7 @@
                         </div>
                         <div class="panel-body">
                             <p class="m-b-2 m-l-2 m-t-1">
-                                <span th:text="${#messages.msg('page.meeting.attendance.chart.month.text', #strings.capitalize(#temporals.format(currentMonthAttendance.period.start, #messages.msg('format.date.month'), #locale)))}">
+                                <span th:text="${#messages.msg('page.meeting.attendance.chart.month.text', #strings.capitalize(#temporals.format(currentMonthAttendance.period.start, #messages.msg('format.date.month.xxxl'), #locale)))}">
                                 You can find here the details of the attendance for the current month (April 2017)
                                 </span>
                             </p>
@@ -141,32 +142,39 @@
                                     <div id="container"></div>
                                 </div>
                                 <div class="col-lg-2 col-md-3 col-sm-4">
-                                    <h3 class="f-w-300 m-t-0" th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.month'), #locale))}">
+                                    <h3 class="f-w-300 m-t-0" 
+                                        th:if="${currentMonthAttendance.minAttendance} != null"
+                                        th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.month.xxxl'), #locale))}">
                                         April 2017</h3>
 
                                     <h3 class="f-w-300 m-t-0 m-b-0 text-primary" th:text="${currentMonthAttendance.averageAttendance}">70</h3>
                                     <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{page.meeting.attendance.average}">Average attendance</p>
 
                                     <h3 class="f-w-300 m-t-1 m-b-0">
-                                        <span th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
+                                        <span th:if="${currentMonthAttendance.maxAttendance} != null" 
+                                            th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
                                         <small><i class="fa fa-caret-up text-success"></i></small>
                                     </h3>
                                     <p class="m-b-0 m-t-0 text-gray-lighter">
                                         <span th:text="#{page.meeting.attendance.max}">Max attendance</span>
                                     </p>
                                     <p class="m-t-0 m-b-1 text-gray-light">
-                                        <span th:text="${#temporals.format(currentMonthAttendance.maxAttendance.date, #messages.msg('format.date.xl'), #locale)}">Sunday, April 28th</span>
+                                        <span
+                                            th:if="${currentMonthAttendance.maxAttendance} != null" 
+                                            th:text="${#temporals.format(currentMonthAttendance.maxAttendance.date, #messages.msg('format.date.xl'), #locale)}">Sunday, April 28th</span>
                                     </p>
 
                                     <h3 class="f-w-300 m-t-1 m-b-0">
-                                        <span th:text="${currentMonthAttendance.minAttendance.attendance}">50</span>
+                                        <span th:if="${currentMonthAttendance.minAttendance} != null" 
+                                            th:text="${currentMonthAttendance.minAttendance.attendance}">50</span>
                                         <small><i class="fa fa-caret-down text-danger"></i></small>
                                     </h3>
                                     <p class="m-b-0 m-t-0 text-gray-lighter">
                                         <span th:text="#{page.meeting.attendance.min}">Min attendance</span>
                                     </p>
                                     <p class="m-t-0 m-b-1 text-gray-light">
-                                        <span th:text="${#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
+                                        <span th:if="${currentMonthAttendance.minAttendance} != null"
+                                             th:text="${#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
                                     </p>
 
                                     <div th:if="${currentMonthAttendance.memorialAttendance} != null">
@@ -217,27 +225,27 @@
                                     <h3 class="f-w-300 m-t-0 m-b-0 text-primary" th:text="${yearAttendance.averageAttendance}">70</h3>
                                     <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{page.meeting.attendance.average}">Average attendance</p>
 
-                                    <div class="col-sm-6 pull-left p-l-0">
+                                    <div class="col-sm-6 pull-left p-l-0" th:if="${yearAttendance.minAverage} != null">
                                         <h3 class="f-w-300 m-t-1 m-b-0">
                                             <span th:text="${yearAttendance.minAverage.averageAttendance}">90</span>
                                             <small><i class="fa fa-caret-down text-danger"></i></small>
                                         </h3>
                                         <p class="m-t-0 m-b-1 text-gray-light">
-                                            <span th:text="${#temporals.format(yearAttendance.minAverage.period.start, 'MMM yy')}">Sunday, April 28th</span>
+                                            <span th:text="${#temporals.format(yearAttendance.minAverage.period.start, #messages.msg('format.date.month'))}">Sunday, April 28th</span>
                                         </p>
                                     </div>
-                                    <div class="col-sm-6 pull-right p-r-0">
+                                    <div class="col-sm-6 pull-right p-r-0" th:if="${yearAttendance.maxAverage} != null">
                                         <h3 class="f-w-300 m-t-1 m-b-0">
                                             <span th:text="${yearAttendance.maxAverage.averageAttendance}">90</span>
                                             <small><i class="fa fa-caret-up text-success"></i></small>
                                         </h3>
                                         <p class="m-t-0 m-b-1 text-gray-light">
-                                            <span th:text="${#temporals.format(yearAttendance.maxAverage.period.start, 'MMM yy')}">Sunday, April 28th</span>
+                                            <span th:text="${#temporals.format(yearAttendance.maxAverage.period.start, #messages.msg('format.date.month'))}">Sunday, April 28th</span>
                                         </p>
                                     </div>
                                     <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{general.average}">Average</p>
 
-                                    <div class="col-sm-6 pull-left p-l-0">
+                                    <div class="col-sm-6 pull-left p-l-0" th:if="${yearAttendance.minAttendance} != null">
                                         <h3 class="f-w-300 m-t-1 m-b-0">
                                             <span th:text="${yearAttendance.minAttendance.attendance}">90</span>
                                             <small><i class="fa fa-caret-down text-danger"></i></small>
@@ -246,7 +254,7 @@
                                             <span th:text="${#temporals.format(yearAttendance.minAttendance.date, 'EEE d MMM')}">Sunday, April 28th</span>
                                         </p>
                                     </div>
-                                    <div class="col-sm-6 pull-right p-r-0">
+                                    <div class="col-sm-6 pull-right p-r-0" th:if="${yearAttendance.maxAttendance} != null">
                                         <h3 class="f-w-300 m-t-1 m-b-0">
                                             <span th:text="${yearAttendance.maxAttendance.attendance}">90</span>
                                             <small><i class="fa fa-caret-up text-success"></i></small>
@@ -269,6 +277,33 @@
                                             <span th:text="${#temporals.format(yearAttendance.memorial.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
                                         </p>
                                     </div>
+                                </div>
+                            </div>
+                            <div class="row m-t-3" th:if="${globalAttendance} != null">
+                                <div class="col-sm-12">
+                                    <table class="table table-striped text-center">
+                                        <thead>
+                                            <tr>
+                                                <th></th>
+                                                <th class="small text-muted text-uppercase text-center" th:each="month : ${shortMonthNamesForTheocraticYear}">
+                                                    <span th:text="${month}"></span>
+                                                </th> 
+                                                <th class="small text-muted text-uppercase text-right" th:text="#{general.average}">Average</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr th:each="yAttendance : ${globalAttendance.attendances}">
+                                                <td class="text-white text-left">
+                                                    <span th:text="${yAttendance.toString()}"></span>
+                                                </td>
+                                                <td th:each="month : ${yAttendance.attendances}">
+                                                    <span th:if="${month} != null" th:text="${month.averageAttendance}"></span>
+                                                    <span th:if="${month} == null" >-</span>
+                                                </td>
+                                                <td class="text-white text-right" th:text="${yAttendance.averageAttendance}"></td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
                         </div>
@@ -312,7 +347,7 @@
             <div class="panel-heading" th:text="#{page.meeting.attendance.result.monthly}">Monthly results</div>
             <div class="panel-body">
                 <div th:each="monthAttendance, status : ${yearAttendance.attendances}">
-                    <div class="col-lg-3 col-md-4 col-sm-6">
+                    <div class="col-lg-3 col-md-4 col-sm-6" th:if="${monthAttendance} != null">
                         <div class="panel no-bg b-a-2 collapsible-panel collapsed"
                              th:classappend="${monthAttendance.period.currentPeriod} ? 'panel-primary b-primary' : 'panel-info'">
                             <div class="panel-heading">
@@ -349,13 +384,13 @@
                                                           th:if="${attendance.memorial}">
                                                         <small><i class="fa fa-star"></i></small>
                                                     </span>
-                                                    <span class="text-warning" data-toggle="tooltip" data-placement="bottom" title="special week" th:if="${attendance.specialWeek}">
+                                                    <span class="text-warning" data-toggle="tooltip" data-placement="bottom" th:title="#{general.special.week}" th:if="${attendance.specialWeek}">
                                                         <small><i class="fa fa-star"></i></small>
                                                     </span>
-                                                    <span class="text-success" data-toggle="tooltip" data-placement="bottom" title="max of month" th:if="${attendance.maxOfMonth}">
+                                                    <span class="text-success" data-toggle="tooltip" data-placement="bottom" th:title="#{page.meeting.attendance.max.month}" th:if="${attendance.maxOfMonth}">
                                                         <small><i class="fa fa-caret-up"></i></small>
                                                     </span>
-                                                    <span class="text-danger" data-toggle="tooltip" data-placement="bottom" title="min of month" th:if="${attendance.minOfMonth}">
+                                                    <span class="text-danger" data-toggle="tooltip" data-placement="bottom" th:title="#{page.meeting.attendance.min.month}" th:if="${attendance.minOfMonth}">
                                                         <small><i class="fa fa-caret-down"></i></small>
                                                     </span> &#160;
                                                     <span class="text-white" th:text="${attendance.attendance}"></span> &#160;
