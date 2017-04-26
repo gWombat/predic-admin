@@ -12,7 +12,7 @@ public class ContactDetailVoBuilder {
 
     }
 
-    public static ContactDetailVoBuilder begin() {
+    public static ContactDetailVoBuilder create() {
         return new ContactDetailVoBuilder();
     }
 

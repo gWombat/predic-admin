@@ -24,7 +24,7 @@ public class YearAttendanceVoBuilder {
         attendances = new ArrayList<>(0);
     }
 
-    public static YearAttendanceVoBuilder begin() {
+    public static YearAttendanceVoBuilder create() {
         return new YearAttendanceVoBuilder();
     }
 

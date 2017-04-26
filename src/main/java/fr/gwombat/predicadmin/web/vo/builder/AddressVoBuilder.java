@@ -12,7 +12,7 @@ public class AddressVoBuilder {
     private AddressVoBuilder() {
     }
 
-    public static AddressVoBuilder begin() {
+    public static AddressVoBuilder create() {
         return new AddressVoBuilder();
     }
 

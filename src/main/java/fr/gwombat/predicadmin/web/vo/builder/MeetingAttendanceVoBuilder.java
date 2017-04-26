@@ -16,7 +16,7 @@ public class MeetingAttendanceVoBuilder {
 
     }
 
-    public static MeetingAttendanceVoBuilder begin() {
+    public static MeetingAttendanceVoBuilder create() {
         return new MeetingAttendanceVoBuilder();
     }
 

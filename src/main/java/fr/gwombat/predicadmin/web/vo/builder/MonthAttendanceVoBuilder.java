@@ -25,7 +25,7 @@ public class MonthAttendanceVoBuilder {
         attendances = new ArrayList<>(0);
     }
 
-    public static MonthAttendanceVoBuilder begin() {
+    public static MonthAttendanceVoBuilder create() {
         return new MonthAttendanceVoBuilder();
     }
 
