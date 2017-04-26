@@ -1,4 +1,4 @@
-package fr.gwombat.predicadmin.model;
+package fr.gwombat.predicadmin.model.entities;
 
 import java.util.List;
 
@@ -40,9 +40,6 @@ public class Congregation extends AuditableEntity {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
     private List<Publisher> publishers;
 
-    /*@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "congregation")
-    private List<TheocraticYear>        years;*/
-    
     @Override
     public String toString() {
         return name + "[" + identifier + "]";

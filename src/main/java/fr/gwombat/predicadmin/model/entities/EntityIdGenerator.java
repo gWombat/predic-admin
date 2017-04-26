@@ -1,4 +1,4 @@
-package fr.gwombat.predicadmin.model;
+package fr.gwombat.predicadmin.model.entities;
 
 import java.util.UUID;
 
