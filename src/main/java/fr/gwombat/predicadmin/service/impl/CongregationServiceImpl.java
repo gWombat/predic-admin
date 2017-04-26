@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.gwombat.predicadmin.model.Congregation;
+import fr.gwombat.predicadmin.model.entities.Congregation;
 import fr.gwombat.predicadmin.repository.CongregationRepository;
 import fr.gwombat.predicadmin.service.CongregationService;
 

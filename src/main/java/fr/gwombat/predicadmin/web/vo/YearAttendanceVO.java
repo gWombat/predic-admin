@@ -1,20 +1,19 @@
 package fr.gwombat.predicadmin.web.vo;
 
 import java.time.Year;
-import java.util.List;
 
 import fr.gwombat.predicadmin.web.vo.builder.YearAttendanceVoBuilder;
 
 public class YearAttendanceVO {
 
-    private final Year                    year;
-    private final MeetingAttendanceVO     maxAttendance;
-    private final MeetingAttendanceVO     minAttendance;
-    private final MeetingAttendanceVO     memorial;
-    private final MonthAttendanceVO       maxAverage;
-    private final MonthAttendanceVO       minAverage;
-    private final int                     averageAttendance;
-    private final List<MonthAttendanceVO> attendances;
+    private final Year                year;
+    private final MeetingAttendanceVO maxAttendance;
+    private final MeetingAttendanceVO minAttendance;
+    private final MeetingAttendanceVO memorial;
+    private final MonthAttendanceVO   maxAverage;
+    private final MonthAttendanceVO   minAverage;
+    private final int                 averageAttendance;
+    private MonthAttendanceVO[]       attendances;
 
     public YearAttendanceVO(YearAttendanceVoBuilder builder) {
         this.attendances = builder.getAttendances();
@@ -45,7 +44,7 @@ public class YearAttendanceVO {
         return averageAttendance;
     }
 
-    public List<MonthAttendanceVO> getAttendances() {
+    public MonthAttendanceVO[] getAttendances() {
         return attendances;
     }
 

@@ -13,9 +13,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.Assert;
 
-import fr.gwombat.predicadmin.model.Congregation;
-import fr.gwombat.predicadmin.model.MeetingAttendance;
 import fr.gwombat.predicadmin.model.MonthAttendance;
+import fr.gwombat.predicadmin.model.entities.Congregation;
+import fr.gwombat.predicadmin.model.entities.MeetingAttendance;
 import fr.gwombat.predicadmin.service.MeetingAttendanceService;
 import fr.gwombat.predicadmin.service.MonthAttendanceService;
 import fr.gwombat.predicadmin.support.period.Period;

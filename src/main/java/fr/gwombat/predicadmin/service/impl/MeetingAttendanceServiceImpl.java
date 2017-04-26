@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import fr.gwombat.predicadmin.model.Congregation;
-import fr.gwombat.predicadmin.model.MeetingAttendance;
+import fr.gwombat.predicadmin.model.entities.Congregation;
+import fr.gwombat.predicadmin.model.entities.MeetingAttendance;
 import fr.gwombat.predicadmin.repository.MeetingAttendanceRepository;
 import fr.gwombat.predicadmin.service.MeetingAttendanceService;
 import fr.gwombat.predicadmin.support.period.Period;

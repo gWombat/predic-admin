@@ -1,9 +1,10 @@
 package fr.gwombat.predicadmin.web.transformer;
 
-import fr.gwombat.predicadmin.model.MeetingAttendance;
+import fr.gwombat.predicadmin.model.entities.MeetingAttendance;
 import fr.gwombat.predicadmin.web.form.MeetingAttendanceForm;
 import fr.gwombat.predicadmin.web.vo.MeetingAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.builder.MeetingAttendanceVoBuilder;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Component;
@@ -50,7 +51,7 @@ public class MeetingAttendanceTransformer extends AbstractEntityTransformer<Meet
 
     @Override
     public MeetingAttendanceVO toViewObject(final MeetingAttendance entity) {
-        MeetingAttendanceVoBuilder builder = MeetingAttendanceVoBuilder.begin();
+        MeetingAttendanceVoBuilder builder = MeetingAttendanceVoBuilder.create();
         if(entity != null)
             builder = builder.attendance(entity.getAttendance())
                 .date(entity.getDate())

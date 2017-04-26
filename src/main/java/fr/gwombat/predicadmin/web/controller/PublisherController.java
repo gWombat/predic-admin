@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.gwombat.predicadmin.exception.ResourceNotFoundException;
-import fr.gwombat.predicadmin.model.Publisher;
+import fr.gwombat.predicadmin.model.entities.Publisher;
 import fr.gwombat.predicadmin.service.CongregationService;
 import fr.gwombat.predicadmin.service.PublisherService;
 import fr.gwombat.predicadmin.support.Gender;

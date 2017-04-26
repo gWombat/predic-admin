@@ -1,11 +1,12 @@
 package fr.gwombat.predicadmin.web.transformer;
 
-import fr.gwombat.predicadmin.model.Publisher;
+import fr.gwombat.predicadmin.model.entities.Publisher;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.vo.AddressVO;
 import fr.gwombat.predicadmin.web.vo.ContactDetailVO;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
 import fr.gwombat.predicadmin.web.vo.builder.PublisherVoBuilder;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,7 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
             final AddressVO addressVo = addressTransformer.toViewObject(publisher.getAddress());
             final ContactDetailVO contactDetailVo = contactDetailTransformer.toViewObject(publisher.getContactDetail());
 
-            final PublisherVoBuilder builder = PublisherVoBuilder.begin(contactDetailVo, addressVo)
+            final PublisherVoBuilder builder = PublisherVoBuilder.create(contactDetailVo, addressVo)
                                                                  .fullName(publisher.getFullName())
                                                                  .identifier(publisher.getIdentifier())
                                                                  .birthDate(publisher.getBirthDate())

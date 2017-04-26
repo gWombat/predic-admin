@@ -1,27 +1,25 @@
 package fr.gwombat.predicadmin.web.vo.builder;
 
+import java.time.Year;
+
 import fr.gwombat.predicadmin.web.vo.MeetingAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.YearAttendanceVO;
 
-import java.time.Year;
-import java.util.ArrayList;
-import java.util.List;
-
 public class YearAttendanceVoBuilder {
 
-    private int                     intYear;
-    private Year                    year;
-    private MeetingAttendanceVO     maxAttendance;
-    private MeetingAttendanceVO     minAttendance;
-    private MeetingAttendanceVO     memorial;
-    private int                     averageAttendance;
-    private MonthAttendanceVO       maxAverage;
-    private MonthAttendanceVO       minAverage;
-    private List<MonthAttendanceVO> attendances;
+    private int                 intYear;
+    private Year                year;
+    private MeetingAttendanceVO maxAttendance;
+    private MeetingAttendanceVO minAttendance;
+    private MeetingAttendanceVO memorial;
+    private int                 averageAttendance;
+    private MonthAttendanceVO   maxAverage;
+    private MonthAttendanceVO   minAverage;
+    private MonthAttendanceVO[] attendances;
 
     private YearAttendanceVoBuilder() {
-        attendances = new ArrayList<>(0);
+        attendances = new MonthAttendanceVO[12];
     }
 
     public static YearAttendanceVoBuilder create() {
@@ -49,7 +47,7 @@ public class YearAttendanceVoBuilder {
     }
 
     public YearAttendanceVoBuilder averageAttendance(final Integer averageAttendance) {
-        if(averageAttendance != null)
+        if (averageAttendance != null)
             this.averageAttendance = averageAttendance;
         else
             this.averageAttendance = 0;
@@ -57,8 +55,8 @@ public class YearAttendanceVoBuilder {
     }
 
     public YearAttendanceVoBuilder addMonthAttendance(final MonthAttendanceVO monthAttendance) {
-        if(monthAttendance != null)
-            attendances.add(monthAttendance);
+        if (monthAttendance != null)
+            attendances[(monthAttendance.getPeriod().getMonth() + 3) % 12] = monthAttendance;
         return this;
     }
 
@@ -89,10 +87,6 @@ public class YearAttendanceVoBuilder {
         return averageAttendance;
     }
 
-    public List<MonthAttendanceVO> getAttendances() {
-        return attendances;
-    }
-
     public MeetingAttendanceVO getMinAttendance() {
         return minAttendance;
     }
@@ -107,6 +101,10 @@ public class YearAttendanceVoBuilder {
 
     public MeetingAttendanceVO getMemorial() {
         return memorial;
+    }
+
+    public MonthAttendanceVO[] getAttendances() {
+        return attendances;
     }
 
 }

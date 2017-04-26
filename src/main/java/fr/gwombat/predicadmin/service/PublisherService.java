@@ -1,7 +1,7 @@
 package fr.gwombat.predicadmin.service;
 
-import fr.gwombat.predicadmin.model.Congregation;
-import fr.gwombat.predicadmin.model.Publisher;
+import fr.gwombat.predicadmin.model.entities.Congregation;
+import fr.gwombat.predicadmin.model.entities.Publisher;
 
 import java.util.List;
 

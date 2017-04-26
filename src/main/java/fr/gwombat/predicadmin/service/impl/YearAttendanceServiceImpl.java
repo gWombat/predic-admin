@@ -12,10 +12,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.CollectionUtils;
 
-import fr.gwombat.predicadmin.model.Congregation;
 import fr.gwombat.predicadmin.model.MonthAttendance;
 import fr.gwombat.predicadmin.model.TheocraticYear;
 import fr.gwombat.predicadmin.model.YearAttendance;
+import fr.gwombat.predicadmin.model.entities.Congregation;
 import fr.gwombat.predicadmin.service.MonthAttendanceService;
 import fr.gwombat.predicadmin.service.YearAttendanceService;
 

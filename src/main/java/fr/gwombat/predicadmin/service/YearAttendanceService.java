@@ -2,9 +2,9 @@ package fr.gwombat.predicadmin.service;
 
 import java.util.List;
 
-import fr.gwombat.predicadmin.model.Congregation;
 import fr.gwombat.predicadmin.model.TheocraticYear;
 import fr.gwombat.predicadmin.model.YearAttendance;
+import fr.gwombat.predicadmin.model.entities.Congregation;
 
 public interface YearAttendanceService {
 

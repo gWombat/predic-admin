@@ -3,8 +3,8 @@ package fr.gwombat.predicadmin.service;
 import java.time.LocalDate;
 import java.util.List;
 
-import fr.gwombat.predicadmin.model.Congregation;
-import fr.gwombat.predicadmin.model.MeetingAttendance;
+import fr.gwombat.predicadmin.model.entities.Congregation;
+import fr.gwombat.predicadmin.model.entities.MeetingAttendance;
 import fr.gwombat.predicadmin.support.period.Period;
 
 public interface MeetingAttendanceService {

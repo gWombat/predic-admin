@@ -27,10 +27,10 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import fr.gwombat.predicadmin.model.MeetingAttendance;
 import fr.gwombat.predicadmin.model.MonthAttendance;
 import fr.gwombat.predicadmin.model.TheocraticYear;
 import fr.gwombat.predicadmin.model.YearAttendance;
+import fr.gwombat.predicadmin.model.entities.MeetingAttendance;
 import fr.gwombat.predicadmin.service.CongregationService;
 import fr.gwombat.predicadmin.service.MeetingAttendanceService;
 import fr.gwombat.predicadmin.service.MonthAttendanceService;
@@ -41,10 +41,12 @@ import fr.gwombat.predicadmin.web.alert.AlertMessage;
 import fr.gwombat.predicadmin.web.alert.DangerAlertMessage;
 import fr.gwombat.predicadmin.web.alert.SuccessAlertMessage;
 import fr.gwombat.predicadmin.web.form.MeetingAttendanceForm;
+import fr.gwombat.predicadmin.web.transformer.GlobalAttendanceTransformer;
 import fr.gwombat.predicadmin.web.transformer.MeetingAttendanceTransformer;
 import fr.gwombat.predicadmin.web.transformer.MonthAttendanceTransformer;
 import fr.gwombat.predicadmin.web.transformer.YearAttendanceTransformer;
 import fr.gwombat.predicadmin.web.validator.MeetingAttendanceValidator;
+import fr.gwombat.predicadmin.web.vo.GlobalAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.YearAttendanceVO;
 
@@ -52,29 +54,19 @@ import fr.gwombat.predicadmin.web.vo.YearAttendanceVO;
 @RequestMapping("/attendance")
 public class MeetingAttendanceController {
 
-    private static final Logger                logger = LoggerFactory.getLogger(MeetingAttendanceController.class);
+    private static final Logger          logger = LoggerFactory.getLogger(MeetingAttendanceController.class);
 
-    private final MeetingAttendanceService     meetingAttendanceService;
-    private final YearAttendanceService        yearAttendanceService;
-    private MonthAttendanceService             monthAttendanceService;
-    private final CongregationService          congregationService;
+    private MeetingAttendanceService     meetingAttendanceService;
+    private YearAttendanceService        yearAttendanceService;
+    private MonthAttendanceService       monthAttendanceService;
+    private CongregationService          congregationService;
 
-    private final MeetingAttendanceTransformer meetingAttendanceTransformer;
-    private final YearAttendanceTransformer    yearAttendanceTransformer;
-    private MonthAttendanceTransformer         monthAttendanceTransformer;
+    private MeetingAttendanceTransformer meetingAttendanceTransformer;
+    private YearAttendanceTransformer    yearAttendanceTransformer;
+    private MonthAttendanceTransformer   monthAttendanceTransformer;
+    private GlobalAttendanceTransformer  globalAttendanceTransformer;
 
-    private final MessageSource                messageSource;
-
-    @Autowired
-    public MeetingAttendanceController(final MeetingAttendanceService meetingAttendanceService, final MeetingAttendanceTransformer meetingAttendancetransformer, final YearAttendanceService yearAttendanceService, final CongregationService congregationService, final MonthAttendanceService monthAttendanceService, final YearAttendanceTransformer yearAttendanceTransformer, final MessageSource messageSource) {
-
-        this.meetingAttendanceService = meetingAttendanceService;
-        this.meetingAttendanceTransformer = meetingAttendancetransformer;
-        this.congregationService = congregationService;
-        this.yearAttendanceService = yearAttendanceService;
-        this.yearAttendanceTransformer = yearAttendanceTransformer;
-        this.messageSource = messageSource;
-    }
+    private MessageSource                messageSource;
 
     @ModelAttribute("yearAttendance")
     public YearAttendanceVO getYearAttendance() {
@@ -92,6 +84,13 @@ public class MeetingAttendanceController {
         return attendanceVO;
     }
 
+    @ModelAttribute("globalAttendance")
+    public GlobalAttendanceVO getGlobalAttendance() {
+        final List<YearAttendance> attendances = yearAttendanceService.getAttendancesForCongregation(congregationService.getCurrentCongregation());
+        final GlobalAttendanceVO globalAttendanceVo = globalAttendanceTransformer.toViewObject(attendances);
+        return globalAttendanceVo;
+    }
+
     @ModelAttribute("monthNames")
     public List<String> getMonthsNames() {
         final Locale locale = LocaleContextHolder.getLocale();
@@ -104,6 +103,17 @@ public class MeetingAttendanceController {
         final Locale locale = LocaleContextHolder.getLocale();
         final String[] monthNames = DateFormatSymbols.getInstance(locale).getShortMonths();
         return convertArrayToList(monthNames);
+    }
+
+    @ModelAttribute("shortMonthNamesForTheocraticYear")
+    public List<String> getShortMonthsNamesForTheocraticYear() {
+        final List<String> shortMonthNames = getShortMonthsNames();
+
+        final String[] orderedMonthNames = new String[12];
+        for (int i = 0; i < shortMonthNames.size(); i++)
+            orderedMonthNames[(i + 4) % 12] = shortMonthNames.get(i);
+
+        return convertArrayToList(orderedMonthNames);
     }
 
     @ModelAttribute("weekdaysNames")
@@ -191,6 +201,41 @@ public class MeetingAttendanceController {
     @Autowired
     public void setMonthAttendanceTransformer(MonthAttendanceTransformer monthAttendanceTransformer) {
         this.monthAttendanceTransformer = monthAttendanceTransformer;
+    }
+
+    @Autowired
+    public void setGlobalAttendanceTransformer(GlobalAttendanceTransformer globalAttendanceTransformer) {
+        this.globalAttendanceTransformer = globalAttendanceTransformer;
+    }
+
+    @Autowired
+    public void setMeetingAttendanceService(MeetingAttendanceService meetingAttendanceService) {
+        this.meetingAttendanceService = meetingAttendanceService;
+    }
+
+    @Autowired
+    public void setYearAttendanceService(YearAttendanceService yearAttendanceService) {
+        this.yearAttendanceService = yearAttendanceService;
+    }
+
+    @Autowired
+    public void setCongregationService(CongregationService congregationService) {
+        this.congregationService = congregationService;
+    }
+
+    @Autowired
+    public void setMeetingAttendanceTransformer(MeetingAttendanceTransformer meetingAttendanceTransformer) {
+        this.meetingAttendanceTransformer = meetingAttendanceTransformer;
+    }
+
+    @Autowired
+    public void setYearAttendanceTransformer(YearAttendanceTransformer yearAttendanceTransformer) {
+        this.yearAttendanceTransformer = yearAttendanceTransformer;
+    }
+
+    @Autowired
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 
 }

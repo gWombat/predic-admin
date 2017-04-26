@@ -5,7 +5,7 @@ import org.apache.commons.lang3.text.WordUtils;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 
-import fr.gwombat.predicadmin.model.Address;
+import fr.gwombat.predicadmin.model.entities.Address;
 import fr.gwombat.predicadmin.web.form.AddressForm;
 import fr.gwombat.predicadmin.web.vo.AddressVO;
 import fr.gwombat.predicadmin.web.vo.builder.AddressVoBuilder;
@@ -56,7 +56,7 @@ class AddressTransformer extends AbstractEntityTransformer<Address, AddressForm,
 
     @Override
     public AddressVO toViewObject(final Address address) {
-        AddressVoBuilder builder = AddressVoBuilder.begin();
+        AddressVoBuilder builder = AddressVoBuilder.create();
         if(address != null)
             builder = builder
                     .city(address.getCity())

@@ -1,10 +1,13 @@
 package fr.gwombat.predicadmin.web.transformer;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.ArrayUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
@@ -33,7 +36,7 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
     public YearAttendanceVO toViewObject(YearAttendance entity) {
         YearAttendanceVO yearAttendanceVo = null;
         if (entity != null) {
-            YearAttendanceVoBuilder builder = YearAttendanceVoBuilder.begin().year(entity.getTheocraticYear().getYear().getValue());
+            YearAttendanceVoBuilder builder = YearAttendanceVoBuilder.create().year(entity.getTheocraticYear().getYear().getValue());
 
             final List<MonthAttendance> attendances = entity.getAttendances();
             if (attendances != null) {
@@ -51,7 +54,7 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
 
             final MeetingAttendanceVO minAttendance = getMaxOrMinAttendance(builder.getAttendances(), MIN);
             builder = builder.minAttendance(minAttendance);
-            
+
             final MeetingAttendanceVO memorial = getMemorial(builder.getAttendances());
             builder = builder.memorial(memorial);
 
@@ -66,44 +69,46 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
 
         return yearAttendanceVo;
     }
-    
-    private static MeetingAttendanceVO getMemorial(final List<MonthAttendanceVO> attendances){
-        if (CollectionUtils.isEmpty(attendances))
+
+    private static MeetingAttendanceVO getMemorial(final MonthAttendanceVO[] attendances) {
+        if (ArrayUtils.isEmpty(attendances))
             return null;
 
         final List<MeetingAttendanceVO> allAttendances = new ArrayList<>(0);
         for (MonthAttendanceVO currentAttendance : attendances)
-            allAttendances.addAll(currentAttendance.getAttendances());
-        
+            if (currentAttendance != null)
+                allAttendances.addAll(currentAttendance.getAttendances());
+
         final List<MeetingAttendanceVO> memorailAttendances = allAttendances.stream().filter(MeetingAttendanceVO::isMemorial).collect(Collectors.toList());
-        if(!CollectionUtils.isEmpty(memorailAttendances))
+        if (!CollectionUtils.isEmpty(memorailAttendances))
             return memorailAttendances.get(0);
-        
+
         return null;
     }
 
-    private static MeetingAttendanceVO getMaxOrMinAttendance(final List<MonthAttendanceVO> attendances, int maxOrMinAttendance) {
-        if (CollectionUtils.isEmpty(attendances))
+    private static MeetingAttendanceVO getMaxOrMinAttendance(final MonthAttendanceVO[] attendances, int maxOrMinAttendance) {
+        if (ArrayUtils.isEmpty(attendances))
             return null;
 
         MeetingAttendanceVO result = null;
 
         final List<MeetingAttendanceVO> allAttendances = new ArrayList<>(0);
         for (MonthAttendanceVO currentAttendance : attendances)
-            allAttendances.addAll(currentAttendance.getAttendances());
+            if (currentAttendance != null)
+                allAttendances.addAll(currentAttendance.getAttendances());
 
         Comparator<MeetingAttendanceVO> comparator = Comparator.comparing(MeetingAttendanceVO::getAttendance);
         if (maxOrMinAttendance == MAX)
             comparator = comparator.reversed();
 
         allAttendances.sort(comparator);
-        result = allAttendances.get(0);
-        allAttendances.sort(Comparator.comparing(MeetingAttendanceVO::getDate));
+        if (!CollectionUtils.isEmpty(allAttendances))
+            result = allAttendances.get(0);
         return result;
     }
 
-    private static MonthAttendanceVO getMaxOrMinAverage(final List<MonthAttendanceVO> attendances, int maxOrMinAttendance) {
-        if (CollectionUtils.isEmpty(attendances))
+    private static MonthAttendanceVO getMaxOrMinAverage(final MonthAttendanceVO[] attendances, int maxOrMinAttendance) {
+        if (ArrayUtils.isEmpty(attendances))
             return null;
 
         MonthAttendanceVO result = null;
@@ -112,13 +117,15 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
         if (maxOrMinAttendance == MAX)
             comparator = comparator.reversed();
 
-        attendances.sort(comparator);
-        result = attendances.get(0);
-        attendances.sort(Comparator.comparing(MonthAttendanceVO::getPeriod));
+        final List<MonthAttendanceVO> listAttendances = Arrays.asList(attendances).stream().filter(Objects::nonNull).collect(Collectors.toList());
+
+        listAttendances.sort(comparator);
+        if (!CollectionUtils.isEmpty(listAttendances))
+            result = listAttendances.get(0);
         return result;
     }
 
-    private static Integer calculateAverageAttendance(final List<MonthAttendanceVO> attendances) {
+    private static Integer calculateAverageAttendance(final MonthAttendanceVO[] attendances) {
         Integer result = null;
         int nbMonthsPassed = 0;
         if (attendances != null) {

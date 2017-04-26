@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
-import fr.gwombat.predicadmin.model.MeetingAttendance;
 import fr.gwombat.predicadmin.model.MonthAttendance;
+import fr.gwombat.predicadmin.model.entities.MeetingAttendance;
 import fr.gwombat.predicadmin.web.vo.MeetingAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.MonthAttendanceVO;
 import fr.gwombat.predicadmin.web.vo.builder.MonthAttendanceVoBuilder;
@@ -25,7 +25,7 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
     public MonthAttendanceVO toViewObject(MonthAttendance entity) {
         MonthAttendanceVO attendanceVo = null;
         if (entity != null) {
-            MonthAttendanceVoBuilder builder = MonthAttendanceVoBuilder.begin().period(entity.getPeriod());
+            MonthAttendanceVoBuilder builder = MonthAttendanceVoBuilder.create().period(entity.getPeriod());
 
             final List<MeetingAttendance> originalAttendances = entity.getAttendances();
             if (!CollectionUtils.isEmpty(originalAttendances)) {

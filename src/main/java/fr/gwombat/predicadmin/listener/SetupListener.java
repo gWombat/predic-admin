@@ -1,10 +1,13 @@
 package fr.gwombat.predicadmin.listener;
 
-import fr.gwombat.predicadmin.model.*;
-import fr.gwombat.predicadmin.repository.CongregationRepository;
-import fr.gwombat.predicadmin.repository.MeetingAttendanceRepository;
-import fr.gwombat.predicadmin.repository.PublisherRepository;
-import fr.gwombat.predicadmin.support.Gender;
+import java.time.LocalDate;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Random;
+import java.util.stream.Collectors;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,9 +16,15 @@ import org.springframework.context.event.EventListener;
 import org.springframework.core.env.Environment;
 import org.springframework.stereotype.Component;
 
-import java.time.LocalDate;
-import java.util.*;
-import java.util.stream.Collectors;
+import fr.gwombat.predicadmin.model.entities.Address;
+import fr.gwombat.predicadmin.model.entities.Congregation;
+import fr.gwombat.predicadmin.model.entities.ContactDetail;
+import fr.gwombat.predicadmin.model.entities.MeetingAttendance;
+import fr.gwombat.predicadmin.model.entities.Publisher;
+import fr.gwombat.predicadmin.repository.CongregationRepository;
+import fr.gwombat.predicadmin.repository.MeetingAttendanceRepository;
+import fr.gwombat.predicadmin.repository.PublisherRepository;
+import fr.gwombat.predicadmin.support.Gender;
 
 @Component
 public class SetupListener {
@@ -98,7 +107,7 @@ public class SetupListener {
 
         publisher = publisherRepository.save(publisher);
 
-        initAttendance(congreg);
+        //initAttendance(congreg);
 
         setUp = true;
     }

@@ -1,7 +1,7 @@
 package fr.gwombat.predicadmin.service.impl;
 
-import fr.gwombat.predicadmin.model.Congregation;
-import fr.gwombat.predicadmin.model.Publisher;
+import fr.gwombat.predicadmin.model.entities.Congregation;
+import fr.gwombat.predicadmin.model.entities.Publisher;
 import fr.gwombat.predicadmin.repository.PublisherRepository;
 import fr.gwombat.predicadmin.service.PublisherService;
 

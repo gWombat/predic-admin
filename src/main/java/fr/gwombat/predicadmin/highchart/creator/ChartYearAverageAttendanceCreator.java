@@ -52,9 +52,8 @@ public class ChartYearAverageAttendanceCreator extends AbstractHighchartDataTran
                 if (i > 0)
                     serie.setVisible(false);
 
-                if (!CollectionUtils.isEmpty(yearAttendanceVo.getAttendances())) {
-                    final MonthAttendanceVO[] orderedAttendances = orderYearAttendances(yearAttendanceVo.getAttendances());
-                    for (MonthAttendanceVO monthAttendanceVo : orderedAttendances) {
+                if (yearAttendanceVo.getAttendances() != null) {
+                    for (MonthAttendanceVO monthAttendanceVo : yearAttendanceVo.getAttendances()) {
                         final Point point = new Point();
                         if (monthAttendanceVo != null)
                             point.setY(monthAttendanceVo.getAverageAttendance());
@@ -111,19 +110,6 @@ public class ChartYearAverageAttendanceCreator extends AbstractHighchartDataTran
         }
 
         return categories;
-    }
-
-    private MonthAttendanceVO[] orderYearAttendances(final List<MonthAttendanceVO> attendances) {
-        final MonthAttendanceVO[] result = new MonthAttendanceVO[12];
-
-        if (!CollectionUtils.isEmpty(attendances)) {
-            for (MonthAttendanceVO monthAttendance : attendances) {
-                if (monthAttendance != null)
-                    result[(monthAttendance.getPeriod().getMonth() + 3) % 12] = monthAttendance;
-            }
-        }
-
-        return result;
     }
 
     @Autowired

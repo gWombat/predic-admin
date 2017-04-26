@@ -8,10 +8,11 @@ import com.google.i18n.phonenumbers.NumberParseException;
 import com.google.i18n.phonenumbers.PhoneNumberUtil;
 import com.google.i18n.phonenumbers.Phonenumber;
 
-import fr.gwombat.predicadmin.model.ContactDetail;
+import fr.gwombat.predicadmin.model.entities.ContactDetail;
 import fr.gwombat.predicadmin.web.form.ContactDetailForm;
 import fr.gwombat.predicadmin.web.vo.ContactDetailVO;
 import fr.gwombat.predicadmin.web.vo.builder.ContactDetailVoBuilder;
+
 import org.springframework.context.MessageSource;
 
 class ContactDetailTransformer extends AbstractEntityTransformer<ContactDetail, ContactDetailForm, ContactDetailVO> {
@@ -53,9 +54,9 @@ class ContactDetailTransformer extends AbstractEntityTransformer<ContactDetail, 
 
     @Override
     public ContactDetailVO toViewObject(final ContactDetail contactDetail) {
-        ContactDetailVoBuilder builder = ContactDetailVoBuilder.begin();
+        ContactDetailVoBuilder builder = ContactDetailVoBuilder.create();
         if (contactDetail != null)
-            builder = ContactDetailVoBuilder.begin()
+            builder = ContactDetailVoBuilder.create()
                     .email(contactDetail.getEmail())
                     .mobilePhone(formatPhoneNumber(contactDetail.getMobilePhone()))
                     .phone(formatPhoneNumber(contactDetail.getPhone()));
