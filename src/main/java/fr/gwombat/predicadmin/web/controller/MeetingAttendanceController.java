@@ -80,7 +80,8 @@ public class MeetingAttendanceController {
     public MonthAttendanceVO getCurrentMonthAttendance() {
         final Period currentPeriod = PeriodBuilder.init().build();
         final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(congregationService.getCurrentCongregation(), currentPeriod);
-        final MonthAttendanceVO attendanceVO = monthAttendanceTransformer.toViewObject(monthAttendance);
+        MonthAttendanceVO attendanceVO = monthAttendanceTransformer.toViewObject(monthAttendance);
+        
         return attendanceVO;
     }
 

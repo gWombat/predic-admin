@@ -2,6 +2,8 @@ package fr.gwombat.predicadmin.web.vo;
 
 import java.time.Year;
 
+import org.apache.commons.lang3.ArrayUtils;
+
 import fr.gwombat.predicadmin.web.vo.builder.YearAttendanceVoBuilder;
 
 public class YearAttendanceVO {
@@ -30,6 +32,23 @@ public class YearAttendanceVO {
     public String toString() {
         final int yearValue = year.getValue();
         return String.format("%s-%s", yearValue - 1, yearValue);
+    }
+    
+    public boolean isShowable(){
+       return !isAllAttendancesEmptyOrNull()
+                && year != null
+                && maxAverage != null
+                && minAverage != null;
+    }
+    
+    public boolean isAllAttendancesEmptyOrNull(){
+        if(ArrayUtils.isEmpty(attendances))
+            return true;
+        
+        for(MonthAttendanceVO monthAttendance : attendances)
+            if(monthAttendance != null)
+                return false;
+        return true;
     }
 
     public int getYear() {

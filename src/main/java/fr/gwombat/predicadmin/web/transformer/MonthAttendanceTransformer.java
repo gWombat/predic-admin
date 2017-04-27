@@ -24,9 +24,8 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
     @Override
     public MonthAttendanceVO toViewObject(MonthAttendance entity) {
         MonthAttendanceVO attendanceVo = null;
+        MonthAttendanceVoBuilder builder = MonthAttendanceVoBuilder.create().period(entity.getPeriod());
         if (entity != null) {
-            MonthAttendanceVoBuilder builder = MonthAttendanceVoBuilder.create().period(entity.getPeriod());
-
             final List<MeetingAttendance> originalAttendances = entity.getAttendances();
             if (!CollectionUtils.isEmpty(originalAttendances)) {
                 for (MeetingAttendance originalAttendance : originalAttendances) {
@@ -43,10 +42,8 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
 
             final MeetingAttendanceVO minAttendance = getMaxOrMinAttendance(builder.getAttendances(), MIN_ATTENDANCE);
             builder = builder.minAttendance(minAttendance);
-
-            attendanceVo = builder.build();
-
         }
+        attendanceVo = builder.build();
         return attendanceVo;
     }
 

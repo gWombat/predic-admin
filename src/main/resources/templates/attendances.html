@@ -58,13 +58,12 @@
                     <h2 class="m-t-0 f-w-300">
                         <span th:text="${currentMonthAttendance.averageAttendance}">$ 694.00</span>
                     </h2>
-                    <span class="pull-left" th:if="${currentMonthAttendance.minAttendance} != null" 
-                        th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, 'MMMM yyyy', #locale))}">April 2017</span>
-                    <span class="pull-right">
+                    <span class="pull-left" th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.period.start, 'MMMM yyyy', #locale))}">April 2017</span>
+                    <span class="pull-right" th:if="${currentMonthAttendance.maxAttendance} != null and ${currentMonthAttendance.minAttendance} != null">
                         <i class="fa fa-caret-up text-success"></i>
-                        <span th:if="${currentMonthAttendance.maxAttendance} != null" th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
+                        <span th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
                         <i class="fa fa-caret-down text-danger"></i>
-                        <span th:if="${currentMonthAttendance.minAttendance} != null" th:text="${currentMonthAttendance.minAttendance.attendance}">45</span>
+                        <span th:text="${currentMonthAttendance.minAttendance.attendance}">45</span>
                     </span>
                 </div>
             </div>
@@ -77,11 +76,11 @@
                         <span th:text="${yearAttendance.averageAttendance}">$ 694.00</span>
                     </h2>
                     <span class="pull-left" th:text="${yearAttendance}">2016-2017</span>
-                    <span class="pull-right">
+                    <span class="pull-right" th:if="${yearAttendance.maxAverage} != null and ${yearAttendance.minAverage} != null">
                         <i class="fa fa-caret-up text-success"></i>
-                        <span th:if="${yearAttendance.maxAverage} != null" th:text="${yearAttendance.maxAverage.averageAttendance}">90</span>
+                        <span th:text="${yearAttendance.maxAverage.averageAttendance}">90</span>
                         <i class="fa fa-caret-down text-danger"></i>
-                        <span th:if="${yearAttendance.minAverage} != null" th:text="${yearAttendance.minAverage.averageAttendance}">45</span>
+                        <span th:text="${yearAttendance.minAverage.averageAttendance}">45</span>
                     </span>
                 </div>
             </div>
@@ -131,7 +130,21 @@
                         <div class="panel-heading" th:text="#{page.meeting.attendance.month}">
                             Month attendance
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" th:if="${currentMonthAttendance.minAttendance} == null">
+                            <div class="row">
+                                <div class="col-sm-12" th:if="${currentMonthAttendance.minAttendance} == null">
+                                    <h2 class="text-center text-gray" th:text="#{page.meeting.attendance.no.result}">No results found</h2>
+                                    <p class="text-center">
+                                        <button type="button" class="btn btn-default btn-lg" data-toggle="modal"
+                                                data-target="#modal_add_attendance">
+                                            <span th:text="#{page.meeting.attendance.add}">Add</span>&#160;
+                                            <i class="fa fa-plus circle text-gray"></i>
+                                        </button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body" th:if="${currentMonthAttendance.minAttendance} != null">
                             <p class="m-b-2 m-l-2 m-t-1">
                                 <span th:text="${#messages.msg('page.meeting.attendance.chart.month.text', #strings.capitalize(#temporals.format(currentMonthAttendance.period.start, #messages.msg('format.date.month.xxxl'), #locale)))}">
                                 You can find here the details of the attendance for the current month (April 2017)
@@ -143,7 +156,6 @@
                                 </div>
                                 <div class="col-lg-2 col-md-3 col-sm-4">
                                     <h3 class="f-w-300 m-t-0" 
-                                        th:if="${currentMonthAttendance.minAttendance} != null"
                                         th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.month.xxxl'), #locale))}">
                                         April 2017</h3>
 
@@ -206,7 +218,21 @@
                         <div class="panel-heading" th:text="#{page.meeting.attendance.year}">
                             Year average attendance
                         </div>
-                        <div class="panel-body">
+                        <div class="panel-body" th:if="${not yearAttendance.showable}">
+                            <div class="row">
+                                <div class="col-sm-12" th:if="${currentMonthAttendance.minAttendance} == null">
+                                    <h2 class="text-center text-gray" th:text="#{page.meeting.attendance.no.result}">No results found</h2>
+                                    <p class="text-center">
+                                        <button type="button" class="btn btn-default btn-lg" data-toggle="modal"
+                                                data-target="#modal_add_attendance">
+                                            <span th:text="#{page.meeting.attendance.add}">Add</span>&#160;
+                                            <i class="fa fa-plus circle text-gray"></i>
+                                        </button>
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="panel-body" th:if="${yearAttendance.showable}">
                             <p class="m-b-2 m-l-2 m-t-1">
                                 <span th:text="#{page.meeting.attendance.chart.year.text}">You can find here the details of the attendance for the current year (2016-2017)</span>
                                 <i class="fa fa-asterisk" aria-hidden="true"></i>
@@ -225,7 +251,7 @@
                                     <h3 class="f-w-300 m-t-0 m-b-0 text-primary" th:text="${yearAttendance.averageAttendance}">70</h3>
                                     <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{page.meeting.attendance.average}">Average attendance</p>
 
-                                    <div class="col-sm-6 pull-left p-l-0" th:if="${yearAttendance.minAverage} != null">
+                                    <div class="col-sm-6 pull-left p-l-0">
                                         <h3 class="f-w-300 m-t-1 m-b-0">
                                             <span th:text="${yearAttendance.minAverage.averageAttendance}">90</span>
                                             <small><i class="fa fa-caret-down text-danger"></i></small>
@@ -234,7 +260,7 @@
                                             <span th:text="${#temporals.format(yearAttendance.minAverage.period.start, #messages.msg('format.date.month'))}">Sunday, April 28th</span>
                                         </p>
                                     </div>
-                                    <div class="col-sm-6 pull-right p-r-0" th:if="${yearAttendance.maxAverage} != null">
+                                    <div class="col-sm-6 pull-right p-r-0">
                                         <h3 class="f-w-300 m-t-1 m-b-0">
                                             <span th:text="${yearAttendance.maxAverage.averageAttendance}">90</span>
                                             <small><i class="fa fa-caret-up text-success"></i></small>
@@ -331,7 +357,7 @@
         </div>
     </div>
 
-    <div class="row text-center m-t-1 m-b-1">
+    <div class="row text-center m-t-1 m-b-1" th:if="${yearAttendance.showable}">
         <div class="col-sm-12">
             <p>
                 <button type="button" class="btn btn-default" data-toggle="modal"
@@ -342,7 +368,7 @@
         </div>
     </div>
 
-    <div class="row">
+    <div class="row" th:if="${yearAttendance.showable}">
         <div class="panel panel-default no-bg b-a-2 b-gray-dark">
             <div class="panel-heading" th:text="#{page.meeting.attendance.result.monthly}">Monthly results</div>
             <div class="panel-body">
@@ -464,7 +490,6 @@
     <script th:inline="javascript">
         //<![CDATA[
         $(document).ready(function () {
-            var options;
             $('[data-toggle="tooltip"]').tooltip();
 
             $('[data-toggle="confirmation"]').confirmation({
@@ -512,39 +537,30 @@
             var chartMonth;
             var chartYear;
             var chartGlobal;
+            var options;
 
             /* ****************************************************** */
             // CHART MONTH MEETINGS ATTENDANCE
-            $.getJSON('/rest/chart/attendance/month', function (config) {
-                options = config;
-                options.chart.renderTo = 'container';
-                options.tooltip = {
-                    dateTimeLabelFormats: {
-                        day: '%e %B %Y'
+            if($('#container').length){
+                $.getJSON('/rest/chart/attendance/month', function (config) {
+                    options = config;
+                    options.chart.renderTo = 'container';
+                    options.tooltip = {
+                        dateTimeLabelFormats: {
+                            day: '%e %B %Y'
+                        }
                     }
-                }
-                chartMonth = new Highcharts.Chart(options);
-            });
+                    chartMonth = new Highcharts.Chart(options);
+                });
+            }
 
             /* ****************************************************** */
             // CHART YEAR AVERAGE ATTENDANCE
-            $.getJSON('/rest/chart/attendance/year', function (config) {
-                options = config;
-                options.chart.renderTo = 'container_year';
-                options.series[0].fillColor = {
-                    linearGradient: {
-                        x1: 0,
-                        y1: 0,
-                        x2: 0,
-                        y2: 1
-                    },
-                    stops: [
-                        [0, 'rgba(120, 253, 154, .2)'],
-                        [1, 'rgba(120, 253, 154, 0)']
-                    ]
-                };
-                if (options.series[1]) {
-                    options.series[1].fillColor = {
+            if($('#container_year').length){
+                $.getJSON('/rest/chart/attendance/year', function (config) {
+                    options = config;
+                    options.chart.renderTo = 'container_year';
+                    options.series[0].fillColor = {
                         linearGradient: {
                             x1: 0,
                             y1: 0,
@@ -552,74 +568,96 @@
                             y2: 1
                         },
                         stops: [
-                            [0, 'rgba(243, 132, 252, .2)'],
-                            [1, 'rgba(243, 132, 252, 0)']
+                            [0, 'rgba(120, 253, 154, .2)'],
+                            [1, 'rgba(120, 253, 154, 0)']
                         ]
                     };
-                }
-                if (options.series[2]) {
-                    options.series[2].fillColor = {
-                        linearGradient: {
-                            x1: 0,
-                            y1: 0,
-                            x2: 0,
-                            y2: 1
-                        },
-                        stops: [
-                            [0, 'rgba(107, 193, 253, .2)'],
-                            [1, 'rgba(107, 193, 253, 0)']
-                        ]
-                    };
-                }
-                if (options.series[3]) {
-                    options.series[3].fillColor = {
-                        linearGradient: {
-                            x1: 0,
-                            y1: 0,
-                            x2: 0,
-                            y2: 1
-                        },
-                        stops: [
-                            [0, 'rgba(168, 32, 132, .2)'],
-                            [1, 'rgba(168, 32, 132, 0)']
-                        ]
-                    };
-                }
-                if (options.series[4]) {
-                    options.series[4].fillColor = {
-                        linearGradient: {
-                            x1: 0,
-                            y1: 0,
-                            x2: 0,
-                            y2: 1
-                        },
-                        stops: [
-                            [0, 'rgba(104, 254, 224, .2)'],
-                            [1, 'rgba(104, 254, 224, 0)']
-                        ]
-                    };
-                }
-                chartYear = new Highcharts.Chart(options);
-            });
+                    if (options.series[1]) {
+                        options.series[1].fillColor = {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, 'rgba(243, 132, 252, .2)'],
+                                [1, 'rgba(243, 132, 252, 0)']
+                            ]
+                        };
+                    }
+                    if (options.series[2]) {
+                        options.series[2].fillColor = {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, 'rgba(107, 193, 253, .2)'],
+                                [1, 'rgba(107, 193, 253, 0)']
+                            ]
+                        };
+                    }
+                    if (options.series[3]) {
+                        options.series[3].fillColor = {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, 'rgba(168, 32, 132, .2)'],
+                                [1, 'rgba(168, 32, 132, 0)']
+                            ]
+                        };
+                    }
+                    if (options.series[4]) {
+                        options.series[4].fillColor = {
+                            linearGradient: {
+                                x1: 0,
+                                y1: 0,
+                                x2: 0,
+                                y2: 1
+                            },
+                            stops: [
+                                [0, 'rgba(104, 254, 224, .2)'],
+                                [1, 'rgba(104, 254, 224, 0)']
+                            ]
+                        };
+                    }
+                    chartYear = new Highcharts.Chart(options);
+                });
+            }
 
             /* ****************************************************** */
             // CHART ALL ATTENDANCES
-            $.getJSON('/rest/chart/attendance', function (config) {
-                options = config;
-                options.chart.renderTo = 'container_global';
-                options.tooltip = {
-                    formatter: function () {
-                        return Highcharts.dateFormat('%b %Y', new Date(this.x)) + ': ' + this.y;
+            if($('#container_global').length){
+                $.getJSON('/rest/chart/attendance', function (config) {
+                    options = config;
+                    options.chart.renderTo = 'container_global';
+                    options.tooltip = {
+                        formatter: function () {
+                            return Highcharts.dateFormat('%b %Y', new Date(this.x)) + ': ' + this.y;
+                        }
+                    };
+                    chartGlobal = new Highcharts.Chart(options);
+                });
+    
+                $('[data-toggle="tab"]').on('shown.bs.tab', function () {
+                    if(chartMonth){
+                		chartMonth.reflow();
                     }
-                };
-                chartGlobal = new Highcharts.Chart(options);
-            });
-
-            $('[data-toggle="tab"]').on('shown.bs.tab', function () {
-                chartMonth.reflow();
-                chartYear.reflow();
-                chartGlobal.reflow();
-            });
+                    if(chartYear){
+                    	chartYear.reflow();
+                    }
+                    if(chartGlobal){
+                    	chartGlobal.reflow();
+                    }
+                });
+            }
         });
         //]]>
     </script>

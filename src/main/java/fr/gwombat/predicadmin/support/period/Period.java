@@ -91,7 +91,7 @@ public final class Period implements Serializable, Comparable<Period> {
     }
 
     public boolean isBefore(final Period otherPeriod){
-        return compareTo(otherPeriod) < 0;
+        return compareTo(otherPeriod) <= 0;
     }
 
     public boolean isBeforeNow(){

@@ -125,22 +125,19 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
         return result;
     }
 
-    private static Integer calculateAverageAttendance(final MonthAttendanceVO[] attendances) {
-        Integer result = null;
+    private static int calculateAverageAttendance(final MonthAttendanceVO[] attendances) {
+        int result = 0;
         int nbMonthsPassed = 0;
         if (attendances != null) {
             for (MonthAttendanceVO attendance : attendances) {
                 if (attendance != null) {
                     if (attendance.getPeriod().isBeforeNow())
                         nbMonthsPassed++;
-                    if (result == null)
-                        result = 0;
                     if (attendance.getAverageAttendance() != null)
                         result += attendance.getAverageAttendance();
                 }
             }
-            if (result != null)
-                result = result / Math.max(nbMonthsPassed, 1);
+            result = result / Math.max(nbMonthsPassed, 1);
         }
         return result;
     }
