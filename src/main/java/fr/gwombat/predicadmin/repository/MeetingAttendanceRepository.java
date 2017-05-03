@@ -14,6 +14,8 @@ public interface MeetingAttendanceRepository extends JpaRepository<MeetingAttend
     
     MeetingAttendance findByIdentifier(String identifier);
     
+    MeetingAttendance findByCongregationAndMemorialAndDateBetween(Congregation congregation, boolean memorial, LocalDate startDate, LocalDate endDate);
+    
     List<MeetingAttendance> findByCongregationOrderByDateAsc(Congregation congregation);
     
     List<MeetingAttendance> findByCongregationAndDateBetweenOrderByDateAsc(Congregation congregation, LocalDate startDate, LocalDate endDate);

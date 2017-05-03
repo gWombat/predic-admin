@@ -40,7 +40,7 @@ public class ChartAttendanceResource {
     @GetMapping("/month")
     public ChartConfiguration chartResultMonthAttendance() {
         final Congregation currentCongregation = congregationService.getCurrentCongregation();
-        final Period currentPeriod = PeriodBuilder.init().build();
+        final Period currentPeriod = PeriodBuilder.create().build();
         final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(currentCongregation, currentPeriod);
         final ChartConfiguration chartConfig = chartMonthAttendanceCreator.createChartConfiguration(monthAttendance);
 

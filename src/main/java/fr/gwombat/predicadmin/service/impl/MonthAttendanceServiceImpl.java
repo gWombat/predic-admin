@@ -44,7 +44,7 @@ public class MonthAttendanceServiceImpl implements MonthAttendanceService {
         Assert.notNull(startPeriod, "The start period must not be null");
 
         if (endPeriod == null)
-            endPeriod = PeriodBuilder.init().build();
+            endPeriod = PeriodBuilder.create().build();
 
         final LocalDate startDate = startPeriod.getStart().toLocalDate();
         final LocalDate endDate = endPeriod.getEnd().toLocalDate();
@@ -73,7 +73,7 @@ public class MonthAttendanceServiceImpl implements MonthAttendanceService {
         if (attendances != null) {
             final Map<Period, MonthAttendance> mapAttendances = new HashMap<>(0);
             for (MeetingAttendance meetingAttendance : attendances) {
-                final Period period = PeriodBuilder.init().month(meetingAttendance.getDate().getMonthValue()).year(meetingAttendance.getDate().getYear()).build();
+                final Period period = PeriodBuilder.create().month(meetingAttendance.getDate().getMonthValue()).year(meetingAttendance.getDate().getYear()).build();
                 MonthAttendance monthAttendance = mapAttendances.get(period);
                 if (monthAttendance == null) {
                     final List<MeetingAttendance> meetings = new ArrayList<>(1);

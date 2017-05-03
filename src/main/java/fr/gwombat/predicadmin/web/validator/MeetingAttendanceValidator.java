@@ -14,6 +14,7 @@ import fr.gwombat.predicadmin.web.form.MeetingAttendanceForm;
 public class MeetingAttendanceValidator implements Validator {
 
     private static final String FORMAT_DATE = "format.date";
+
     private final MessageSource messageSource;
 
     public MeetingAttendanceValidator(final MessageSource messageSource) {
@@ -31,19 +32,18 @@ public class MeetingAttendanceValidator implements Validator {
 
         final Locale locale = LocaleContextHolder.getLocale();
         final DateTimeFormatter formatter = DateTimeFormatter.ofPattern(messageSource.getMessage(FORMAT_DATE, null, locale));
-        
+
         final LocalDate date = LocalDate.parse(meetingAttendance.getDate(), formatter);
-        if(date != null){
-            if(date.isAfter(LocalDate.now()))
+        if (date != null) {
+            if (date.isAfter(LocalDate.now()))
                 errors.rejectValue("date", "validation.attendance.date");
         }
-        
+
         final Integer attendance = meetingAttendance.getAttendance();
-        if(attendance == null)
+        if (attendance == null)
             errors.rejectValue("attendance", "validation.attendance.count.null");
-        else if(attendance < 0)
+        else if (attendance < 0)
             errors.rejectValue("attendance", "validation.attendance.count");
-        
     }
 
 }

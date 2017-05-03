@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import fr.gwombat.predicadmin.model.TheocraticYear;
 import fr.gwombat.predicadmin.model.entities.Congregation;
 import fr.gwombat.predicadmin.model.entities.MeetingAttendance;
 import fr.gwombat.predicadmin.repository.MeetingAttendanceRepository;
@@ -59,6 +60,16 @@ public class MeetingAttendanceServiceImpl implements MeetingAttendanceService {
         final MeetingAttendance attendance = attendanceRepository.findByIdentifier(identifier);
         if(attendance != null)
             attendanceRepository.delete(attendance);
+    }
+
+    @Override
+    public MeetingAttendance getMemorialAttendance(Congregation congregation, TheocraticYear year) {
+        if(congregation == null || year == null)
+            return null;
+        
+        final LocalDate start = year.getStart().getStart().toLocalDate();
+        final LocalDate end = year.getEnd().getEnd().toLocalDate();
+        return attendanceRepository.findByCongregationAndMemorialAndDateBetween(congregation, true, start, end);
     }
 
 }

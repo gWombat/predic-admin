@@ -1,13 +1,16 @@
 package fr.gwombat.predicadmin.web.controller;
 
 import java.text.DateFormatSymbols;
+import java.time.ZoneId;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang3.BooleanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -78,7 +81,7 @@ public class MeetingAttendanceController {
 
     @ModelAttribute("currentMonthAttendance")
     public MonthAttendanceVO getCurrentMonthAttendance() {
-        final Period currentPeriod = PeriodBuilder.init().build();
+        final Period currentPeriod = PeriodBuilder.create().build();
         final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(congregationService.getCurrentCongregation(), currentPeriod);
         MonthAttendanceVO attendanceVO = monthAttendanceTransformer.toViewObject(monthAttendance);
         
@@ -137,16 +140,28 @@ public class MeetingAttendanceController {
 
         Validator validator = new MeetingAttendanceValidator(messageSource);
         validator.validate(attendanceForm, errors);
+        
+        MeetingAttendance meetingAttendance = null;
+        meetingAttendance = meetingAttendanceService.getByIdentifier(attendanceForm.getIdentifier());
+        meetingAttendance = meetingAttendanceTransformer.toEntity(attendanceForm, meetingAttendance);
+        meetingAttendance.setCongregation(congregationService.getCurrentCongregation());
+        
+        if(!result.hasErrors() && BooleanUtils.isTrue(meetingAttendance.getMemorial())){
+            final Period attendancePeriod = PeriodBuilder.create().date(meetingAttendance.getDate()).build();
+            final TheocraticYear year = new TheocraticYear(attendancePeriod);
+            final MeetingAttendance memorialAttendance = meetingAttendanceService.getMemorialAttendance(congregationService.getCurrentCongregation(), year);
+            
+            if(memorialAttendance != null){
+                final Date attendanceDate = Date.from(memorialAttendance.getDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+                result.rejectValue("memorial", "validation.attendance.memorial", new Object[]{attendanceDate}, "validation.attendance.memorial.alt");
+            }
+        }
 
         if (result.hasErrors())
             return "attendances";
 
         AlertMessage message = null;
-        MeetingAttendance meetingAttendance = null;
         try {
-            meetingAttendance = meetingAttendanceService.getByIdentifier(attendanceForm.getIdentifier());
-            meetingAttendance = meetingAttendanceTransformer.toEntity(attendanceForm, meetingAttendance);
-            meetingAttendance.setCongregation(congregationService.getCurrentCongregation());
             meetingAttendanceService.save(meetingAttendance);
 
             message = new SuccessAlertMessage();

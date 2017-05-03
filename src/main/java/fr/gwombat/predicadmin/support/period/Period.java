@@ -19,7 +19,7 @@ public final class Period implements Serializable, Comparable<Period> {
 
     public static Period parseFromIntValue(int value) {
         final YearMonth yearMonth = YearMonth.parse(String.valueOf(value), DATE_FORMAT);
-        final Period period = PeriodBuilder.init().yearMonth(yearMonth).build();
+        final Period period = PeriodBuilder.create().yearMonth(yearMonth).build();
         return period;
     }
 
@@ -95,7 +95,7 @@ public final class Period implements Serializable, Comparable<Period> {
     }
 
     public boolean isBeforeNow(){
-        return isBefore(PeriodBuilder.init().build());
+        return isBefore(PeriodBuilder.create().build());
     }
 
 }

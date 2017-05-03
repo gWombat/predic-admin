@@ -1,12 +1,13 @@
 package fr.gwombat.predicadmin.support.period;
 
 import java.time.YearMonth;
+import java.time.temporal.TemporalAccessor;
 
 public final class PeriodBuilder {
 
     private YearMonth yearMonth;
 
-    public static PeriodBuilder init() {
+    public static PeriodBuilder create() {
         return new PeriodBuilder();
     }
 
@@ -21,6 +22,11 @@ public final class PeriodBuilder {
 
     public PeriodBuilder year(int year) {
         yearMonth = yearMonth.withYear(year);
+        return this;
+    }
+
+    public PeriodBuilder date(TemporalAccessor date) {
+        yearMonth = YearMonth.from(date);
         return this;
     }
 

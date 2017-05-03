@@ -40,8 +40,8 @@ public class TheocraticYear implements Serializable, Comparable<TheocraticYear> 
 
     private void initDatesFromYear(int yearValue) {
         year = Year.of(yearValue);
-        start = PeriodBuilder.init().year(yearValue - 1).month(9).build();
-        end = PeriodBuilder.init().year(yearValue).month(8).build();
+        start = PeriodBuilder.create().year(yearValue - 1).month(9).build();
+        end = PeriodBuilder.create().year(yearValue).month(8).build();
     }
 
     @Override
