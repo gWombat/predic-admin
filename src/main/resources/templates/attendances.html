@@ -133,83 +133,111 @@
                         <div class="panel-heading" th:text="#{page.meeting.attendance.month}">
                             Month attendance
                         </div>
-                        <div class="panel-body" th:if="${currentMonthAttendance.minAttendance} == null">
-                            <div class="row">
-                                <div class="col-sm-12" th:if="${currentMonthAttendance.minAttendance} == null">
-                                    <h2 class="text-center text-gray" th:text="#{page.meeting.attendance.no.result}">No results found</h2>
-                                    <p class="text-center">
-                                        <button type="button" class="btn btn-default btn-lg" data-toggle="modal"
-                                                data-target="#modal_add_attendance">
-                                            <span th:text="#{page.meeting.attendance.add}">Add</span>&#160;
-                                            <i class="fa fa-plus circle text-gray"></i>
-                                        </button>
-                                    </p>
+                        <div id="tab_current_month_content"  class="panel-body">
+                            <div th:fragment="tab_month">
+                                <div class="row">
+                                    <div class="col-md-offset-4 col-md-4 col-sm-6 col-sm-offset-3">
+                                        <nav>
+                                            <ul class="pager">
+                                                <li class="previous">
+                                                    <a class="changePeriod"
+                                                        th:href="@{/attendance/month(period=${previousPeriod})}">
+                                                        <i class="fa fa-long-arrow-left"></i>&#160;
+                                                        <span th:text="#{general.previous.sm}">Prev.</span>
+                                                    </a>
+                                                </li>
+                                                <li><span class="b-a-0 text-white"
+                                                    th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.period.start, #messages.msg('format.date.month.xxxl'), #locale))}"
+                                                    >May 2017</span>
+                                                </li>
+                                                <li class="next">
+                                                    <a class="changePeriod"
+                                                        th:href="@{/attendance/month?period={id}(id=${nextPeriod})}">
+                                                        <span th:text="#{general.next.sm}">Next.</span>&#160;
+                                                        <i class="fa fa-long-arrow-right"></i>
+                                                    </a>&#160;
+                                                </li>
+                                            </ul>
+                                        </nav>
+                                    </div>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="panel-body" th:if="${currentMonthAttendance.minAttendance} != null">
-                            <p class="m-b-2 m-l-2 m-t-1">
-                                <span th:text="${#messages.msg('page.meeting.attendance.chart.month.text', #strings.capitalize(#temporals.format(currentMonthAttendance.period.start, #messages.msg('format.date.month.xxxl'), #locale)))}">
-                                You can find here the details of the attendance for the current month (April 2017)
-                                </span>
-                            </p>
-                            <div class="row">
-                                <div class="col-lg-10 col-md-9 col-sm-8">
-                                    <div id="container"></div>
-                                </div>
-                                <div class="col-lg-2 col-md-3 col-sm-4">
-                                    <h3 class="f-w-300 m-t-0" 
-                                        th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.month.xxxl'), #locale))}">
-                                        April 2017</h3>
-
-                                    <h3 class="f-w-300 m-t-0 m-b-0 text-primary" th:text="${currentMonthAttendance.averageAttendance}">70</h3>
-                                    <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{page.meeting.attendance.average}">Average attendance</p>
-
-                                    <h3 class="f-w-300 m-t-1 m-b-0">
-                                        <span th:if="${currentMonthAttendance.maxAttendance} != null" 
-                                            th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
-                                        <small><i class="fa fa-caret-up text-success"></i></small>
-                                    </h3>
-                                    <p class="m-b-0 m-t-0 text-gray-lighter">
-                                        <span th:text="#{page.meeting.attendance.max}">Max attendance</span>
-                                    </p>
-                                    <p class="m-t-0 m-b-1 text-gray-light">
-                                        <span
-                                            th:if="${currentMonthAttendance.maxAttendance} != null" 
-                                            th:text="${#temporals.format(currentMonthAttendance.maxAttendance.date, #messages.msg('format.date.xl'), #locale)}">Sunday, April 28th</span>
-                                    </p>
-
-                                    <h3 class="f-w-300 m-t-1 m-b-0">
-                                        <span th:if="${currentMonthAttendance.minAttendance} != null" 
-                                            th:text="${currentMonthAttendance.minAttendance.attendance}">50</span>
-                                        <small><i class="fa fa-caret-down text-danger"></i></small>
-                                    </h3>
-                                    <p class="m-b-0 m-t-0 text-gray-lighter">
-                                        <span th:text="#{page.meeting.attendance.min}">Min attendance</span>
-                                    </p>
-                                    <p class="m-t-0 m-b-1 text-gray-light">
-                                        <span th:if="${currentMonthAttendance.minAttendance} != null"
-                                             th:text="${#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
-                                    </p>
-
-                                    <div th:if="${currentMonthAttendance.memorialAttendance} != null">
-                                        <h4 class="f-w-300 m-t-1 m-b-0 text-gray-lighter">
-                                            <span th:text="${currentMonthAttendance.memorialAttendance.attendance}">50</span>
-                                            <small><i class="fa fa-star text-danger"></i></small>
-                                        </h4>
-                                        <p class="m-b-0 m-t-0 text-gray-lighter">
-                                            <span th:text="#{general.memorial}">Memorial</span>
-                                        </p>
-                                        <p class="m-t-0 m-b-1 text-gray-light">
-                                            <span th:text="${#temporals.format(currentMonthAttendance.memorialAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
+                                <div class="row" th:if="${currentMonthAttendance.minAttendance} == null">
+                                    <div class="col-sm-12" th:if="${currentMonthAttendance.minAttendance} == null">
+                                        <h2 class="text-center text-gray" th:text="#{page.meeting.attendance.no.result}">No results found</h2>
+                                        <p class="text-center">
+                                            <button type="button" class="btn btn-default btn-lg" data-toggle="modal"
+                                                    data-target="#modal_add_attendance">
+                                                <span th:text="#{page.meeting.attendance.add}">Add</span>&#160;
+                                                <i class="fa fa-plus circle text-gray"></i>
+                                            </button>
                                         </p>
                                     </div>
-
-                                    <button type="button" class="btn m-t-3 btn-default" data-toggle="modal"
-                                            data-target="#modal_add_attendance">
-                                        <span th:text="#{general.add}">Add</span>&nbsp;
-                                        <i class="fa fa-plus circle text-gray"></i>
-                                    </button>
+                                </div>
+                                <div th:if="${currentMonthAttendance.minAttendance} != null">
+                                    <p class="m-b-1 m-l-2 m-t-1">
+                                        <span th:text="${#messages.msg('page.meeting.attendance.chart.month.text', #strings.capitalize(#temporals.format(currentMonthAttendance.period.start, #messages.msg('format.date.month.xxxl'), #locale)))}">
+                                        You can find here the details of the attendance for the current month (April 2017)
+                                        </span>
+                                    </p>
+                                    <div class="row">
+                                        <div class="col-lg-10 col-md-9 col-sm-8">
+                                            <div id="container"></div>
+                                        </div>
+                                        <div class="col-lg-2 col-md-3 col-sm-4">
+                                            <h3 class="f-w-300 m-t-0" 
+                                                th:text="${#strings.capitalize(#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.month.xxxl'), #locale))}">
+                                                April 2017</h3>
+        
+                                            <h3 class="f-w-300 m-t-0 m-b-0 text-primary" th:text="${currentMonthAttendance.averageAttendance}">70</h3>
+                                            <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{page.meeting.attendance.average}">Average attendance</p>
+        
+                                            <h3 class="f-w-300 m-t-1 m-b-0">
+                                                <span th:if="${currentMonthAttendance.maxAttendance} != null" 
+                                                    th:text="${currentMonthAttendance.maxAttendance.attendance}">90</span>
+                                                <small><i class="fa fa-caret-up text-success"></i></small>
+                                            </h3>
+                                            <p class="m-b-0 m-t-0 text-gray-lighter">
+                                                <span th:text="#{page.meeting.attendance.max}">Max attendance</span>
+                                            </p>
+                                            <p class="m-t-0 m-b-1 text-gray-light">
+                                                <span
+                                                    th:if="${currentMonthAttendance.maxAttendance} != null" 
+                                                    th:text="${#temporals.format(currentMonthAttendance.maxAttendance.date, #messages.msg('format.date.xl'), #locale)}">Sunday, April 28th</span>
+                                            </p>
+        
+                                            <h3 class="f-w-300 m-t-1 m-b-0">
+                                                <span th:if="${currentMonthAttendance.minAttendance} != null" 
+                                                    th:text="${currentMonthAttendance.minAttendance.attendance}">50</span>
+                                                <small><i class="fa fa-caret-down text-danger"></i></small>
+                                            </h3>
+                                            <p class="m-b-0 m-t-0 text-gray-lighter">
+                                                <span th:text="#{page.meeting.attendance.min}">Min attendance</span>
+                                            </p>
+                                            <p class="m-t-0 m-b-1 text-gray-light">
+                                                <span th:if="${currentMonthAttendance.minAttendance} != null"
+                                                     th:text="${#temporals.format(currentMonthAttendance.minAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
+                                            </p>
+        
+                                            <div th:if="${currentMonthAttendance.memorialAttendance} != null">
+                                                <h4 class="f-w-300 m-t-1 m-b-0 text-gray-lighter">
+                                                    <span th:text="${currentMonthAttendance.memorialAttendance.attendance}">50</span>
+                                                    <small><i class="fa fa-star text-danger"></i></small>
+                                                </h4>
+                                                <p class="m-b-0 m-t-0 text-gray-lighter">
+                                                    <span th:text="#{general.memorial}">Memorial</span>
+                                                </p>
+                                                <p class="m-t-0 m-b-1 text-gray-light">
+                                                    <span th:text="${#temporals.format(currentMonthAttendance.memorialAttendance.date, #messages.msg('format.date.xl'), #locale)}">Tuesday, April 17th</span>
+                                                </p>
+                                            </div>
+        
+                                            <button type="button" class="btn m-t-3 btn-default" data-toggle="modal"
+                                                    data-target="#modal_add_attendance">
+                                                <span th:text="#{general.add}">Add</span>&nbsp;
+                                                <i class="fa fa-plus circle text-gray"></i>
+                                            </button>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
@@ -365,7 +393,8 @@
             <p>
                 <button type="button" class="btn btn-default" data-toggle="modal"
                         data-target="#modal_add_attendance">
-                    <span th:text="#{general.add}">Add</span>
+                    <span th:text="#{general.add}">Add</span>&#160;
+                    <i class="fa fa-plus circle text-gray"></i>
                 </button>
             </p>
         </div>
@@ -490,43 +519,37 @@
     </div><!-- /.modal -->
     <!-- END Modal Add attendance -->
 
+    <script th:src="@{/js/attendances.min.js}"></script>
     <script th:inline="javascript">
         //<![CDATA[
         $(document).ready(function () {
-            $('[data-toggle="tooltip"]').tooltip();
-
-            $('[data-toggle="confirmation"]').confirmation({
-                title: 'Supprimer ce rapport?',
-                placement: 'left',
-                rootSelector: '[data-toggle="confirmation"]',
-                singleton: true,
-                popout: true,
-                btnCancelClass: 'btn-xs btn-danger',
-                btnOkLabel: /*[[#{general.yes}]]*/'',
+            initTooltip();
+            
+            initLoading({
+            	message: 'Chargement en cours...'
+            });
+            
+           	initConfirmation({
+            	title: /*[[#{page.meeting.attendance.delete.confirm}]]*/'',
+            	btnOkLabel: /*[[#{general.yes}]]*/'',
                 btnCancelLabel: /*[[#{general.no}]]*/''
             });
-
-            $('.date-picker').datetimepicker({
-                locale: 'fr',
-                format: /*[[${#strings.toUpperCase(#messages.msg('format.date'))}]]*/'',
-                showClear: true,
-                icons: {
-                    time: "fa fa-clock-o",
-                    date: "fa fa-calendar",
-                    up: "fa fa-arrow-up",
-                    down: "fa fa-arrow-down"
-                }
-            });
-
-            $('.touchspin').TouchSpin({
-                min: 0,
-                max: 1000,
-                step: 1
-            });
-
-            $('#box-memorial input[type="hidden"]').prependTo('#box-memorial');
-            $('#box-special-week input[type="hidden"]').prependTo('#box-special-week');
-
+            
+            messages = {
+            	locale: 'fr',
+            	format: /*[[${#strings.toUpperCase(#messages.msg('format.date'))}]]*/''
+            }
+            initDatePicker(messages);
+            initTouchspin();
+            
+            parameters = {
+            	url: '/rest/chart/attendance/month',
+            	urlTabMonth: '/attendance/month',
+            	container: 'container'
+            }
+            initChartMonth(parameters);
+            updateChartMonth();
+            
             /* ****************************************************** */
             // CHART GLOBAL CONFIGURATION
             Highcharts.setOptions({
@@ -541,21 +564,6 @@
             var chartYear;
             var chartGlobal;
             var options;
-
-            /* ****************************************************** */
-            // CHART MONTH MEETINGS ATTENDANCE
-            if($('#container').length){
-                $.getJSON('/rest/chart/attendance/month', function (config) {
-                    options = config;
-                    options.chart.renderTo = 'container';
-                    options.tooltip = {
-                        dateTimeLabelFormats: {
-                            day: '%e %B %Y'
-                        }
-                    }
-                    chartMonth = new Highcharts.Chart(options);
-                });
-            }
 
             /* ****************************************************** */
             // CHART YEAR AVERAGE ATTENDANCE
@@ -584,7 +592,7 @@
                                 y2: 1
                             },
                             stops: [
-                                [0, 'rgba(243, 132, 252, .2)'],
+                                [0, 'rgba(243, 132, 252, .1)'],
                                 [1, 'rgba(243, 132, 252, 0)']
                             ]
                         };
@@ -598,7 +606,7 @@
                                 y2: 1
                             },
                             stops: [
-                                [0, 'rgba(107, 193, 253, .2)'],
+                                [0, 'rgba(107, 193, 253, .1)'],
                                 [1, 'rgba(107, 193, 253, 0)']
                             ]
                         };
@@ -612,7 +620,7 @@
                                 y2: 1
                             },
                             stops: [
-                                [0, 'rgba(168, 32, 132, .2)'],
+                                [0, 'rgba(168, 32, 132, .1)'],
                                 [1, 'rgba(168, 32, 132, 0)']
                             ]
                         };
@@ -626,7 +634,7 @@
                                 y2: 1
                             },
                             stops: [
-                                [0, 'rgba(104, 254, 224, .2)'],
+                                [0, 'rgba(104, 254, 224, .1)'],
                                 [1, 'rgba(104, 254, 224, 0)']
                             ]
                         };

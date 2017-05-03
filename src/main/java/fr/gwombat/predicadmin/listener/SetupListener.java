@@ -107,7 +107,7 @@ public class SetupListener {
 
         publisher = publisherRepository.save(publisher);
 
-        //initAttendance(congreg);
+        initAttendance(congreg);
 
         setUp = true;
     }

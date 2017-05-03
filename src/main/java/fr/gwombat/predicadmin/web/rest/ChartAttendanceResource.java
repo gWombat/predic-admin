@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.gwombat.predicadmin.highchart.ChartConfiguration;
@@ -38,10 +39,13 @@ public class ChartAttendanceResource {
     private CongregationService               congregationService;
 
     @GetMapping("/month")
-    public ChartConfiguration chartResultMonthAttendance() {
+    public ChartConfiguration chartResultMonthAttendance(@RequestParam(name = "period", required = false) Period period) {
         final Congregation currentCongregation = congregationService.getCurrentCongregation();
-        final Period currentPeriod = PeriodBuilder.create().build();
-        final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(currentCongregation, currentPeriod);
+        
+        if(period == null)
+            period = PeriodBuilder.create().build();
+        
+        final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(currentCongregation, period);
         final ChartConfiguration chartConfig = chartMonthAttendanceCreator.createChartConfiguration(monthAttendance);
 
         return chartConfig;

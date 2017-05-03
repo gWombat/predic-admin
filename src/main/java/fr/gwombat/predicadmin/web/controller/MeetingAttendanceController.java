@@ -28,6 +28,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.gwombat.predicadmin.model.MonthAttendance;
@@ -84,7 +85,7 @@ public class MeetingAttendanceController {
         final Period currentPeriod = PeriodBuilder.create().build();
         final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(congregationService.getCurrentCongregation(), currentPeriod);
         MonthAttendanceVO attendanceVO = monthAttendanceTransformer.toViewObject(monthAttendance);
-        
+
         return attendanceVO;
     }
 
@@ -130,9 +131,28 @@ public class MeetingAttendanceController {
     @GetMapping
     public String attendancePage(Model model) {
         final MeetingAttendanceForm meetingAttendance = new MeetingAttendanceForm();
+        
+        final Period currentPeriod = PeriodBuilder.create().build();
         model.addAttribute("attendance", meetingAttendance);
+        model.addAttribute("previousPeriod", Period.shiftPeriod(currentPeriod, -1).getPeriodValue());
+        model.addAttribute("nextPeriod", Period.shiftPeriod(currentPeriod, 1).getPeriodValue());
 
         return "attendances";
+    }
+
+    @GetMapping("/month")
+    public String monthTabTemplate(Model model, @RequestParam(name = "period", required = false) Period period) {
+        if(period == null)
+            period = PeriodBuilder.create().build();
+        
+        final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(congregationService.getCurrentCongregation(), period);
+        MonthAttendanceVO attendanceVO = monthAttendanceTransformer.toViewObject(monthAttendance);
+        
+        model.addAttribute("currentMonthAttendance", attendanceVO);
+        model.addAttribute("previousPeriod", Period.shiftPeriod(period, -1).getPeriodValue());
+        model.addAttribute("nextPeriod", Period.shiftPeriod(period, 1).getPeriodValue());
+        
+        return "attendances :: tab_month";
     }
 
     @PostMapping
@@ -140,20 +160,20 @@ public class MeetingAttendanceController {
 
         Validator validator = new MeetingAttendanceValidator(messageSource);
         validator.validate(attendanceForm, errors);
-        
+
         MeetingAttendance meetingAttendance = null;
         meetingAttendance = meetingAttendanceService.getByIdentifier(attendanceForm.getIdentifier());
         meetingAttendance = meetingAttendanceTransformer.toEntity(attendanceForm, meetingAttendance);
         meetingAttendance.setCongregation(congregationService.getCurrentCongregation());
-        
-        if(!result.hasErrors() && BooleanUtils.isTrue(meetingAttendance.getMemorial())){
+
+        if (!result.hasErrors() && BooleanUtils.isTrue(meetingAttendance.getMemorial())) {
             final Period attendancePeriod = PeriodBuilder.create().date(meetingAttendance.getDate()).build();
             final TheocraticYear year = new TheocraticYear(attendancePeriod);
             final MeetingAttendance memorialAttendance = meetingAttendanceService.getMemorialAttendance(congregationService.getCurrentCongregation(), year);
-            
-            if(memorialAttendance != null){
+
+            if (memorialAttendance != null) {
                 final Date attendanceDate = Date.from(memorialAttendance.getDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
-                result.rejectValue("memorial", "validation.attendance.memorial", new Object[]{attendanceDate}, "validation.attendance.memorial.alt");
+                result.rejectValue("memorial", "validation.attendance.memorial", new Object[] { attendanceDate }, "validation.attendance.memorial.alt");
             }
         }
 
