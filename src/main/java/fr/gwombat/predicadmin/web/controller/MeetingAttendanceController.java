@@ -73,7 +73,7 @@ public class MeetingAttendanceController {
 
     @ModelAttribute("yearAttendance")
     public YearAttendanceVO getYearAttendance() {
-        final TheocraticYear year = new TheocraticYear(2017);
+        final TheocraticYear year = new TheocraticYear();
         final YearAttendance yearAttendance = yearAttendanceService.getAttendanceForYear(congregationService.getCurrentCongregation(), year);
         final YearAttendanceVO yearAttendanceVo = yearAttendanceTransformer.toViewObject(yearAttendance);
         return yearAttendanceVo;

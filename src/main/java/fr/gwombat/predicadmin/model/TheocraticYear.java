@@ -20,6 +20,7 @@ public class TheocraticYear implements Serializable, Comparable<TheocraticYear> 
     private Period            end;
 
     public TheocraticYear() {
+        this(PeriodBuilder.create().build());
     }
 
     public TheocraticYear(final Period period) {
