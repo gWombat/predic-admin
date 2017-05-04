@@ -76,13 +76,22 @@
                 <div class="panel-heading b-b-info b-b-2" th:text="#{page.meeting.attendance.current.year}">Current year average</div>
                 <div class="panel-body">
                     <h2 class="m-t-0 f-w-300">
-                        <span th:text="${yearAttendance.averageAttendance}">$ 694.00</span>
+                        <span>
+                            <span th:text="${yearAttendance.averageAttendance}">$ 694.00</span>
+                        </span>
+                        <span th:if="${yearAttendance.averageAttendanceVariation} != null" class="pull-right">
+                            <small>
+                                <span th:class="${yearAttendance.averageAttendanceVariation} >= 0 ? 'text-success' : 'text-danger'">
+                                    <span th:text="${yearAttendance.getFormattedVariation()}"></span>
+                                </span>
+                            </small>
+                        </span>
                     </h2>
                     <span class="pull-left" th:text="${yearAttendance}">2016-2017</span>
                     <span class="pull-right" th:if="${yearAttendance.maxAverage} != null and ${yearAttendance.minAverage} != null">
-                        <i class="fa fa-caret-up text-success"></i>
+                        <i class="fa fa-caret-up "></i>
                         <span th:text="${yearAttendance.maxAverage.averageAttendance}">90</span>
-                        <i class="fa fa-caret-down text-danger"></i>
+                        <i class="fa fa-caret-down "></i>
                         <span th:text="${yearAttendance.minAverage.averageAttendance}">45</span>
                     </span>
                 </div>
@@ -130,8 +139,8 @@
                 <div class="tab-content">
                     <!--  START TAB CHART MONTH -->
                     <div id="tab_current_month" role="tabpanel" class="tab-pane fade in active panel panel-default no-bg b-dark-gray b-a-2">
-                        <div class="panel-heading" th:text="#{page.meeting.attendance.month}">
-                            Month attendance
+                        <div class="panel-heading">
+                            <h4 class="panel-title" th:text="#{page.meeting.attendance.month}"></h4>
                         </div>
                         <div id="tab_current_month_content"  class="panel-body">
                             <div th:fragment="tab_month">
@@ -142,8 +151,7 @@
                                                 <li class="previous">
                                                     <a class="changePeriod"
                                                         th:href="@{/attendance/month(period=${previousPeriod})}">
-                                                        <i class="fa fa-long-arrow-left"></i>&#160;
-                                                        <span th:text="#{general.previous.sm}">Prev.</span>
+                                                        <i class="fa fa-long-arrow-left"></i>
                                                     </a>
                                                 </li>
                                                 <li><span class="b-a-0 text-white"
@@ -153,9 +161,8 @@
                                                 <li class="next">
                                                     <a class="changePeriod"
                                                         th:href="@{/attendance/month?period={id}(id=${nextPeriod})}">
-                                                        <span th:text="#{general.next.sm}">Next.</span>&#160;
                                                         <i class="fa fa-long-arrow-right"></i>
-                                                    </a>&#160;
+                                                    </a>
                                                 </li>
                                             </ul>
                                         </nav>
@@ -174,11 +181,6 @@
                                     </div>
                                 </div>
                                 <div th:if="${currentMonthAttendance.minAttendance} != null">
-                                    <p class="m-b-1 m-l-2 m-t-1">
-                                        <span th:text="${#messages.msg('page.meeting.attendance.chart.month.text', #strings.capitalize(#temporals.format(currentMonthAttendance.period.start, #messages.msg('format.date.month.xxxl'), #locale)))}">
-                                        You can find here the details of the attendance for the current month (April 2017)
-                                        </span>
-                                    </p>
                                     <div class="row">
                                         <div class="col-lg-10 col-md-9 col-sm-8">
                                             <div id="container"></div>
@@ -246,8 +248,8 @@
 
                     <!--  END TAB CHART YEAR AVERAGE -->
                     <div id="tab_current_year" role="tabpanel" class="tab-pane fade panel panel-default no-bg b-dark-gray b-a-2">
-                        <div class="panel-heading" th:text="#{page.meeting.attendance.year}">
-                            Year average attendance
+                        <div class="panel-heading">
+                            <h4 class="panel-title" th:text="#{page.meeting.attendance.year}"></h4>
                         </div>
                         <div class="panel-body" th:if="${not yearAttendance.showable}">
                             <div class="row">
@@ -338,13 +340,14 @@
                             </div>
                             <div class="row m-t-3" th:if="${globalAttendance} != null">
                                 <div class="col-sm-12">
-                                    <table class="table table-striped text-center">
+                                    <table class="table table-striped text-center table-hover">
                                         <thead>
                                             <tr>
                                                 <th></th>
                                                 <th class="small text-muted text-uppercase text-center" th:each="month : ${shortMonthNamesForTheocraticYear}">
                                                     <span th:text="${month}"></span>
-                                                </th> 
+                                                </th>
+                                                <th class="small text-muted text-uppercase text-right" th:text="#{general.variation}">Variation</th>
                                                 <th class="small text-muted text-uppercase text-right" th:text="#{general.average}">Average</th>
                                             </tr>
                                         </thead>
@@ -356,6 +359,12 @@
                                                 <td th:each="month : ${yAttendance.attendances}">
                                                     <span th:if="${month} != null" th:text="${month.averageAttendance}"></span>
                                                     <span th:if="${month} == null" >-</span>
+                                                </td>
+                                                <td class="text-right">
+                                                    <span th:if="${yAttendance.averageAttendanceVariation} != null"
+                                                        th:class="${yAttendance.averageAttendanceVariation} >= 0 ? 'text-success' : 'text-danger'"
+                                                        th:text="${yAttendance.getFormattedVariation()}">
+                                                    </span>
                                                 </td>
                                                 <td class="text-white text-right" th:text="${yAttendance.averageAttendance}"></td>
                                             </tr>
@@ -388,81 +397,59 @@
         </div>
     </div>
 
-    <div class="row text-center m-t-1 m-b-1" th:if="${yearAttendance.showable}">
-        <div class="col-sm-12">
-            <p>
-                <button type="button" class="btn btn-default" data-toggle="modal"
-                        data-target="#modal_add_attendance">
-                    <span th:text="#{general.add}">Add</span>&#160;
-                    <i class="fa fa-plus circle text-gray"></i>
-                </button>
-            </p>
+    <div class="panel panel-default no-bg b-dark-gray b-a-2" th:if="${yearAttendance.showable}">
+        <div class="panel-heading">
+            <button type="button" class="btn btn-outline btn-primary pull-right btn-sm" data-toggle="modal" data-target="#modal_add_attendance">
+                <span th:text="#{general.add}">Add</span>&#160;
+                <i class="fa fa-plus circle"></i>
+            </button>
+            <h4 class="panel-title" th:text="#{page.meeting.attendance.result.monthly}"></h4>
         </div>
-    </div>
-
-    <div class="row" th:if="${yearAttendance.showable}">
-        <div class="panel panel-default no-bg b-a-2 b-gray-dark">
-            <div class="panel-heading" th:text="#{page.meeting.attendance.result.monthly}">Monthly results</div>
-            <div class="panel-body">
-                <div th:each="monthAttendance, status : ${yearAttendance.attendances}">
-                    <div class="col-lg-3 col-md-4 col-sm-6" th:if="${monthAttendance} != null">
-                        <div class="panel no-bg b-a-2 collapsible-panel collapsed"
-                             th:classappend="${monthAttendance.period.currentPeriod} ? 'panel-primary b-primary' : 'panel-info'">
-                            <div class="panel-heading">
-                                <div class="row">
-                                    <div class="col-sm-9">
-                                        <span th:text="${#strings.capitalize(#temporals.format(monthAttendance.period.start, 'MMMM', #locale))}"></span>
-                                    </div>
-                                    <div class="col-sm-3 text-right">
-                                        <a href="#" class="action-panel-collapse">
-                                            <i class="fa fa-fw fa-chevron-up text-muted panel-collapsed-hidden"></i>
-                                            <i class="fa fa-fw fa-chevron-down text-muted panel-collapsed-visible"></i>
-                                        </a>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="panel-body p-a-0">
-                                <ul class="list-group m-b-0">
-                                    <li class="list-group-item p-tb-px-5">
-                                        <div class="media">
-                                            <div class="media-body">
-                                                <i><span th:text="#{general.average}">Average</span></i>
-                                            </div>
-                                            <div class="media-body text-right">
-                                                <i><span th:text="${monthAttendance.averageAttendance}"></span></i>
-                                            </div>
-                                        </div>
-                                    </li>
-                                    <li class="list-group-item p-tb-px-5" th:each="attendance : ${monthAttendance.attendances}">
-                                        <form th:action="@{/attendance/{id}/delete(id=${attendance.identifier})}" method="post">
-                                            <div class="media">
-                                                <div class="media-body" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}"></div>
-                                                <div class="media-body text-right">
-                                                    <span class="text-danger" data-toggle="tooltip" data-placement="bottom" th:title="#{general.memorial}"
-                                                          th:if="${attendance.memorial}">
-                                                        <small><i class="fa fa-star"></i></small>
-                                                    </span>
-                                                    <span class="text-warning" data-toggle="tooltip" data-placement="bottom" th:title="#{general.special.week}" th:if="${attendance.specialWeek}">
-                                                        <small><i class="fa fa-star"></i></small>
-                                                    </span>
-                                                    <span class="text-success" data-toggle="tooltip" data-placement="bottom" th:title="#{page.meeting.attendance.max.month}" th:if="${attendance.maxOfMonth}">
-                                                        <small><i class="fa fa-caret-up"></i></small>
-                                                    </span>
-                                                    <span class="text-danger" data-toggle="tooltip" data-placement="bottom" th:title="#{page.meeting.attendance.min.month}" th:if="${attendance.minOfMonth}">
-                                                        <small><i class="fa fa-caret-down"></i></small>
-                                                    </span> &#160;
-                                                    <span class="text-white" th:text="${attendance.attendance}"></span> &#160;
-                                                    <button data-toggle="confirmation" type="submit" class="close font-sm"><i class="fa fa-times"></i></button>
-                                                </div>
-                                            </div>
-                                        </form>
-                                    </li>
-                                </ul>
-                            </div>
+        <div class="panel-body">
+            <div th:each="monthAttendance, status : ${yearAttendance.attendances}">
+                <div class="col-md-4" th:if="${monthAttendance} != null">
+                    <div class="hr-text hr-text-center m-t-0 m-b-0">
+                        <h4 class="text-white"
+                            th:text="${#strings.capitalize(#temporals.format(monthAttendance.period.start, 'MMMM yyyy', #locale))}">May 2017</h4>
+                    </div>
+                    <div class="table-responsive scroll-200 custom-scrollbar">
+                        <div class="col-sm-12">
+                        <table class="table table-responsive table-striped table-condensed">
+                            <thead>
+                                <tr class="small text-muted text-uppercase w-5">
+                                    <th th:text="#{general.date}">Date</th>
+                                    <th th:text="#{general.attendance}">Attendance</th>
+                                    <th></th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr th:each="attendance : ${monthAttendance.attendances}">
+                                    <td class="v-a-m" th:text="${#temporals.format(attendance.date, 'EEE d', #locale)}">Mon 2</td>
+                                    <td class="v-a-m text-white" th:text="${attendance.attendance}">58</td>
+                                    <td class="v-a-m">
+                                        <span class="text-danger" data-toggle="tooltip" data-placement="bottom" th:title="#{general.memorial}"
+                                              th:if="${attendance.memorial}">
+                                            <small><i class="fa fa-star"></i></small>
+                                        </span>
+                                        <span class="text-warning" data-toggle="tooltip" data-placement="bottom" th:title="#{general.special.week}" th:if="${attendance.specialWeek}">
+                                            <small><i class="fa fa-star"></i></small>
+                                        </span>
+                                        <span class="text-success" data-toggle="tooltip" data-placement="bottom" th:title="#{page.meeting.attendance.max.month}" th:if="${attendance.maxOfMonth}">
+                                            <small><i class="fa fa-caret-up"></i></small>
+                                        </span>
+                                        <span class="text-danger" data-toggle="tooltip" data-placement="bottom" th:title="#{page.meeting.attendance.min.month}" th:if="${attendance.minOfMonth}">
+                                            <small><i class="fa fa-caret-down"></i></small>
+                                        </span>
+                                    </td>
+                                    <td class="v-a-m text-right"><button class="close font-sm" data-toggle="confirmation"><i class="fa fa-times"></i></button></td>
+                                </tr>
+                            </tbody>
+                        </table>
                         </div>
                     </div>
-                    <div th:if="${status.index % 4 == 3}" class="clearfix visible-lg-block">&nbsp;</div>
                 </div>
+                <div th:if="${status.index % 3 == 2}" class="clearfix visible-lg-block">&nbsp;</div>
             </div>
         </div>
     </div>
@@ -524,9 +511,10 @@
         //<![CDATA[
         $(document).ready(function () {
             initTooltip();
+            initTouchspin();
             
             initLoading({
-            	message: 'Chargement en cours...'
+            	message: /*[[#{general.loading}]]*/''
             });
             
            	initConfirmation({
@@ -535,19 +523,16 @@
                 btnCancelLabel: /*[[#{general.no}]]*/''
             });
             
-            messages = {
+            initDatePicker({
             	locale: 'fr',
             	format: /*[[${#strings.toUpperCase(#messages.msg('format.date'))}]]*/''
-            }
-            initDatePicker(messages);
-            initTouchspin();
+            });
             
-            parameters = {
+            
+            initChartMonth({
             	url: '/rest/chart/attendance/month',
-            	urlTabMonth: '/attendance/month',
             	container: 'container'
-            }
-            initChartMonth(parameters);
+            });
             updateChartMonth();
             
             /* ****************************************************** */
