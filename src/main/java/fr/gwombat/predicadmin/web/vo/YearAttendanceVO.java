@@ -1,5 +1,6 @@
 package fr.gwombat.predicadmin.web.vo;
 
+import java.text.NumberFormat;
 import java.time.Year;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -16,6 +17,7 @@ public class YearAttendanceVO {
     private final MonthAttendanceVO   minAverage;
     private final int                 averageAttendance;
     private MonthAttendanceVO[]       attendances;
+    private final Double              averageAttendanceVariation;
 
     public YearAttendanceVO(YearAttendanceVoBuilder builder) {
         this.attendances = builder.getAttendances();
@@ -26,6 +28,7 @@ public class YearAttendanceVO {
         this.maxAverage = builder.getMaxAverage();
         this.minAverage = builder.getMinAverage();
         this.memorial = builder.getMemorial();
+        this.averageAttendanceVariation = builder.getAverageAttendanceVariation();
     }
 
     @Override
@@ -33,20 +36,17 @@ public class YearAttendanceVO {
         final int yearValue = year.getValue();
         return String.format("%s-%s", yearValue - 1, yearValue);
     }
-    
-    public boolean isShowable(){
-       return !isAllAttendancesEmptyOrNull()
-                && year != null
-                && maxAverage != null
-                && minAverage != null;
+
+    public boolean isShowable() {
+        return !isAllAttendancesEmptyOrNull() && year != null && maxAverage != null && minAverage != null;
     }
-    
-    public boolean isAllAttendancesEmptyOrNull(){
-        if(ArrayUtils.isEmpty(attendances))
+
+    public boolean isAllAttendancesEmptyOrNull() {
+        if (ArrayUtils.isEmpty(attendances))
             return true;
-        
-        for(MonthAttendanceVO monthAttendance : attendances)
-            if(monthAttendance != null)
+
+        for (MonthAttendanceVO monthAttendance : attendances)
+            if (monthAttendance != null)
                 return false;
         return true;
     }
@@ -81,6 +81,18 @@ public class YearAttendanceVO {
 
     public MeetingAttendanceVO getMemorial() {
         return memorial;
+    }
+
+    public Double getAverageAttendanceVariation() {
+        return averageAttendanceVariation;
+    }
+    
+    public String getFormattedVariation(){
+        final NumberFormat format =  NumberFormat.getPercentInstance();
+        format.setMinimumFractionDigits(1);
+        format.setMaximumFractionDigits(2);
+        
+        return format.format(averageAttendanceVariation);
     }
 
 }

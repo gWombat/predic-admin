@@ -36,33 +36,33 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
     public YearAttendanceVO toViewObject(YearAttendance entity) {
         YearAttendanceVO yearAttendanceVo = null;
         if (entity != null) {
-            YearAttendanceVoBuilder builder = YearAttendanceVoBuilder.create().year(entity.getTheocraticYear().getYear().getValue());
+            final YearAttendanceVoBuilder builder = YearAttendanceVoBuilder.create().year(entity.getTheocraticYear().getYear().getValue());
 
             final List<MonthAttendance> attendances = entity.getAttendances();
             if (attendances != null) {
                 for (MonthAttendance monthAttendance : attendances) {
                     final MonthAttendanceVO attendanceVo = monthAttendanceTransformer.toViewObject(monthAttendance);
-                    builder = builder.addMonthAttendance(attendanceVo);
+                    builder.addMonthAttendance(attendanceVo);
                 }
             }
 
-            final Integer averageAttendance = calculateAverageAttendance(builder.getAttendances());
-            builder = builder.averageAttendance(averageAttendance);
+            builder.averageAttendance(entity.getAverageAttendance());
+            builder.averageAttendanceVariation(entity.getAverageAttendanceVariation());
 
             final MeetingAttendanceVO maxAttendance = getMaxOrMinAttendance(builder.getAttendances(), MAX);
-            builder = builder.maxAttendance(maxAttendance);
+            builder.maxAttendance(maxAttendance);
 
             final MeetingAttendanceVO minAttendance = getMaxOrMinAttendance(builder.getAttendances(), MIN);
-            builder = builder.minAttendance(minAttendance);
+            builder.minAttendance(minAttendance);
 
             final MeetingAttendanceVO memorial = getMemorial(builder.getAttendances());
-            builder = builder.memorial(memorial);
+            builder.memorial(memorial);
 
             final MonthAttendanceVO maxAverage = getMaxOrMinAverage(builder.getAttendances(), MAX);
-            builder = builder.maxAverage(maxAverage);
+            builder.maxAverage(maxAverage);
 
             final MonthAttendanceVO minAverage = getMaxOrMinAverage(builder.getAttendances(), MIN);
-            builder = builder.minAverage(minAverage);
+            builder.minAverage(minAverage);
 
             yearAttendanceVo = builder.build();
         }
@@ -122,23 +122,6 @@ public class YearAttendanceTransformer implements ViewTransformer<YearAttendance
         listAttendances.sort(comparator);
         if (!CollectionUtils.isEmpty(listAttendances))
             result = listAttendances.get(0);
-        return result;
-    }
-
-    private static int calculateAverageAttendance(final MonthAttendanceVO[] attendances) {
-        int result = 0;
-        int nbMonthsPassed = 0;
-        if (attendances != null) {
-            for (MonthAttendanceVO attendance : attendances) {
-                if (attendance != null) {
-                    if (attendance.getPeriod().isBeforeNow())
-                        nbMonthsPassed++;
-                    if (attendance.getAverageAttendance() != null)
-                        result += attendance.getAverageAttendance();
-                }
-            }
-            result = result / Math.max(nbMonthsPassed, 1);
-        }
         return result;
     }
 

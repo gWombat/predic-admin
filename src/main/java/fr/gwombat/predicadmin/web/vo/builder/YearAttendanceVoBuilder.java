@@ -17,6 +17,7 @@ public class YearAttendanceVoBuilder {
     private MonthAttendanceVO   maxAverage;
     private MonthAttendanceVO   minAverage;
     private MonthAttendanceVO[] attendances;
+    private Double              averageAttendanceVariation;
 
     private YearAttendanceVoBuilder() {
         attendances = new MonthAttendanceVO[12];
@@ -70,6 +71,11 @@ public class YearAttendanceVoBuilder {
         return this;
     }
 
+    public YearAttendanceVoBuilder averageAttendanceVariation(final Double variation) {
+        this.averageAttendanceVariation = variation;
+        return this;
+    }
+
     public YearAttendanceVO build() {
         year = Year.of(intYear);
         return new YearAttendanceVO(this);
@@ -105,6 +111,10 @@ public class YearAttendanceVoBuilder {
 
     public MonthAttendanceVO[] getAttendances() {
         return attendances;
+    }
+
+    public Double getAverageAttendanceVariation() {
+        return averageAttendanceVariation;
     }
 
 }

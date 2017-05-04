@@ -34,8 +34,7 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
                 }
             }
 
-            final Integer averageAttendance = calculateAverageAttendance(builder.getAttendances());
-            builder = builder.averageAttendance(averageAttendance);
+            builder = builder.averageAttendance(entity.getAverageAttendance());
 
             final MeetingAttendanceVO maxAttendance = getMaxOrMinAttendance(builder.getAttendances(), MAX_ATTENDANCE);
             builder = builder.maxAttendance(maxAttendance);
@@ -59,19 +58,6 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
         attendances.sort(comparator);
         result = attendances.get(0);
         attendances.sort(Comparator.comparing(MeetingAttendanceVO::getDate));
-        return result;
-    }
-
-    private static int calculateAverageAttendance(final List<MeetingAttendanceVO> attendances) {
-        int result = 0;
-        if (attendances != null) {
-            for (MeetingAttendanceVO attendance : attendances) {
-                if (attendance != null)
-                    result += attendance.getAttendance();
-            }
-
-            result = result / Math.max(attendances.size(), 1);
-        }
         return result;
     }
 
