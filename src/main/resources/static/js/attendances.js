@@ -1,6 +1,5 @@
 var urlChartMonth,
 chartMonthContainer,
-urlTabMonth,
 loadingMessage;
 
 $(document).ready(function(){
@@ -59,6 +58,7 @@ function initDatePicker(messages){
         locale: messages.locale,
         format: messages.format,
         showClear: true,
+        maxDate: moment(),
         icons: {
             time: "fa fa-clock-o",
             date: "fa fa-calendar",
@@ -79,7 +79,6 @@ function initTouchspin(){
 function initChartMonth(parameters){
 	urlChartMonth = parameters.url;
 	chartMonthContainer = parameters.container;
-	urlTabMonth = parameters.urlTabMonth;
 }
 
 /* CHART MONTH MEETINGS ATTENDANCE */
