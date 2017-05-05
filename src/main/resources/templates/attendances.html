@@ -528,13 +528,6 @@
             	format: /*[[${#strings.toUpperCase(#messages.msg('format.date'))}]]*/''
             });
             
-            
-            initChartMonth({
-            	url: '/rest/chart/attendance/month',
-            	container: 'container'
-            });
-            updateChartMonth();
-            
             /* ****************************************************** */
             // CHART GLOBAL CONFIGURATION
             Highcharts.setOptions({
@@ -544,116 +537,21 @@
                     weekdays: /*[[${weekdaysNames}]]*/''
                 }
             });
-
-            var chartMonth;
-            var chartYear;
-            var chartGlobal;
-            var options;
-
             /* ****************************************************** */
-            // CHART YEAR AVERAGE ATTENDANCE
-            if($('#container_year').length){
-                $.getJSON('/rest/chart/attendance/year', function (config) {
-                    options = config;
-                    options.chart.renderTo = 'container_year';
-                    options.series[0].fillColor = {
-                        linearGradient: {
-                            x1: 0,
-                            y1: 0,
-                            x2: 0,
-                            y2: 1
-                        },
-                        stops: [
-                            [0, 'rgba(120, 253, 154, .2)'],
-                            [1, 'rgba(120, 253, 154, 0)']
-                        ]
-                    };
-                    if (options.series[1]) {
-                        options.series[1].fillColor = {
-                            linearGradient: {
-                                x1: 0,
-                                y1: 0,
-                                x2: 0,
-                                y2: 1
-                            },
-                            stops: [
-                                [0, 'rgba(243, 132, 252, .1)'],
-                                [1, 'rgba(243, 132, 252, 0)']
-                            ]
-                        };
-                    }
-                    if (options.series[2]) {
-                        options.series[2].fillColor = {
-                            linearGradient: {
-                                x1: 0,
-                                y1: 0,
-                                x2: 0,
-                                y2: 1
-                            },
-                            stops: [
-                                [0, 'rgba(107, 193, 253, .1)'],
-                                [1, 'rgba(107, 193, 253, 0)']
-                            ]
-                        };
-                    }
-                    if (options.series[3]) {
-                        options.series[3].fillColor = {
-                            linearGradient: {
-                                x1: 0,
-                                y1: 0,
-                                x2: 0,
-                                y2: 1
-                            },
-                            stops: [
-                                [0, 'rgba(168, 32, 132, .1)'],
-                                [1, 'rgba(168, 32, 132, 0)']
-                            ]
-                        };
-                    }
-                    if (options.series[4]) {
-                        options.series[4].fillColor = {
-                            linearGradient: {
-                                x1: 0,
-                                y1: 0,
-                                x2: 0,
-                                y2: 1
-                            },
-                            stops: [
-                                [0, 'rgba(104, 254, 224, .1)'],
-                                [1, 'rgba(104, 254, 224, 0)']
-                            ]
-                        };
-                    }
-                    chartYear = new Highcharts.Chart(options);
-                });
-            }
-
+            initChartMonth({
+            	url: '/rest/chart/attendance/month',
+            	container: 'container'
+            });
             /* ****************************************************** */
-            // CHART ALL ATTENDANCES
-            if($('#container_global').length){
-                $.getJSON('/rest/chart/attendance', function (config) {
-                    options = config;
-                    options.chart.renderTo = 'container_global';
-                    options.tooltip = {
-                        formatter: function () {
-                            return Highcharts.dateFormat('%b %Y', new Date(this.x)) + ': ' + this.y;
-                        }
-                    };
-                    chartGlobal = new Highcharts.Chart(options);
-                });
-    
-                $('[data-toggle="tab"]').on('shown.bs.tab', function () {
-                    if(chartMonth){
-                		chartMonth.reflow();
-                    }
-                    if(chartYear){
-                    	chartYear.reflow();
-                    }
-                    if(chartGlobal){
-                    	chartGlobal.reflow();
-                    }
-                });
-            }
+            initChartYear({
+            	url: '/rest/chart/attendance/year',
+            	container: 'container_year'
+            });
+            /* ****************************************************** */
+            initChartGlobal({
+            	url: '/rest/chart/attendance',
+            	container: 'container_global'
+            });
         });
         //]]>
     </script>

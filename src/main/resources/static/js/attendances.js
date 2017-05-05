@@ -1,6 +1,14 @@
 var urlChartMonth,
 chartMonthContainer,
-loadingMessage;
+urlChartYear,
+urlChartGlobal,
+chartGlobalContainer,
+chartYearContainer,
+loadingMessage,
+chartMonth,
+chartYear,
+chartGlobal
+;
 
 $(document).ready(function(){
 	$('#box-memorial input[type="hidden"]').prependTo('#box-memorial');
@@ -19,6 +27,18 @@ $(document).ready(function(){
     		period = getParameterByName('period', url);
     		updateChartMonth(period);
     	});
+    });
+    
+    $('[data-toggle="tab"]').on('shown.bs.tab', function () {
+        if(chartMonth){
+    		chartMonth.reflow();
+        }
+        if(chartYear){
+        	chartYear.reflow();
+        }
+        if(chartGlobal){
+        	chartGlobal.reflow();
+        }
     });
 });
 
@@ -76,12 +96,14 @@ function initTouchspin(){
     });
 }
 
+/* ********************************************* */
+/* CHART MONTH MEETINGS ATTENDANCE */
 function initChartMonth(parameters){
 	urlChartMonth = parameters.url;
 	chartMonthContainer = parameters.container;
+	updateChartMonth();
 }
 
-/* CHART MONTH MEETINGS ATTENDANCE */
 function updateChartMonth(period){
 	var url = urlChartMonth;
 	if(typeof period !== 'undefined'){
@@ -101,4 +123,117 @@ function updateChartMonth(period){
             chartMonth = new Highcharts.Chart(options);
         });
     }
+}
+
+/* ********************************************* */
+//CHART YEAR AVERAGE ATTENDANCE
+function initChartYear(parameters){
+	urlChartYear = parameters.url;
+	chartYearContainer = parameters.container;
+	
+	updateChartYear();
+}
+
+function updateChartYear(){
+	var url = urlChartYear;
+	
+	if($('#' + chartYearContainer).length){
+        $.getJSON(url, function (config) {
+            options = config;
+            options.chart.renderTo = chartYearContainer;
+            options.series[0].fillColor = {
+                linearGradient: {
+                    x1: 0,
+                    y1: 0,
+                    x2: 0,
+                    y2: 1
+                },
+                stops: [
+                    [0, 'rgba(120, 253, 154, .2)'],
+                    [1, 'rgba(120, 253, 154, 0)']
+                ]
+            };
+            if (options.series[1]) {
+                options.series[1].fillColor = {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, 'rgba(243, 132, 252, .1)'],
+                        [1, 'rgba(243, 132, 252, 0)']
+                    ]
+                };
+            }
+            if (options.series[2]) {
+                options.series[2].fillColor = {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, 'rgba(107, 193, 253, .1)'],
+                        [1, 'rgba(107, 193, 253, 0)']
+                    ]
+                };
+            }
+            if (options.series[3]) {
+                options.series[3].fillColor = {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, 'rgba(168, 32, 132, .1)'],
+                        [1, 'rgba(168, 32, 132, 0)']
+                    ]
+                };
+            }
+            if (options.series[4]) {
+                options.series[4].fillColor = {
+                    linearGradient: {
+                        x1: 0,
+                        y1: 0,
+                        x2: 0,
+                        y2: 1
+                    },
+                    stops: [
+                        [0, 'rgba(104, 254, 224, .1)'],
+                        [1, 'rgba(104, 254, 224, 0)']
+                    ]
+                };
+            }
+            chartYear = new Highcharts.Chart(options);
+        });
+    }
+}
+
+/* ********************************************* */
+//CHART ALL ATTENDANCES
+function initChartGlobal(parameters){
+	urlChartGlobal = parameters.url;
+	chartGlobalContainer = parameters.container;
+	updateChartGlobal();
+}
+
+function updateChartGlobal(){
+	var url = urlChartGlobal;
+	if($('#' + chartGlobalContainer).length){
+        $.getJSON(url, function (config) {
+            options = config;
+            options.chart.renderTo = chartGlobalContainer;
+            options.tooltip = {
+                formatter: function () {
+                    return Highcharts.dateFormat('%b %Y', new Date(this.x)) + ': ' + this.y;
+                }
+            };
+            chartGlobal = new Highcharts.Chart(options);
+        });
+	}
 }
