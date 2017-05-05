@@ -1,4 +1,4 @@
-package fr.gwombat.predicadmin.web.vo;
+package fr.gwombat.predicadmin.web.vo.element;
 
 import java.text.NumberFormat;
 

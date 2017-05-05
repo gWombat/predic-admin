@@ -5,6 +5,8 @@ import java.time.Year;
 import org.apache.commons.lang3.ArrayUtils;
 
 import fr.gwombat.predicadmin.web.vo.builder.YearAttendanceVoBuilder;
+import fr.gwombat.predicadmin.web.vo.element.NumberElementVO;
+import fr.gwombat.predicadmin.web.vo.element.PercentageNumberElementVO;
 
 public class YearAttendanceVO {
 
