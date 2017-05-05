@@ -81,8 +81,8 @@
                         </span>
                         <span th:if="${yearAttendance.averageAttendanceVariation} != null" class="pull-right">
                             <small>
-                                <span th:class="${yearAttendance.averageAttendanceVariation} >= 0 ? 'text-success' : 'text-danger'">
-                                    <span th:text="${yearAttendance.getFormattedVariation()}"></span>
+                                <span th:class="${yearAttendance.averageAttendanceVariation.cssClass}">
+                                    <span th:text="${yearAttendance.averageAttendanceVariation.formattedValue}"></span>
                                 </span>
                             </small>
                         </span>
@@ -362,8 +362,8 @@
                                                 </td>
                                                 <td class="text-right">
                                                     <span th:if="${yAttendance.averageAttendanceVariation} != null"
-                                                        th:class="${yAttendance.averageAttendanceVariation} >= 0 ? 'text-success' : 'text-danger'"
-                                                        th:text="${yAttendance.getFormattedVariation()}">
+                                                        th:class="${yAttendance.averageAttendanceVariation.cssClass}"
+                                                        th:text="${yAttendance.averageAttendanceVariation.formattedValue}">
                                                     </span>
                                                 </td>
                                                 <td class="text-white text-right" th:text="${yAttendance.averageAttendance}"></td>
