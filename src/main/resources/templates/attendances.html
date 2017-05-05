@@ -99,12 +99,12 @@
         </div>
         <div class="col-lg-3">
             <div class="panel panel-default b-a-0 bg-gray-dark">
-                <div class="panel-heading b-b-warning b-b-2">Global average</div>
+                <div class="panel-heading b-b-warning b-b-2" th:text="#{page.meeting.attendance.global.average}">Global average</div>
                 <div class="panel-body">
                     <h2 class="m-t-0 f-w-300">
-                        <span>75</span>
+                        <span th:text="${globalAttendance.averageAttendance}">75</span>
                     </h2>
-                    <span>Global</span>
+                    <span th:text="#{page.meeting.attendance.reports(${globalAttendance.nbReports})}">Global</span>
                 </div>
             </div>
         </div>
@@ -133,7 +133,7 @@
                         <a href="#tab_current_year" data-toggle="tab" th:text="#{page.meeting.attendance.year.average}">Year 2016-2017</a>
                     </li>
                     <li role="presentation">
-                        <a href="#tab_global" data-toggle="tab">Global results</a>
+                        <a href="#tab_global" data-toggle="tab" th:text="#{page.meeting.attendance.global.result}">Global results</a>
                     </li>
                 </ul>
                 <div class="tab-content">
@@ -377,8 +377,8 @@
                     <!--  END TAB CHART YEAR AVERAGE -->
 
                     <div id="tab_global" role="tabpanel" class="tab-pane fade panel panel-default no-bg b-dark-gray b-a-2">
-                        <div class="panel-heading">
-                            Year average attendance
+                        <div class="panel-heading" >
+                            <h4 class="panel-title" th:text="#{page.meeting.attendance.global.result}">Year average attendance</h4>
                         </div>
                         <div class="panel-body">
                             <div class="row">
@@ -386,8 +386,11 @@
                                     <div id="container_global"></div>
                                 </div>
                                 <div class="col-lg-2">
-                                    <p class="m-b-0 m-t-1 text-gray-lighter">Total Income</p>
-                                    <h2 class="f-w-300 m-t-0">$5,878,00</h2>
+                                    <h3 class="f-w-300 m-t-0 m-b-0 text-primary" th:text="${globalAttendance.averageAttendance}">70</h3>
+                                    <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{page.meeting.attendance.global.average}">Average attendance</p>
+                                    
+                                    <h4 class="f-w-300 m-t-1 m-b-0" th:text="${globalAttendance.nbReports}">70</h4>
+                                    <p class="m-b-1 m-t-0 text-gray-lighter" th:text="#{page.meeting.attendance.reports.alt(${globalAttendance.nbReports})}">Reports</p>
                                 </div>
                             </div>
                         </div>

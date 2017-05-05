@@ -9,6 +9,7 @@ import fr.gwombat.predicadmin.web.vo.YearAttendanceVO;
 public class GlobalAttendanceVoBuilder {
 
     private int                    averageAttendance;
+    private int                    nbReports;
     private List<YearAttendanceVO> attendances;
 
     private GlobalAttendanceVoBuilder() {
@@ -29,8 +30,13 @@ public class GlobalAttendanceVoBuilder {
         this.averageAttendance = averageAttendance;
         return this;
     }
-    
-    public GlobalAttendanceVO build(){
+
+    public GlobalAttendanceVoBuilder nbReports(final int nbReports) {
+        this.nbReports = nbReports;
+        return this;
+    }
+
+    public GlobalAttendanceVO build() {
         return new GlobalAttendanceVO(this);
     }
 
@@ -40,6 +46,10 @@ public class GlobalAttendanceVoBuilder {
 
     public int getAverageAttendance() {
         return averageAttendance;
+    }
+
+    public int getNbReports() {
+        return nbReports;
     }
 
 }
