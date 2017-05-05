@@ -1,6 +1,5 @@
 package fr.gwombat.predicadmin.web.vo;
 
-import java.text.NumberFormat;
 import java.time.Year;
 
 import org.apache.commons.lang3.ArrayUtils;
@@ -17,7 +16,7 @@ public class YearAttendanceVO {
     private final MonthAttendanceVO   minAverage;
     private final int                 averageAttendance;
     private MonthAttendanceVO[]       attendances;
-    private final Double              averageAttendanceVariation;
+    private NumberElementVO<Double>   averageAttendanceVariation;
 
     public YearAttendanceVO(YearAttendanceVoBuilder builder) {
         this.attendances = builder.getAttendances();
@@ -28,7 +27,10 @@ public class YearAttendanceVO {
         this.maxAverage = builder.getMaxAverage();
         this.minAverage = builder.getMinAverage();
         this.memorial = builder.getMemorial();
-        this.averageAttendanceVariation = builder.getAverageAttendanceVariation();
+
+        final Double variation = builder.getAverageAttendanceVariation();
+        if (variation != null)
+            this.averageAttendanceVariation = new PercentageNumberElementVO(variation);
     }
 
     @Override
@@ -83,16 +85,8 @@ public class YearAttendanceVO {
         return memorial;
     }
 
-    public Double getAverageAttendanceVariation() {
+    public NumberElementVO<Double> getAverageAttendanceVariation() {
         return averageAttendanceVariation;
-    }
-    
-    public String getFormattedVariation(){
-        final NumberFormat format =  NumberFormat.getPercentInstance();
-        format.setMinimumFractionDigits(1);
-        format.setMaximumFractionDigits(2);
-        
-        return format.format(averageAttendanceVariation);
     }
 
 }

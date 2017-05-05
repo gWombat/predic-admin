@@ -31,6 +31,8 @@ import fr.gwombat.predicadmin.web.vo.YearAttendanceVO;
 @Component
 public class ChartYearAverageAttendanceCreator extends AbstractHighchartDataTransformer<List<YearAttendance>> {
 
+    private static final int          NB_SERIES_TO_DISPLAY = 5;
+
     private YearAttendanceTransformer yearAttendanceTransformer;
 
     @Override
@@ -45,9 +47,10 @@ public class ChartYearAverageAttendanceCreator extends AbstractHighchartDataTran
                 final YearAttendanceVO yearAttendanceVo = yearAttendanceTransformer.toViewObject(yearAttendance);
 
                 final AreaSplineSerie serie = new AreaSplineSerie(yearAttendance.getTheocraticYear().toString());
-                
+
+                serie.setIndex(NB_SERIES_TO_DISPLAY - i);
                 serie.setLineWidth(1);
-                if(i == 0)
+                if (i == 0)
                     serie.setLineWidth(2);
                 if (i > 0)
                     serie.setVisible(false);

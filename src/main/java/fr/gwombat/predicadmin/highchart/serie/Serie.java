@@ -22,6 +22,7 @@ public class Serie {
     protected String      name;
     protected List<Point> data;
     protected Number      pointInterval = 1;
+    protected Number      index;
     protected boolean     visible       = true;
 
     protected Serie(final ChartType chartType) {
@@ -79,5 +80,13 @@ public class Serie {
 
     protected void setType(ChartType type) {
         this.type = type;
+    }
+
+    public Number getIndex() {
+        return index;
+    }
+
+    public void setIndex(Number index) {
+        this.index = index;
     }
 }
