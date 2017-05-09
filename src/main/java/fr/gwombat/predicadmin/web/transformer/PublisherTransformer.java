@@ -4,6 +4,7 @@ import fr.gwombat.predicadmin.model.entities.Publisher;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.vo.AddressVO;
 import fr.gwombat.predicadmin.web.vo.ContactDetailVO;
+import fr.gwombat.predicadmin.web.vo.PrivilegeVO;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
 import fr.gwombat.predicadmin.web.vo.builder.PublisherVoBuilder;
 
@@ -33,8 +34,9 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
 
         if(publisherForm != null) {
             publisher.setName(StringUtils.upperCase(publisherForm.getName()));
-            publisher.setFirstName(WordUtils.capitalizeFully(publisherForm.getFirstName()));
+            publisher.setFirstName(WordUtils.capitalizeFully(publisherForm.getFirstName(), ' ', '-'));
             publisher.setGender(publisherForm.getGender());
+            publisher.setPrivilege(publisherForm.getPrivilege());
 
             publisher.setBaptismDate(formatDate(publisherForm.getBaptismDate()));
             publisher.setBirthDate(formatDate(publisherForm.getBirthDate()));
@@ -59,6 +61,7 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
             publisherForm.setGender(publisher.getGender());
             publisherForm.setIdentifier(publisher.getIdentifier());
             publisherForm.setFullName(publisher.getFullName());
+            publisherForm.setPrivilege(publisher.getPrivilege());
 
             publisherForm.setAddress(addressTransformer.toFormObject(publisher.getAddress()));
             publisherForm.setContactDetail(contactDetailTransformer.toFormObject(publisher.getContactDetail()));
@@ -73,6 +76,10 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
         if(publisher != null) {
             final AddressVO addressVo = addressTransformer.toViewObject(publisher.getAddress());
             final ContactDetailVO contactDetailVo = contactDetailTransformer.toViewObject(publisher.getContactDetail());
+            
+            PrivilegeVO privilege = null;
+            if(publisher.getPrivilege() != null)
+                privilege = new PrivilegeVO(publisher.getPrivilege());
 
             final PublisherVoBuilder builder = PublisherVoBuilder.create(contactDetailVo, addressVo)
                                                                  .fullName(publisher.getFullName())
@@ -80,7 +87,8 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
                                                                  .birthDate(publisher.getBirthDate())
                                                                  .name(publisher.getName())
                                                                  .firstName(publisher.getFirstName())
-                                                                 .baptismDate(publisher.getBaptismDate());
+                                                                 .baptismDate(publisher.getBaptismDate())
+                                                                 .privilege(privilege);
 
             return builder.build();
         }

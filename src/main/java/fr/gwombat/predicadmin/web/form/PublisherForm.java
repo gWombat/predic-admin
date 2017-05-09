@@ -6,6 +6,7 @@ import javax.validation.constraints.Pattern;
 import org.hibernate.validator.constraints.NotBlank;
 
 import fr.gwombat.predicadmin.support.Gender;
+import fr.gwombat.predicadmin.support.Privilege;
 
 public class PublisherForm {
 
@@ -23,6 +24,7 @@ public class PublisherForm {
     private Gender            gender;
     private AddressForm       address;
     private ContactDetailForm contactDetail;
+    private Privilege         privilege;
 
     public String getIdentifier() {
         return identifier;
@@ -94,6 +96,14 @@ public class PublisherForm {
 
     public void setContactDetail(ContactDetailForm contactDetail) {
         this.contactDetail = contactDetail;
+    }
+
+    public Privilege getPrivilege() {
+        return privilege;
+    }
+
+    public void setPrivilege(Privilege privilege) {
+        this.privilege = privilege;
     }
 
 }

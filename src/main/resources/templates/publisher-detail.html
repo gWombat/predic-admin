@@ -56,6 +56,13 @@
                         <div class="media">
                             <div class="media-body">
                                 <h4 class="m-b-0"><span th:text="${publisher.fullName}">Haskell Hahn</span> </h4>
+                                <p class="m-t-0">
+                                    <span th:if="${publisher.privilege} != null" class="label label-outline"
+                                        th:classappend="'label-' + ${publisher.privilege.cssClass}"
+                                        th:text="#{${publisher.privilege.labelCode}}">
+                                        Elder
+                                    </span>
+                                </p>
                                 <p class="m-t-0"><span th:text="${publisher.identifier}">Investor Directives Agent</span></p>
 
                                 <div class="btn-toolbar" role="toolbar">

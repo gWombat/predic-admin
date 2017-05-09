@@ -5,6 +5,8 @@ import fr.gwombat.predicadmin.repository.CongregationRepository;
 import fr.gwombat.predicadmin.repository.MeetingAttendanceRepository;
 import fr.gwombat.predicadmin.repository.PublisherRepository;
 import fr.gwombat.predicadmin.support.Gender;
+import fr.gwombat.predicadmin.support.Privilege;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -59,6 +61,7 @@ public class SetupListener {
         publisher.setBirthDate(LocalDate.of(1989, 5, 11));
         publisher.setBaptismDate(LocalDate.of(2008, 12, 6));
         publisher.setCongregation(congreg);
+        publisher.setPrivilege(Privilege.MINISTERIAL_SERVANT);
 
         Address address = new Address();
         address.setCity("Paris");

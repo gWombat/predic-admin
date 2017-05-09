@@ -42,7 +42,6 @@
                     <span th:if="${newPublisher} == null" th:text="#{page.publisher.edit.header.title}">Title</span>
                 </h3>
                 <p class="m-t-0">
-                    <span class="label label-warning label-outline text-uppercase m-r-1">Premium</span> 
                     <span th:text="#{page.publisher.edit.header.subtitle}">Subtitle!</span>
                 </p>
             </div>
@@ -76,6 +75,7 @@
                 <!-- START Menu Pills Vertical -->
                 <ul class="nav nav-pills nav-stacked">
                     <li role="presentation" class="active"><a href="#tab-detail-general" role="tab" data-toggle="tab" th:text="#{general}">General</a></li>
+                    <li role="presentation" class=""><a href="#tab-detail-spi" role="tab" data-toggle="tab" th:text="#{general.spiritual}">Spiritual Informations</a></li>
                     <li role="presentation" class=""><a href="#tab-detail-address" role="tab" data-toggle="tab" th:text="#{general.address}">Address</a></li>
                     <li role="presentation" class=""><a href="#tab-detail-contact" role="tab" data-toggle="tab" th:text="#{general.contact}">Contact</a></li>
                 </ul>
@@ -147,6 +147,18 @@
                                         <span class="help-block" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}">Incorrect name</span>
                                     </div>
                                     <!-- END Form Gender -->
+                                </div>
+                            </div>
+                        </div>
+                        <!-- END Tab General informations -->
+                        <!-- START Tab Spiritual Informations -->
+                        <div class="tab-pane fade p-r-1" id="tab-detail-spi" role="tabpanel">
+                            <div class="panel panel-default b-a-2 no-bg b-gray-dark">
+                                <div class="panel-heading">
+                                    <h4 class="panel-title" th:text="#{general.spiritual}">Spiritual informations</h4>
+                                </div>
+                                
+                                <div class="panel-body">
                                     <!-- START Form Baptism Date -->
                                     <div class="form-group" th:classappend="${#fields.hasErrors('baptismDate')} ? 'has-error'">
                                         <label for="profile-edit-baptism-date" class="col-sm-3 control-label"> <span th:text="#{general.baptism.date}"></span>
@@ -159,10 +171,23 @@
                                         <span class="help-block" th:if="${#fields.hasErrors('baptismDate')}" th:errors="*{baptismDate}">Incorrect name</span>
                                     </div>
                                     <!-- END Form Baptism Date -->
+                                    <!-- START Form Privilege -->
+                                    <div class="form-group" th:classappend="${#fields.hasErrors('privilege')} ? 'has-error'">
+                                        <label for="profile-edit-privilege" class="col-sm-3 control-label"> <span th:text="#{general.privilege}"></span>
+                                        </label>
+                                        <div class="col-sm-3">
+                                            <select id="profile-edit-privilege" th:field="*{privilege}" class="form-control selectpicker">
+                                                <option th:value="${null}" >Aucun</option>
+                                                <option th:each="privilege : ${privileges}" th:value="${privilege}" th:text="${#messages.msg(privilege.code)}"></option>
+                                            </select>
+                                        </div>
+                                        <span class="help-block" th:if="${#fields.hasErrors('gender')}" th:errors="*{gender}">Incorrect name</span>
+                                    </div>
+                                    <!-- END Form Privilege -->
                                 </div>
                             </div>
                         </div>
-                        <!-- END Tab General informations -->
+                        <!-- END Tab Spiritual Informations -->
                         <!-- START Tab Address -->
                         <div class="tab-pane fade p-r-1" id="tab-detail-address" role="tabpanel">
                             <div class="panel panel-default b-a-2 no-bg b-gray-dark">

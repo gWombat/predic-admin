@@ -20,6 +20,7 @@ import javax.validation.constraints.NotNull;
 import org.hibernate.validator.constraints.NotBlank;
 
 import fr.gwombat.predicadmin.support.Gender;
+import fr.gwombat.predicadmin.support.Privilege;
 
 @Entity
 @Table(name = "congregations_publishers")
@@ -40,8 +41,7 @@ public class Publisher extends AuditableEntity {
     @Column(name = "firstname", nullable = false)
     private String            firstName;
 
-    @NotNull
-    @Column(name = "birth_date", nullable = false)
+    @Column(name = "birth_date")
     private LocalDate         birthDate;
 
     @Column(name = "baptism_date")
@@ -51,6 +51,10 @@ public class Publisher extends AuditableEntity {
     @Enumerated(EnumType.STRING)
     @Column(name = "gender", nullable = false)
     private Gender            gender;
+
+    @Enumerated(EnumType.STRING)
+    @Column(name = "privilege")
+    private Privilege         privilege;
 
     @NotNull
     @ManyToOne(fetch = FetchType.LAZY)
@@ -144,6 +148,14 @@ public class Publisher extends AuditableEntity {
 
     public void setContactDetail(ContactDetail contactDetail) {
         this.contactDetail = contactDetail;
+    }
+
+    public Privilege getPrivilege() {
+        return privilege;
+    }
+
+    public void setPrivilege(Privilege privilege) {
+        this.privilege = privilege;
     }
 
 }

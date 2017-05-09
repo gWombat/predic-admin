@@ -16,6 +16,7 @@ public class PublisherVO {
 
     private final ContactDetailVO contactDetail;
     private final AddressVO       address;
+    private final PrivilegeVO     privilege;
 
     public PublisherVO(final PublisherVoBuilder builder) {
         this.fullName = builder.getFullName();
@@ -26,6 +27,7 @@ public class PublisherVO {
         this.address = builder.getAddress();
         this.name = builder.getName();
         this.firstName = builder.getFirstName();
+        this.privilege = builder.getPrivilege();
     }
 
     public LocalDate getBirthDate() {
@@ -58,5 +60,9 @@ public class PublisherVO {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public PrivilegeVO getPrivilege() {
+        return privilege;
     }
 }

@@ -1,6 +1,5 @@
 package fr.gwombat.predicadmin.web.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -25,33 +24,35 @@ import fr.gwombat.predicadmin.model.entities.Publisher;
 import fr.gwombat.predicadmin.service.CongregationService;
 import fr.gwombat.predicadmin.service.PublisherService;
 import fr.gwombat.predicadmin.support.Gender;
+import fr.gwombat.predicadmin.support.Privilege;
 import fr.gwombat.predicadmin.web.alert.AlertMessage;
 import fr.gwombat.predicadmin.web.alert.DangerAlertMessage;
 import fr.gwombat.predicadmin.web.alert.SuccessAlertMessage;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
+import fr.gwombat.predicadmin.web.transformer.CongregationPublishersTransformer;
 import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
+import fr.gwombat.predicadmin.web.vo.CongregationPublishersVO;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
 
 @Controller
 @RequestMapping("/publishers")
 public class PublisherController {
 
-    private static final Logger logger = LoggerFactory.getLogger(PublisherController.class);
+    private static final Logger               logger                = LoggerFactory.getLogger(PublisherController.class);
 
-    private static final String PUBLISHERS_PAGE       = "publishers";
-    private static final String PUBLISHER_EDIT_PAGE   = "publisher-edit";
-    private static final String PUBLISHER_DETAIL_PAGE = "publisher-detail";
+    private static final String               PUBLISHERS_PAGE       = "publishers";
+    private static final String               PUBLISHER_EDIT_PAGE   = "publisher-edit";
+    private static final String               PUBLISHER_DETAIL_PAGE = "publisher-detail";
 
-    private PublisherService     publisherService;
-    private PublisherTransformer publisherTransformer;
-    private CongregationService  congregationService;
+    private PublisherService                  publisherService;
+    private CongregationService               congregationService;
+
+    private CongregationPublishersTransformer congregationPublishersTransformer;
+    private PublisherTransformer              publisherTransformer;
 
     @Autowired
-    public PublisherController(final PublisherService publisherService,
-                               final PublisherTransformer publisherTransformer,
-                               final CongregationService congregationService) {
+    public PublisherController(final PublisherService publisherService, final CongregationService congregationService) {
         this.publisherService = publisherService;
-        this.publisherTransformer = publisherTransformer;
         this.congregationService = congregationService;
     }
 
@@ -60,16 +61,11 @@ public class PublisherController {
 
         final List<Publisher> publishers = publisherService.getByCongregation(congregationService.getCurrentCongregation());
 
-        if(publishers != null) {
-            final List<PublisherVO> publisherVOS = new ArrayList<>(publishers.size());
-            for(Publisher publisher : publishers) {
-                PublisherVO publisherVo = publisherTransformer.toViewObject(publisher);
-                publisherVOS.add(publisherVo);
-            }
+        if (publishers != null) {
+            final CongregationPublishersVO congregationPublishersVo = congregationPublishersTransformer.toViewObject(publishers);
 
             model.addAttribute("congregation", congregationService.getCurrentCongregation());
-            model.addAttribute("publishers", publisherVOS);
-            model.addAttribute("nbPublishers", publisherVOS.size());
+            model.addAttribute("congregationPublishers", congregationPublishersVo);
         }
 
         return PUBLISHERS_PAGE;
@@ -89,7 +85,7 @@ public class PublisherController {
     public String detailPublisherPage(@PathVariable("id") final String identifier, Model model, HttpServletRequest request) {
         final Publisher publisher = publisherService.getByIdentifier(identifier);
 
-        if(publisher == null)
+        if (publisher == null)
             throw new ResourceNotFoundException(identifier, request.getRequestURI());
 
         final PublisherVO publisherVo = publisherTransformer.toViewObject(publisher);
@@ -109,7 +105,7 @@ public class PublisherController {
 
     @PostMapping
     public String saveOrUpdatePublisher(Model model, @ModelAttribute("publisher") @Valid PublisherForm publisherForm, BindingResult result, Errors errors, RedirectAttributes redirectAttributes) {
-        if(result.hasErrors()) {
+        if (result.hasErrors()) {
             errors.reject("validation.error.global");
             return PUBLISHER_EDIT_PAGE;
         }
@@ -117,60 +113,74 @@ public class PublisherController {
         boolean isNew = false;
 
         Publisher publisher = publisherService.getByIdentifier(publisherForm.getIdentifier());
-        if(publisher == null)
+        if (publisher == null)
             isNew = true;
 
         publisher = publisherTransformer.toEntity(publisherForm, publisher);
-        if(isNew)
+        if (isNew)
             publisher.setCongregation(congregationService.getCurrentCongregation());
 
         AlertMessage message = null;
         try {
             publisherService.save(publisher);
-            
+
             message = new SuccessAlertMessage();
-            if(isNew)
-                message.setLabelCode("page.profile.detail.creation.success");
+            if (isNew)
+                message.setLabelCode("page.publisher.detail.creation.success");
             else
-                message.setLabelCode("page.profile.detail.update.success");
+                message.setLabelCode("page.publisher.detail.update.success");
             redirectAttributes.addFlashAttribute("message", message);
 
             return "redirect:/publishers/" + publisher.getIdentifier();
-        } catch(Exception e) {
+        } catch (Exception e) {
             message = new DangerAlertMessage();
             message.setLabelCode("validation.error.internal");
             model.addAttribute("message", message);
-            
+
             logger.error(String.format("Error saving publisher [%s]: ", publisher), e);
             return PUBLISHER_EDIT_PAGE;
         }
     }
-    
+
     @PostMapping("/{id}/delete")
-    public String deletePublisher(@PathVariable("id") final String identifier, Model model, RedirectAttributes redirectAttributes){
+    public String deletePublisher(@PathVariable("id") final String identifier, Model model, RedirectAttributes redirectAttributes) {
         AlertMessage message = null;
-        try{
+        try {
             message = new SuccessAlertMessage();
-            
+
             publisherService.deleteByIdentifier(identifier);
             message.setLabelCode("page.profile.detail.delete.success");
             redirectAttributes.addFlashAttribute("message", message);
-        }
-        catch(Exception e){
+        } catch (Exception e) {
             message = new DangerAlertMessage();
             message.setLabelCode("validation.error.internal");
             model.addAttribute("message", message);
-            
+
             logger.error(String.format("Error deleting publisher [%s]: ", identifier), e);
             return PUBLISHER_EDIT_PAGE;
         }
-        
+
         return "redirect:/publishers";
     }
 
     @ModelAttribute("genders")
     public Gender[] getGenders() {
         return Gender.values();
+    }
+
+    @ModelAttribute("privileges")
+    public Privilege[] getPrivileges() {
+        return Privilege.values();
+    }
+
+    @Autowired
+    public void setCongregationPublishersTransformer(CongregationPublishersTransformer congregationPublishersTransformer) {
+        this.congregationPublishersTransformer = congregationPublishersTransformer;
+    }
+
+    @Autowired
+    public void setPublisherTransformer(PublisherTransformer publisherTransformer) {
+        this.publisherTransformer = publisherTransformer;
     }
 
 }

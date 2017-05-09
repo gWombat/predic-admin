@@ -4,6 +4,7 @@ import java.time.LocalDate;
 
 import fr.gwombat.predicadmin.web.vo.AddressVO;
 import fr.gwombat.predicadmin.web.vo.ContactDetailVO;
+import fr.gwombat.predicadmin.web.vo.PrivilegeVO;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
 
 public class PublisherVoBuilder {
@@ -18,6 +19,7 @@ public class PublisherVoBuilder {
 
     private ContactDetailVO contactDetail;
     private AddressVO       address;
+    private PrivilegeVO     privilege;
 
     public static PublisherVoBuilder create(final ContactDetailVO contactDetail, final AddressVO address) {
         final PublisherVoBuilder builder = new PublisherVoBuilder();
@@ -55,6 +57,11 @@ public class PublisherVoBuilder {
         this.firstName = firstName;
         return this;
     }
+    
+    public PublisherVoBuilder privilege(final PrivilegeVO privilege) {
+        this.privilege = privilege;
+        return this;
+    }
 
     public PublisherVO build() {
         return new PublisherVO(this);
@@ -90,5 +97,9 @@ public class PublisherVoBuilder {
 
     public String getFirstName() {
         return firstName;
+    }
+
+    public PrivilegeVO getPrivilege() {
+        return privilege;
     }
 }
