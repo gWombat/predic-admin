@@ -17,6 +17,8 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.gwombat.predicadmin.exception.ResourceNotFoundException;
@@ -160,6 +162,16 @@ public class PublisherController {
             return PUBLISHER_EDIT_PAGE;
         }
 
+        return "redirect:/publishers";
+    }
+    
+    @PostMapping("/upload")
+    public String uploadPublishers(@RequestParam("file") MultipartFile file){
+        logger.debug("Uploading file: " + file.getName());
+        logger.debug("Uploading file: " + file.getContentType());
+        logger.debug("Uploading file: " + file.getOriginalFilename());
+        logger.debug("Uploading file: " + file.getSize());
+        
         return "redirect:/publishers";
     }
 
