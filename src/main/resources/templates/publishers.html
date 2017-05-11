@@ -87,9 +87,9 @@
                     <span th:text="#{general.add}">Add</span>&#160;
                     <i class="fa fa-plus circle text-gray"></i>
                 </a>
-                <form id="uploadPublishers" class="dropzone" method="post" th:action="@{/publishers/upload}" enctype="multipart/form-data">
-<!--                     <input type="file" name="file" /> -->
-<!--                     <button type="submit" class="btn btn-default">Submit</button> -->
+                <form method="post" th:action="@{/publishers/upload}" enctype="multipart/form-data">
+                    <input id="input_upload_publishers" multiple type="file" name="file" class="file-loading" />
+                    <button type="submit" class="btn btn-default">Submit</button>
                 </form>
             </div>
         </div>
@@ -143,9 +143,13 @@
                 </div>
             </div>
         </div> 
-        <script th:src="@{/plugins/dropzone/dropzone.min.js}"></script>
-        <script th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
+        <script type="application/javascript" th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
         <script type="application/javascript" th:src="@{https://cdn.datatables.net/plug-ins/1.10.13/sorting/datetime-moment.js}"></script>
+        <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/canvas-to-blob.min.js}"></script>
+        <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/sortable.min.js}"></script>
+        <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/purify.min.js}"></script>
+        <script type="application/javascript" th:src="@{/plugins/fileinput/js/fileinput.min.js}"></script>
+        <script type="application/javascript" th:src="@{/plugins/fileinput/themes/explorer/theme.min.js}"></script>
         <script th:inline="javascript">
       	//<![CDATA[
         $(document).ready(function () {
@@ -187,12 +191,13 @@
         	
         	$('#table_publishers_length select').addClass('select2 select2-input');
         	
-        	Dropzone.options.uploadPublishers = {
-    			maxFilesize: 3,
-    			clickable: true,
-    			acceptedFiles: 'application/pdf',
-    			dictDefaultMessage: 'Glissez ici le fichier'
-        	};
+        	$('#input_upload_publishers').fileinput({
+        		theme: "explorer",
+        	    uploadUrl: "/file-upload-batch/2",
+        	    allowedFileExtensions: ['jpg', 'png', 'gif'],
+        	    overwriteInitial: false,
+        	    initialPreviewAsData: true,
+        	});
         	
         	(function() {
         	    if ($('.select2-input').length === 0) {
