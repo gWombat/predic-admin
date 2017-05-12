@@ -1,5 +1,6 @@
 package fr.gwombat.predicadmin.web.controller;
 
+import java.io.File;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -8,6 +9,7 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -171,6 +173,12 @@ public class PublisherController {
         logger.debug("Uploading file: " + file.getContentType());
         logger.debug("Uploading file: " + file.getOriginalFilename());
         logger.debug("Uploading file: " + file.getSize());
+        
+        if(file.getContentType().equalsIgnoreCase(MediaType.APPLICATION_PDF_VALUE))
+            logger.debug("The uploaded file is a pdf!");
+        else if(file.getContentType().equalsIgnoreCase("application/vnd.ms-excel") 
+                || file.getContentType().equalsIgnoreCase("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
+            logger.debug("The uploaded file is an MS Excel file!");
         
         return "redirect:/publishers";
     }

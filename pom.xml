@@ -30,6 +30,7 @@
 		<momentjs.version>2.17.1</momentjs.version>
         <google.libphone.version>8.3.3</google.libphone.version>
         <jackson.datatype.jsr310.version>2.6.0</jackson.datatype.jsr310.version>
+        <apache.poi.version>3.16</apache.poi.version>
 	</properties>
 
 	<dependencies>
@@ -106,6 +107,17 @@
             <artifactId>jackson-datatype-jsr310</artifactId>
             <version>${jackson.datatype.jsr310.version}</version>
         </dependency>
+        <dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi</artifactId>
+		    <version>${apache.poi.version}</version>
+		</dependency>
+        <dependency>
+		    <groupId>org.apache.poi</groupId>
+		    <artifactId>poi-ooxml</artifactId>
+		    <version>${apache.poi.version}</version>
+		</dependency>
+        
 
 
         <!-- Webjars -->

@@ -1,3 +1,0 @@
-url: http://www.dropzonejs.com
-
-version: ?
