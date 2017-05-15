@@ -1,6 +1,6 @@
 package fr.gwombat.predicadmin.web.controller;
 
-import java.io.File;
+import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -9,7 +9,6 @@ import javax.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -29,6 +28,9 @@ import fr.gwombat.predicadmin.service.CongregationService;
 import fr.gwombat.predicadmin.service.PublisherService;
 import fr.gwombat.predicadmin.support.Gender;
 import fr.gwombat.predicadmin.support.Privilege;
+import fr.gwombat.predicadmin.upload.excel.ColumnMappingItem;
+import fr.gwombat.predicadmin.upload.excel.ExcelFileReader;
+import fr.gwombat.predicadmin.upload.excel.ExcelFileUploadConfiguration;
 import fr.gwombat.predicadmin.web.alert.AlertMessage;
 import fr.gwombat.predicadmin.web.alert.DangerAlertMessage;
 import fr.gwombat.predicadmin.web.alert.SuccessAlertMessage;
@@ -174,11 +176,30 @@ public class PublisherController {
         logger.debug("Uploading file: " + file.getOriginalFilename());
         logger.debug("Uploading file: " + file.getSize());
         
-        if(file.getContentType().equalsIgnoreCase(MediaType.APPLICATION_PDF_VALUE))
-            logger.debug("The uploaded file is a pdf!");
-        else if(file.getContentType().equalsIgnoreCase("application/vnd.ms-excel") 
-                || file.getContentType().equalsIgnoreCase("application/vnd.openxmlformats-officedocument.spreadsheetml.sheet"))
-            logger.debug("The uploaded file is an MS Excel file!");
+        /*
+        Detector detector = new DefaultDetector();
+        try {
+            org.apache.tika.mime.MediaType type = detector.detect(new BufferedInputStream(file.getInputStream()), new Metadata());
+            logger.debug("Tika mimeType: " + type.toString());
+        } catch (IOException e) {
+            logger.error(e.getMessage());
+        }*/
+        ExcelFileUploadConfiguration fileConfiguration = new ExcelFileUploadConfiguration();
+        try {
+            // TODO export to form data
+            fileConfiguration.setInputStream(file.getInputStream());
+            fileConfiguration.setSheetName("Feuille1");
+            fileConfiguration.setUseHeader(true);
+            fileConfiguration.addMappingItem(new ColumnMappingItem("D", "name"));
+            fileConfiguration.addMappingItem(new ColumnMappingItem("E", "firstname"));
+            fileConfiguration.addMappingItem(new ColumnMappingItem("F", "birthdate"));
+            
+            ExcelFileReader fileReader = new ExcelFileReader();
+            fileReader.readFile(fileConfiguration);
+        } catch (IOException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         
         return "redirect:/publishers";
     }
