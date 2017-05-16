@@ -1,8 +1,6 @@
 package fr.gwombat.predicadmin.upload.excel;
 
 import java.io.IOException;
-import java.time.Instant;
-import java.time.ZoneId;
 import java.util.Iterator;
 
 import org.apache.poi.EncryptedDocumentException;
@@ -17,6 +15,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.util.Assert;
 
 import fr.gwombat.predicadmin.model.entities.Publisher;
+import fr.gwombat.predicadmin.support.util.DateConversionUtils;
 
 public class ExcelFileReader {
 
@@ -26,9 +25,6 @@ public class ExcelFileReader {
         Assert.notNull(fileConfiguration, "The file configuration must not be null");
 
         boolean skipRow = fileConfiguration.isUseHeader();
-
-        //for (ColumnMappingItem item : fileConfiguration.getMappings())
-        //    logger.debug(item.toString());
 
         try {
             final Workbook workbook = WorkbookFactory.create(fileConfiguration.getInputStream());
@@ -46,17 +42,22 @@ public class ExcelFileReader {
                     final Iterator<Cell> cellIterator = currentRow.cellIterator();
                     while (cellIterator.hasNext()) {
                         final Cell currentCell = cellIterator.next();
-                        String entityFieldName = fileConfiguration.getEntityFieldByindex(currentCell.getColumnIndex());
-                        
+                        final UploadablePublisherFields entityFieldName = fileConfiguration.getEntityFieldForindex(currentCell.getColumnIndex());
                         
                         // TODO add try/catch(IllegalStateException)
-                        // TODO replace string field name by enum
-                        if(entityFieldName.equalsIgnoreCase("name"))
+                        switch (entityFieldName) {
+                        case NAME:
                             publisher.setName(currentCell.getStringCellValue());
-                        else if(entityFieldName.equalsIgnoreCase("firstname"))
+                            break;
+                        case FIRSTNAME:
                             publisher.setFirstName(currentCell.getStringCellValue());
-                        else if(entityFieldName.equalsIgnoreCase("birthdate"))
-                            publisher.setBirthDate(Instant.ofEpochMilli(currentCell.getDateCellValue().getTime()).atZone(ZoneId.systemDefault()).toLocalDate());
+                            break;
+                        case BIRTHDATE:
+                            publisher.setBirthDate(DateConversionUtils.asLocalDate(currentCell.getDateCellValue()));
+                            break;
+                        default:
+                            break;
+                        }
                             
                     }
                     logger.debug(publisher.toString());

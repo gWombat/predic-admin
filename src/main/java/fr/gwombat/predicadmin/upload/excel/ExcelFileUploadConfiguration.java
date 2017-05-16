@@ -9,11 +9,11 @@ import org.apache.commons.collections4.map.HashedMap;
 
 public class ExcelFileUploadConfiguration {
 
-    private InputStream             inputStream;
-    private String                  sheetName;
-    private boolean                 useHeader;
-    private List<ColumnMappingItem> mappings;
-    private Map<Integer, String>    mappedFieldsByColumnIndex;
+    private InputStream                   inputStream;
+    private String                        sheetName;
+    private boolean                       useHeader;
+    private List<ColumnMappingItem>       mappings;
+    private Map<Integer, UploadableField> mappedFieldsByColumnIndex;
 
     public ExcelFileUploadConfiguration() {
         mappings = new ArrayList<>(0);
@@ -42,12 +42,12 @@ public class ExcelFileUploadConfiguration {
 
     public void setMappings(List<ColumnMappingItem> mappings) {
         this.mappings = mappings;
-        for(ColumnMappingItem item : mappings)
+        for (ColumnMappingItem item : mappings)
             mappedFieldsByColumnIndex.put(item.getColumnIndex(), item.getMappedToValue());
     }
 
     public void addMappingItem(ColumnMappingItem item) {
-        if (item != null){
+        if (item != null) {
             mappings.add(item);
             mappedFieldsByColumnIndex.put(item.getColumnIndex(), item.getMappedToValue());
         }
@@ -60,9 +60,9 @@ public class ExcelFileUploadConfiguration {
     public void setUseHeader(boolean useHeader) {
         this.useHeader = useHeader;
     }
-    
-    public String getEntityFieldByindex(int columnIndex){
-        return mappedFieldsByColumnIndex.get(columnIndex);
+
+    public UploadablePublisherFields getEntityFieldForindex(int columnIndex) {
+        return (UploadablePublisherFields) mappedFieldsByColumnIndex.get(columnIndex);
     }
 
 }

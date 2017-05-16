@@ -31,6 +31,7 @@ import fr.gwombat.predicadmin.support.Privilege;
 import fr.gwombat.predicadmin.upload.excel.ColumnMappingItem;
 import fr.gwombat.predicadmin.upload.excel.ExcelFileReader;
 import fr.gwombat.predicadmin.upload.excel.ExcelFileUploadConfiguration;
+import fr.gwombat.predicadmin.upload.excel.UploadablePublisherFields;
 import fr.gwombat.predicadmin.web.alert.AlertMessage;
 import fr.gwombat.predicadmin.web.alert.DangerAlertMessage;
 import fr.gwombat.predicadmin.web.alert.SuccessAlertMessage;
@@ -176,23 +177,15 @@ public class PublisherController {
         logger.debug("Uploading file: " + file.getOriginalFilename());
         logger.debug("Uploading file: " + file.getSize());
         
-        /*
-        Detector detector = new DefaultDetector();
-        try {
-            org.apache.tika.mime.MediaType type = detector.detect(new BufferedInputStream(file.getInputStream()), new Metadata());
-            logger.debug("Tika mimeType: " + type.toString());
-        } catch (IOException e) {
-            logger.error(e.getMessage());
-        }*/
         ExcelFileUploadConfiguration fileConfiguration = new ExcelFileUploadConfiguration();
         try {
             // TODO export to form data
             fileConfiguration.setInputStream(file.getInputStream());
             fileConfiguration.setSheetName("Feuille1");
             fileConfiguration.setUseHeader(true);
-            fileConfiguration.addMappingItem(new ColumnMappingItem("D", "name"));
-            fileConfiguration.addMappingItem(new ColumnMappingItem("E", "firstname"));
-            fileConfiguration.addMappingItem(new ColumnMappingItem("F", "birthdate"));
+            fileConfiguration.addMappingItem(new ColumnMappingItem("D", UploadablePublisherFields.NAME));
+            fileConfiguration.addMappingItem(new ColumnMappingItem("E", UploadablePublisherFields.FIRSTNAME));
+            fileConfiguration.addMappingItem(new ColumnMappingItem("F", UploadablePublisherFields.BIRTHDATE));
             
             ExcelFileReader fileReader = new ExcelFileReader();
             fileReader.readFile(fileConfiguration);
