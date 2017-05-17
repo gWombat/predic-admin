@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
@@ -171,8 +172,8 @@ public class PublisherController {
     }
     
     @PostMapping("/upload")
-    public String uploadPublishers(@RequestParam("file") MultipartFile file){
-        logger.debug("Uploading file: " + file.getName());
+    public String uploadPublishers(@RequestBody ExcelFileUploadConfiguration fileConfiguration){
+        /*logger.debug("Uploading file: " + file.getName());
         logger.debug("Uploading file: " + file.getContentType());
         logger.debug("Uploading file: " + file.getOriginalFilename());
         logger.debug("Uploading file: " + file.getSize());
@@ -186,13 +187,13 @@ public class PublisherController {
             fileConfiguration.addMappingItem(new ColumnMappingItem("D", UploadablePublisherFields.NAME));
             fileConfiguration.addMappingItem(new ColumnMappingItem("E", UploadablePublisherFields.FIRSTNAME));
             fileConfiguration.addMappingItem(new ColumnMappingItem("F", UploadablePublisherFields.BIRTHDATE));
-            
+            */
             ExcelFileReader fileReader = new ExcelFileReader();
             fileReader.readFile(fileConfiguration);
-        } catch (IOException e) {
+        /*} catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        }
+        }*/
         
         return "redirect:/publishers";
     }

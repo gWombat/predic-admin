@@ -27,8 +27,13 @@ public class ExcelFileReader {
         boolean skipRow = fileConfiguration.isUseHeader();
 
         try {
-            final Workbook workbook = WorkbookFactory.create(fileConfiguration.getInputStream());
-            final Sheet sheet = workbook.getSheet(fileConfiguration.getSheetName());
+            final Workbook workbook = WorkbookFactory.create(fileConfiguration.getFile().getInputStream());
+            Sheet sheet = null;
+            if(fileConfiguration.isUseActiveSheet())
+                sheet = workbook.getSheetAt(workbook.getActiveSheetIndex());
+            else
+                sheet = workbook.getSheet(fileConfiguration.getSheetName());
+            
             final Iterator<Row> rowIterator = sheet.rowIterator();
 
             int rowCount = 0;

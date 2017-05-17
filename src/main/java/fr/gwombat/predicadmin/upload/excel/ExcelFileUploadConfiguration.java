@@ -1,17 +1,18 @@
 package fr.gwombat.predicadmin.upload.excel;
 
-import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
 import org.apache.commons.collections4.map.HashedMap;
+import org.springframework.web.multipart.MultipartFile;
 
 public class ExcelFileUploadConfiguration {
 
-    private InputStream                   inputStream;
+    private MultipartFile                 file;
     private String                        sheetName;
     private boolean                       useHeader;
+    private boolean                       useActiveSheet;
     private List<ColumnMappingItem>       mappings;
     private Map<Integer, UploadableField> mappedFieldsByColumnIndex;
 
@@ -20,12 +21,12 @@ public class ExcelFileUploadConfiguration {
         mappedFieldsByColumnIndex = new HashedMap<>(0);
     }
 
-    public InputStream getInputStream() {
-        return inputStream;
+    public MultipartFile getFile() {
+        return file;
     }
 
-    public void setInputStream(InputStream inputStream) {
-        this.inputStream = inputStream;
+    public void setFile(MultipartFile file) {
+        this.file = file;
     }
 
     public String getSheetName() {
@@ -63,6 +64,14 @@ public class ExcelFileUploadConfiguration {
 
     public UploadablePublisherFields getEntityFieldForindex(int columnIndex) {
         return (UploadablePublisherFields) mappedFieldsByColumnIndex.get(columnIndex);
+    }
+
+    public boolean isUseActiveSheet() {
+        return useActiveSheet;
+    }
+
+    public void setUseActiveSheet(boolean useActiveSheet) {
+        this.useActiveSheet = useActiveSheet;
     }
 
 }

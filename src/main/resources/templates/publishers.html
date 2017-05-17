@@ -148,7 +148,7 @@
         <div id="modal_import_publishers" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form role="form" th:action="@{/publishers/upload}" method="post" enctype="multipart/form-data">
+                    <form id="form_upload_publishers" class="form" role="form" th:action="@{/publishers/upload}" method="post" enctype="multipart/form-data">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" >Import data</h4>
@@ -164,14 +164,42 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="input_upload_publishers">Choose xls file</label>
-                                        <input id="input_upload_publishers" multiple type="file" name="file" class="file-loading form-control" />
+                                        <input id="input_upload_publishers" multiple type="file" name="file" class="file-loading form-control" required />
                                     </div>
                                 </div>
                             </div>
                             <div class="row">
+                                <hr />
                                 <div class="col-sm-12">
                                     <h4 class="m-t-2">
                                         <span class="badge badge-primary">2</span>&#160;
+                                        Configuration
+                                    </h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="custom-box checkbox checkbox-primary">
+                                        <input id="useActiveSheet" type="checkbox" name="useActiveSheet" v-model="useActiveSheet"/>
+                                        <label for="useActiveSheet" >Use active sheet</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="sheetName">Sheet name</label>
+                                        <input id="sheetName" type="text" class="form-control" name="sheetName" :disabled="useActiveSheet ? true : false">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="custom-box checkbox checkbox-primary">
+                                        <input id="useHeader" type="checkbox" name="useHeader" v-model="useHeader" />
+                                        <label for="useHeader" >Use the first row as a header</label>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <hr />
+                                <div class="col-sm-12">
+                                    <h4 class="m-t-2">
+                                        <span class="badge badge-primary">3</span>&#160;
                                         Data binding
                                     </h4>
                                 </div>
@@ -222,7 +250,7 @@
                                     </table>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-default">Submit</button>
+                            <button type="submit" class="btn btn-primary">Submit</button>
                         </div>
                     </form>
                 </div>
@@ -232,6 +260,7 @@
         
         <template id="select2-template">
             <select class="select2 select2-input">
+                <option value="" disabled>Select an option</option>
                 <slot></slot>
             </select>
         </template>
@@ -285,7 +314,7 @@
     		  	destroyed: function () {
     		    	$(this.$el).off().select2('destroy')
     		  	}
-    		})
+    		});
         	
         	vm = new Vue({
         		el: '#modal_import_publishers',
@@ -297,16 +326,20 @@
         				column: '',
         				fieldLabel: '',
         				fieldValue: ''
-        			}
+        			},
+        			useActiveSheet: true,
+        			useHeader: false
         		},
         		methods: {
         			addRow: function(){
-        				for(var i = 0; i < this.optionFields.length; i++){
-        					if(this.optionFields[i].id == this.newField.fieldValue){
-        						this.newField.fieldLabel = this.optionFields[i].text;
-        					}
+        				if(this.newField.column.length && this.newField.fieldValue.length){
+            				for(var i = 0; i < this.optionFields.length; i++){
+            					if(this.optionFields[i].id == this.newField.fieldValue){
+            						this.newField.fieldLabel = this.optionFields[i].text;
+            					}
+            				}
+        					this.mappedFields.push(this.newField);
         				}
-        				this.mappedFields.push(this.newField);
         				this.newField = {
             				column: '',
             				fieldLabel: '',
@@ -327,13 +360,31 @@
 	            		text: data.optionFields[i].label
 	            	});
 	            }
-	            vm.newField = {
+	            /*vm.newField = {
         			column: vm.optionColumns[0],
         			fieldLabel: vm.optionFields[0].text,
     				fieldValue: vm.optionFields[0].id
-	            }
+	            }*/
 	            
 	        });
+        	
+        	$('#form_upload_publishers').submit(function(e){
+        		var frm = $('#form_upload_publishers');
+        		e.preventDefault();
+        		var formData = {};
+        		formData['mappedFields'] = vm.mappedFields;
+        		formData['useActiveSheet'] = vm.useActiveSheet;
+        		formData['useHeader'] = vm.useHeader;
+        		formData['file'] = $('#input_upload_publishers').val();
+        		
+        		$.ajax({
+        			contentType: frm.attr('enctype'),
+        			type: frm.attr('method'),
+                    url: frm.attr('action'),
+                    dataType : 'json',
+                    data : JSON.stringify(formData)
+        		});
+        	});
         	
         	$('#table_publishers').DataTable({
         		language: {
