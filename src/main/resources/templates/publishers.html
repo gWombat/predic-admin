@@ -148,7 +148,7 @@
         <div id="modal_import_publishers" class="modal fade" tabindex="-1" role="dialog">
             <div class="modal-dialog" role="document">
                 <div class="modal-content">
-                    <form id="form_upload_publishers" class="form" role="form" th:action="@{/publishers/upload}" method="post" enctype="multipart/form-data">
+                    <form id="form_upload_publishers" class="form" role="form" th:action="@{/rest/publishers/upload}" method="post" enctype="multipart/form-data">
                         <div class="modal-header">
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" >Import data</h4>
@@ -371,18 +371,28 @@
         	$('#form_upload_publishers').submit(function(e){
         		var frm = $('#form_upload_publishers');
         		e.preventDefault();
-        		var formData = {};
-        		formData['mappedFields'] = vm.mappedFields;
-        		formData['useActiveSheet'] = vm.useActiveSheet;
-        		formData['useHeader'] = vm.useHeader;
-        		formData['file'] = $('#input_upload_publishers').val();
+        		var formData = new FormData(frm);
+
+        		$.each(vm.mappedFields, function(index, value){
+        		   formData.append('mappings', {
+                        columnValue: value.column,
+                        mappedToValue: value.fieldValue
+                    })
+                });
+                formData.append('useActiveSheet', vm.useActiveSheet);
+                formData.append('useHeader' ,vm.useHeader);
+        		formData.append('file', $('#input_upload_publishers')[0].files[0]);
         		
         		$.ajax({
-        			contentType: frm.attr('enctype'),
-        			type: frm.attr('method'),
+        			enctype: 'multipart/form-data',
+                    contentType: false,
+                    type: frm.attr('method'),
                     url: frm.attr('action'),
-                    dataType : 'json',
-                    data : JSON.stringify(formData)
+                    processData: false,
+                    data : formData,
+                    error: function (e) {
+        			    console.log("ERROR : ", e);
+                    }
         		});
         	});
         	

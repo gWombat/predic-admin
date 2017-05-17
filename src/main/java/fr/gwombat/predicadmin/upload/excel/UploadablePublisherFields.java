@@ -1,6 +1,8 @@
 package fr.gwombat.predicadmin.upload.excel;
 
 
+import com.fasterxml.jackson.annotation.JsonValue;
+
 //@JsonSerialize(using = UploadablePublisherFieldSerializer.class)
 public enum UploadablePublisherFields implements UploadableField {
 
@@ -19,5 +21,8 @@ public enum UploadablePublisherFields implements UploadableField {
     public String getLabel() {
         return label;
     }
+
+    @JsonValue
+    public String getName(){return this.name();}
 
 }

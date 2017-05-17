@@ -3,12 +3,12 @@ package fr.gwombat.predicadmin.upload.excel;
 public class ColumnMappingItem {
 
     private String          columnValue;
-    private UploadableField mappedToValue;
+    private UploadablePublisherFields mappedToValue;
 
     public ColumnMappingItem() {
     }
 
-    public ColumnMappingItem(String columnValue, UploadableField mappedToValue) {
+    public ColumnMappingItem(String columnValue, UploadablePublisherFields mappedToValue) {
         super();
         this.columnValue = columnValue;
         this.mappedToValue = mappedToValue;
@@ -22,11 +22,11 @@ public class ColumnMappingItem {
         this.columnValue = columnValue;
     }
 
-    public UploadableField getMappedToValue() {
+    public UploadablePublisherFields getMappedToValue() {
         return mappedToValue;
     }
 
-    public void setMappedToValue(UploadableField mappedToValue) {
+    public void setMappedToValue(UploadablePublisherFields mappedToValue) {
         this.mappedToValue = mappedToValue;
     }
 

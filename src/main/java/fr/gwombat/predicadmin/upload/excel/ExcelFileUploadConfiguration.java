@@ -1,10 +1,10 @@
 package fr.gwombat.predicadmin.upload.excel;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.apache.commons.collections4.map.HashedMap;
 import org.springframework.web.multipart.MultipartFile;
 
 public class ExcelFileUploadConfiguration {
@@ -18,7 +18,7 @@ public class ExcelFileUploadConfiguration {
 
     public ExcelFileUploadConfiguration() {
         mappings = new ArrayList<>(0);
-        mappedFieldsByColumnIndex = new HashedMap<>(0);
+        mappedFieldsByColumnIndex = new HashMap<>(0);
     }
 
     public MultipartFile getFile() {
