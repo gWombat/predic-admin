@@ -164,7 +164,9 @@
                                 <div class="col-sm-12">
                                     <div class="form-group">
                                         <label for="input_upload_publishers">Choose xls file</label>
-                                        <input id="input_upload_publishers" multiple type="file" name="file" class="file-loading form-control" required />
+                                        <input id="input_upload_publishers" multiple type="file" name="file" 
+                                            class="file-loading form-control" required
+                                            accept=".xls, .xslx" />
                                     </div>
                                 </div>
                             </div>
@@ -185,7 +187,7 @@
                                 <div class="col-sm-6">
                                     <div class="form-group">
                                         <label for="sheetName">Sheet name</label>
-                                        <input id="sheetName" type="text" class="form-control" name="sheetName" :disabled="useActiveSheet ? true : false">
+                                        <input id="sheetName" type="text" class="form-control" v-model="sheetName" name="sheetName" :disabled="useActiveSheet ? true : false" :required="useActiveSheet ? false : true">
                                     </div>
                                 </div>
                                 <div class="col-md-12">
@@ -328,7 +330,9 @@
         				fieldValue: ''
         			},
         			useActiveSheet: true,
-        			useHeader: false
+        			useHeader: false,
+        			sheetName: '',
+        			importedPublishers: []
         		},
         		methods: {
         			addRow: function(){
@@ -360,36 +364,32 @@
 	            		text: data.optionFields[i].label
 	            	});
 	            }
-	            /*vm.newField = {
-        			column: vm.optionColumns[0],
-        			fieldLabel: vm.optionFields[0].text,
-    				fieldValue: vm.optionFields[0].id
-	            }*/
-	            
 	        });
         	
         	$('#form_upload_publishers').submit(function(e){
-        		var frm = $('#form_upload_publishers');
         		e.preventDefault();
-        		var formData = new FormData(frm);
+        		var frm = $('#form_upload_publishers');
+        		formData = new FormData(frm);
 
         		$.each(vm.mappedFields, function(index, value){
-        		   formData.append('mappings', {
-                        columnValue: value.column,
-                        mappedToValue: value.fieldValue
-                    })
-                });
+     		   		formData.append('mappings', value.column + ':' + value.fieldValue);
+             	});
                 formData.append('useActiveSheet', vm.useActiveSheet);
                 formData.append('useHeader' ,vm.useHeader);
+                formData.append('sheetName' ,vm.sheetName);
         		formData.append('file', $('#input_upload_publishers')[0].files[0]);
-        		
+
         		$.ajax({
-        			enctype: 'multipart/form-data',
-                    contentType: false,
+        			enctype: frm.attr('enctype'),
                     type: frm.attr('method'),
                     url: frm.attr('action'),
+                    contentType: false,
                     processData: false,
                     data : formData,
+                    success: function(data){
+                    	vm.importedPublishers = data;
+                    	console.log(data);
+                    },
                     error: function (e) {
         			    console.log("ERROR : ", e);
                     }

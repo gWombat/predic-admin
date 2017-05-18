@@ -1,6 +1,5 @@
 package fr.gwombat.predicadmin.web.controller;
 
-import java.io.IOException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,8 +18,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import fr.gwombat.predicadmin.exception.ResourceNotFoundException;
@@ -29,10 +26,7 @@ import fr.gwombat.predicadmin.service.CongregationService;
 import fr.gwombat.predicadmin.service.PublisherService;
 import fr.gwombat.predicadmin.support.Gender;
 import fr.gwombat.predicadmin.support.Privilege;
-import fr.gwombat.predicadmin.upload.excel.ColumnMappingItem;
-import fr.gwombat.predicadmin.upload.excel.ExcelFileReader;
 import fr.gwombat.predicadmin.upload.excel.ExcelFileUploadConfiguration;
-import fr.gwombat.predicadmin.upload.excel.UploadablePublisherFields;
 import fr.gwombat.predicadmin.web.alert.AlertMessage;
 import fr.gwombat.predicadmin.web.alert.DangerAlertMessage;
 import fr.gwombat.predicadmin.web.alert.SuccessAlertMessage;
@@ -172,6 +166,7 @@ public class PublisherController {
     }
     
     @PostMapping("/upload")
+    @Deprecated
     public String uploadPublishers(@RequestBody ExcelFileUploadConfiguration fileConfiguration){
         /*logger.debug("Uploading file: " + file.getName());
         logger.debug("Uploading file: " + file.getContentType());
@@ -188,8 +183,8 @@ public class PublisherController {
             fileConfiguration.addMappingItem(new ColumnMappingItem("E", UploadablePublisherFields.FIRSTNAME));
             fileConfiguration.addMappingItem(new ColumnMappingItem("F", UploadablePublisherFields.BIRTHDATE));
             */
-            ExcelFileReader fileReader = new ExcelFileReader();
-            fileReader.readFile(fileConfiguration);
+            //ExcelFileReader fileReader = new ExcelFileReader();
+            //fileReader.readFile(fileConfiguration);
         /*} catch (IOException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

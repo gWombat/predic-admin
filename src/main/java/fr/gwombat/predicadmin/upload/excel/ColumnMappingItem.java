@@ -2,7 +2,7 @@ package fr.gwombat.predicadmin.upload.excel;
 
 public class ColumnMappingItem {
 
-    private String          columnValue;
+    private String                    columnValue;
     private UploadablePublisherFields mappedToValue;
 
     public ColumnMappingItem() {

@@ -8,7 +8,8 @@ public enum UploadablePublisherFields implements UploadableField {
 
     NAME("general.name"),
     FIRSTNAME("general.firstname"),
-    BIRTHDATE("general.birthdate")
+    BIRTHDATE("general.birthdate"),
+    BAPTISMDATE("general.baptism.date")
 
     ;
 

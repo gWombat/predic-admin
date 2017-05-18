@@ -1,40 +1,72 @@
 package fr.gwombat.predicadmin.web.rest;
 
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.util.CollectionUtils;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
+import fr.gwombat.predicadmin.model.entities.Publisher;
 import fr.gwombat.predicadmin.upload.excel.ExcelFileReader;
 import fr.gwombat.predicadmin.upload.excel.ExcelFileUploadConfiguration;
-import org.springframework.web.bind.annotation.*;
+import fr.gwombat.predicadmin.web.form.PublisherForm;
+import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
+import fr.gwombat.predicadmin.web.vo.PublisherVO;
 
 /**
- * Created by Guillaume Fabbi on 17/05/2017.
+ * Created by gWombat on 17/05/2017.
  */
 @RestController
 @RequestMapping("/rest/publishers")
 public class UploadPublishersResource {
 
+    private PublisherTransformer publisherTransformer;
+    private MessageSource        messageSource;
+
     @PostMapping("/upload")
-    public String uploadPublishers(@ModelAttribute ExcelFileUploadConfiguration fileConfiguration){
-        /*logger.debug("Uploading file: " + file.getName());
-        logger.debug("Uploading file: " + file.getContentType());
-        logger.debug("Uploading file: " + file.getOriginalFilename());
-        logger.debug("Uploading file: " + file.getSize());
+    public UploadPublisherResult uploadPublishers(@ModelAttribute ExcelFileUploadConfiguration fileConfiguration) {
+        final ExcelFileReader fileReader = new ExcelFileReader(messageSource);
+        final List<PublisherForm> publishersToImport = fileReader.readFile(fileConfiguration);
+        return new UploadPublisherResult(publishersToImport);
+    }
 
-        ExcelFileUploadConfiguration fileConfiguration = new ExcelFileUploadConfiguration();
-        try {
-            // TODO export to form data
-            fileConfiguration.setInputStream(file.getInputStream());
-            fileConfiguration.setSheetName("Feuille1");
-            fileConfiguration.setUseHeader(true);
-            fileConfiguration.addMappingItem(new ColumnMappingItem("D", UploadablePublisherFields.NAME));
-            fileConfiguration.addMappingItem(new ColumnMappingItem("E", UploadablePublisherFields.FIRSTNAME));
-            fileConfiguration.addMappingItem(new ColumnMappingItem("F", UploadablePublisherFields.BIRTHDATE));
-            */
-        ExcelFileReader fileReader = new ExcelFileReader();
-        fileReader.readFile(fileConfiguration);
-        /*} catch (IOException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }*/
+    public class UploadPublisherResult {
 
-        return "redirect:/publishers";
+        private final List<PublisherForm> publishersToImport;
+        private final List<PublisherVO>   publishersData;
+
+        public UploadPublisherResult(List<PublisherForm> publishers) {
+            publishersToImport = publishers;
+            publishersData = new ArrayList<>(0);
+            if (!CollectionUtils.isEmpty(publishers)) {
+                for (PublisherForm formObject : publishers) {
+                    final Publisher publisher = publisherTransformer.toEntity(formObject, null);
+                    publishersData.add(publisherTransformer.toViewObject(publisher));
+                }
+            }
+        }
+
+        public List<PublisherForm> getPublishersToImport() {
+            return publishersToImport;
+        }
+
+        public List<PublisherVO> getPublishersData() {
+            return publishersData;
+        }
+    }
+
+    @Autowired
+    public void setPublisherTransformer(PublisherTransformer publisherTransformer) {
+        this.publisherTransformer = publisherTransformer;
+    }
+
+    @Autowired
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 }
