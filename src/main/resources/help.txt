@@ -7,3 +7,6 @@ http://www.codejava.net/coding/how-to-read-excel-files-in-java-using-apache-poi
 http://stackoverflow.com/questions/14522441/determine-ms-excel-file-type-with-apache-poi
 
 http://www.mkyong.com/spring-boot/spring-boot-file-upload-example-ajax-and-rest/
+
+jQuery steps:
+http://www.jquery-steps.com/GettingStarted#download

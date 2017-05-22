@@ -6,531 +6,540 @@
 
 <body>
 
-    <div class="sub-navbar sub-navbar__header-breadcrumbs" layout:fragment="content-header">
-        <div class="container">
-            <div class="row">
-                <div class="col-lg-12 sub-navbar-column">
-                    <div class="sub-navbar-header">
-                        <h3 th:text="#{general.publishers}">Publisher file</h3>
-                    </div>
-                    <ol class="breadcrumb navbar-text navbar-right no-bg">
-                        <li class="current-parent">
-                            <a class="current-parent" th:href="@{/}">
-                                <i class="fa fa-fw fa-home"></i>
-                            </a>
-                        </li>
-                        <li class="active" th:text="#{general.publishers}">Publishers</li>
-                    </ol>
+<div class="sub-navbar sub-navbar__header-breadcrumbs" layout:fragment="content-header">
+    <div class="container">
+        <div class="row">
+            <div class="col-lg-12 sub-navbar-column">
+                <div class="sub-navbar-header">
+                    <h3 th:text="#{general.publishers}">Publisher file</h3>
+                </div>
+                <ol class="breadcrumb navbar-text navbar-right no-bg">
+                    <li class="current-parent">
+                        <a class="current-parent" th:href="@{/}">
+                            <i class="fa fa-fw fa-home"></i>
+                        </a>
+                    </li>
+                    <li class="active" th:text="#{general.publishers}">Publishers</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<div layout:fragment="content">
+
+    <div th:class="'alert alert-' + ${message.messageLevel}" role="alert" th:if="${message}">
+        <button type="button" class="close text-gray-darker" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
+        <span class="fa-stack fa-lg m-r-1">
+                <i class="fa fa-circle-thin fa-stack-2x" th:classappend="'text-' + ${message.messageLevel}"></i>
+                <i th:class="'fa ' + ${message.icon} + ' fa-stack-1x text-' + ${message.messageLevel}"></i>
+            </span>
+        <strong th:text="#{${message.levelTextCode}} + '!'">Well Done!</strong>
+        <span th:text="#{${message.labelCode}}">You successfully read this important alert message.</span>
+    </div>
+
+    <div class="row">
+        <div class="col-lg-3">
+            <div class="panel panel-default b-a-0 bg-gray-dark">
+                <div class="panel-heading b-b-primary b-b-2"
+                     th:text="#{general.publishers}">Current month average
+                </div>
+                <div class="panel-body">
+                    <h2 class="m-t-0 f-w-300">
+                        <span th:text="${congregationPublishers.publishersCount}">58</span>
+                    </h2>
+                    <span class="pull-left" th:text="#{general.total}">total</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="panel panel-default b-a-0 bg-gray-dark">
+                <div class="panel-heading b-b-danger b-b-2"
+                     th:text="#{general.publishers}">Current month average
+                </div>
+                <div class="panel-body">
+                    <h2 class="m-t-0 f-w-300">
+                        <span th:text="${congregationPublishers.eldersCount}">58</span>
+                    </h2>
+                    <span class="pull-left" th:text="#{general.elder.plural}">total</span>
+                </div>
+            </div>
+        </div>
+        <div class="col-lg-3">
+            <div class="panel panel-default b-a-0 bg-gray-dark">
+                <div class="panel-heading b-b-warning b-b-2"
+                     th:text="#{general.publishers}">Current month average
+                </div>
+                <div class="panel-body">
+                    <h2 class="m-t-0 f-w-300">
+                        <span th:text="${congregationPublishers.ministerialServantsCount}">58</span>
+                    </h2>
+                    <span class="pull-left" th:text="#{general.ministerial.servant.plural}">total</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row text-center">
+        <div class="col-sm-12 m-b-3">
+            <a th:href="@{/publishers/add}" class="btn btn-default">
+                <span th:text="#{general.add}">Add</span>&#160;
+                <i class="fa fa-plus circle text-gray"></i>
+            </a>
+            <button id="btn_modal_import" class="btn btn-default" data-toggle="modal" data-target="#modal_import_publishers">
+                <i class="fa fa-upload"></i>
+                <span>Import</span>
+            </button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
+            <div class="panel panel-default no-bg b-dark-gray b-a-2">
+                <div class="panel-heading">
+                    <h4 class="panel-title" th:text="#{page.publishers.panel.heading}"></h4>
+                </div>
+                <div class="panel-body">
+                    <table id="table_publishers" class="display table table-hover table-condensed">
+                        <thead>
+                        <tr>
+                            <th th:text="#{general.name}">Name</th>
+                            <th th:text="#{general.firstname}">First name</th>
+                            <th th:text="#{general.birthdate}">Birth date</th>
+                            <th th:text="#{general.baptism.date}">Baptism date</th>
+                            <th></th>
+                            <th></th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                        <tr th:each="publisher : ${congregationPublishers.publishers}">
+                            <td class="v-a-m">
+                                <span class="text-white" th:text="${publisher.name}"></span>
+                            </td>
+                            <td class="v-a-m">
+                                <span class="text-white" th:text="${publisher.firstName}"></span>
+                            </td>
+                            <td class="v-a-m">
+                                <span th:if="${publisher.birthDate} != null" th:text="${#temporals.format(publisher.birthDate, 'dd/MM/yyyy')}"></span>
+                            </td>
+                            <td class="v-a-m">
+                                <span th:if="${publisher.baptismDate} != null" th:text="${#temporals.format(publisher.baptismDate, 'dd/MM/yyyy')}"></span>
+                            </td>
+                            <td class="v-a-m text-right">
+                                        <span th:if="${publisher.privilege} != null" class="label label-outline text-lowercase"
+                                              th:classappend="'label-' + ${publisher.privilege.cssClass}"
+                                              th:text="#{${publisher.privilege.labelCode}}"></span>
+                            </td>
+                            <td class="text-right v-a-m">
+                                <div class="btn-group" role="group">
+                                    <a th:type="button" th:href="@{/publishers/{id}(id=${publisher.identifier})}"
+                                       class="btn btn-sm btn-default" th:text="#{general.detail}">Detail</a>
+                                </div>
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
                 </div>
             </div>
         </div>
     </div>
 
-
-
-    <div layout:fragment="content">
-    
-        <div th:class="'alert alert-' + ${message.messageLevel}" role="alert" th:if="${message}">
-            <button type="button" class="close text-gray-darker" data-dismiss="alert" aria-label="Close"><span aria-hidden="true">×</span></button>
-            <span class="fa-stack fa-lg m-r-1">
-                <i class="fa fa-circle-thin fa-stack-2x" th:classappend="'text-' + ${message.messageLevel}"></i>
-                <i th:class="'fa ' + ${message.icon} + ' fa-stack-1x text-' + ${message.messageLevel}"></i>
-            </span>
-            <strong th:text="#{${message.levelTextCode}} + '!'">Well Done!</strong> 
-            <span th:text="#{${message.labelCode}}">You successfully read this important alert message.</span>
-        </div>
-    
-        <div class="row">
-            <div class="col-lg-3">
-                <div class="panel panel-default b-a-0 bg-gray-dark">
-                    <div class="panel-heading b-b-primary b-b-2" 
-                        th:text="#{general.publishers}">Current month average
+    <!-- START Modal Import data -->
+    <div id="modal_import_publishers" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-dialog" role="document">
+            <div class="modal-content">
+                <form id="form_upload_publishers" class="form" role="form" th:action="@{/rest/publishers/upload}" method="post" enctype="multipart/form-data">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <h4 class="modal-title">Import data</h4>
                     </div>
-                    <div class="panel-body">
-                        <h2 class="m-t-0 f-w-300">
-                            <span th:text="${congregationPublishers.publishersCount}">58</span>
-                        </h2>
-                        <span class="pull-left" th:text="#{general.total}">total</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="panel panel-default b-a-0 bg-gray-dark">
-                    <div class="panel-heading b-b-danger b-b-2" 
-                        th:text="#{general.publishers}">Current month average
-                    </div>
-                    <div class="panel-body">
-                        <h2 class="m-t-0 f-w-300">
-                            <span th:text="${congregationPublishers.eldersCount}">58</span>
-                        </h2>
-                        <span class="pull-left" th:text="#{general.elder.plural}">total</span>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3">
-                <div class="panel panel-default b-a-0 bg-gray-dark">
-                    <div class="panel-heading b-b-warning b-b-2" 
-                        th:text="#{general.publishers}">Current month average
-                    </div>
-                    <div class="panel-body">
-                        <h2 class="m-t-0 f-w-300">
-                            <span th:text="${congregationPublishers.ministerialServantsCount}">58</span>
-                        </h2>
-                        <span class="pull-left" th:text="#{general.ministerial.servant.plural}">total</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="row text-center">
-            <div class="col-sm-12 m-b-3">
-                <a th:href="@{/publishers/add}" class="btn btn-default">
-                    <span th:text="#{general.add}">Add</span>&#160;
-                    <i class="fa fa-plus circle text-gray"></i>
-                </a>
-                <button id="btn_modal_import" class="btn btn-default" data-toggle="modal" data-target="#modal_import_publishers">
-                    <i class="fa fa-upload"></i>
-                    <span>Import</span>
-                </button>
-            </div>
-        </div>
-        <div class="row">
-            <div class="col-lg-12">
-                <div class="panel panel-default no-bg b-dark-gray b-a-2">
-                    <div class="panel-heading">
-                        <h4 class="panel-title" th:text="#{page.publishers.panel.heading}"></h4>
-                    </div>
-                    <div class="panel-body">
-                        <table id="table_publishers" class="display table table-hover table-condensed">
-                            <thead>
-                                <tr>
-                                    <th th:text="#{general.name}">Name</th>
-                                    <th th:text="#{general.firstname}">First name</th>
-                                    <th th:text="#{general.birthdate}">Birth date</th>
-                                    <th th:text="#{general.baptism.date}">Baptism date</th>
-                                    <th></th>
-                                    <th></th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr th:each="publisher : ${congregationPublishers.publishers}">
-                                    <td class="v-a-m">
-                                        <span class="text-white" th:text="${publisher.name}"></span>
-                                    </td>
-                                    <td class="v-a-m">
-                                        <span class="text-white" th:text="${publisher.firstName}"></span>
-                                    </td>
-                                    <td class="v-a-m">
-                                        <span th:if="${publisher.birthDate} != null" th:text="${#temporals.format(publisher.birthDate, 'dd/MM/yyyy')}"></span>
-                                    </td>
-                                    <td class="v-a-m">
-                                        <span th:if="${publisher.baptismDate} != null" th:text="${#temporals.format(publisher.baptismDate, 'dd/MM/yyyy')}"></span>
-                                    </td>
-                                    <td class="v-a-m text-right">
-                                        <span th:if="${publisher.privilege} != null" class="label label-outline text-lowercase"
-                                            th:classappend="'label-' + ${publisher.privilege.cssClass}"
-                                            th:text="#{${publisher.privilege.labelCode}}"></span>
-                                    </td>
-                                    <td class="text-right v-a-m">
-                                        <div class="btn-group" role="group">
-                                            <a th:type="button" th:href="@{/publishers/{id}(id=${publisher.identifier})}"
-                                                class="btn btn-sm btn-default" th:text="#{general.detail}">Detail</a>
-                                        </div>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-        <!-- START Modal Import data -->
-        <div id="modal_import_publishers" class="modal fade" tabindex="-1" role="dialog">
-            <div class="modal-dialog" role="document">
-                <div class="modal-content">
-                    <form id="form_upload_publishers" class="form" role="form" th:action="@{/rest/publishers/upload}" method="post" enctype="multipart/form-data">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
-                            <h4 class="modal-title" >Import data</h4>
-                        </div>
-                        <div class="modal-body" v-if="step == 1">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <div class="alert alert-danger" role="alert" v-if="showError">
+                    <div class="modal-body" v-if="step == 1">
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <div class="alert alert-danger" role="alert" v-if="showError">
                                         <span class="fa-stack fa-lg m-r-1">
                                             <i class="fa fa-circle-thin fa-stack-2x text-danger"></i>
                                             <i class="fa fa-times fa-stack-1x text-danger"></i>
                                         </span>
-                                        <strong>Error!!</strong>
-                                        <div><span>{{error.message}} ({{error.id}})</span></div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <h4>
-                                        <span class="badge badge-primary">1</span>&#160;
-                                        Choose the file to import
-                                    </h4>
-                                </div>
-                                <div class="col-sm-12">
-                                    <div class="form-group">
-                                        <label for="input_upload_publishers">Choose xls file</label>
-                                        <input id="input_upload_publishers" multiple type="file" name="file" 
-                                            class="file-loading form-control" required
-                                            accept=".xls, .xlsx" />
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <hr />
-                                <div class="col-sm-12">
-                                    <h4 class="m-t-2">
-                                        <span class="badge badge-primary">2</span>&#160;
-                                        Configuration
-                                    </h4>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="custom-box checkbox checkbox-primary">
-                                        <input id="useActiveSheet" type="checkbox" name="useActiveSheet" v-model="useActiveSheet"/>
-                                        <label for="useActiveSheet" >Use active sheet</label>
-                                    </div>
-                                </div>
-                                <div class="col-sm-6">
-                                    <div class="form-group">
-                                        <label for="sheetName">Sheet name</label>
-                                        <input id="sheetName" type="text" class="form-control" v-model="sheetName" name="sheetName" :disabled="useActiveSheet ? true : false" :required="useActiveSheet ? false : true">
-                                    </div>
-                                </div>
-                                <div class="col-md-12">
-                                    <div class="custom-box checkbox checkbox-primary">
-                                        <input id="useHeader" type="checkbox" name="useHeader" v-model="useHeader" />
-                                        <label for="useHeader" >Use the first row as a header</label>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="row">
-                                <hr />
-                                <div class="col-sm-12">
-                                    <h4 class="m-t-2">
-                                        <span class="badge badge-primary">3</span>&#160;
-                                        Data binding
-                                    </h4>
-                                </div>
-                                <div class="col-sm-12">
-                                    <table class="table table-condensed">
-                                        <thead>
-                                            <tr>
-                                                <th>Column</th>
-                                                <th>Field</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(field, index) in mappedFields">
-                                                <td class="col-sm-3">
-                                                    {{field.column}}
-                                                </td>
-                                                <td class="col-sm-8">
-                                                    {{field.fieldLabel}}
-                                                </td>
-                                                <td class="hidden">
-                                                    {{field.fieldValue}}
-                                                </td>
-                                                <td class="text-right col-sm-1">
-                                                    <button type="button" class="btn btn-sm btn-default" @click="deleteRow(index)">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <tr>
-                                                <td class="col-sm-3">
-                                                    <select2 :options="optionColumns" class="select2 select2-input" v-model="newField.column">
-                                                        <option disabled value="">Select a column</option>
-                                                    </select2>
-                                                </td>
-                                                <td class="col-sm-8">
-                                                    <select2 :options="optionFields" class="select2 select2-input" v-model="newField.fieldValue">
-                                                        <option disabled value="">Select a Field</option>
-                                                    </select2>
-                                                </td>
-                                                <td class="text-right">
-                                                    <button type="button" class="btn btn-sm btn-default" @click="addRow">
-                                                        <i class="fa fa-plus"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
-                                </div>
-                            </div>
-                            <button type="submit" class="btn btn-primary">Continue</button>
-                        </div>
-                        <div class="modal-body" v-if="step == 2">
-                            <div class="row">
-                                <div class="col-sm-12">
-                                    <table class="table table-condensed table-striped table-hover">
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Firstname</th>
-                                                <th>Birthdate</th>
-                                                <th>Baptism</th>
-                                                <th></th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr v-for="(publisher, index) in importedPublishers">
-                                                <td>{{publisher.name}}</td>
-                                                <td>{{publisher.firstName}}</td>
-                                                <td>{{formatDate(publisher.birthDate)}}</td>
-                                                <td>{{formatDate(publisher.baptismDate)}}</td>
-                                                <td class="text-right col-sm-1">
-                                                    <button type="button" class="btn btn-sm btn-default" @click="deleteRowToImport(index)">
-                                                        <i class="fa fa-trash"></i>
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                        </tbody>
-                                    </table>
+                                    <strong>Error!!</strong>
+                                    <div><span>{{error.message}} ({{error.id}})</span></div>
                                 </div>
                             </div>
                         </div>
-                    </form>
-                </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <h4>
+                                    <span class="badge badge-primary">1</span>&#160;
+                                    Choose the file to import
+                                </h4>
+                            </div>
+                            <div class="col-sm-12">
+                                <div class="form-group">
+                                    <label for="input_upload_publishers">Choose xls file</label>
+                                    <input id="input_upload_publishers" multiple type="file" name="file"
+                                           class="file-loading form-control" required
+                                           accept=".xls, .xlsx"/>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <hr/>
+                            <div class="col-sm-12">
+                                <h4 class="m-t-2">
+                                    <span class="badge badge-primary">2</span>&#160;
+                                    Configuration
+                                </h4>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="custom-box checkbox checkbox-primary">
+                                    <input id="useActiveSheet" type="checkbox" name="useActiveSheet" v-model="useActiveSheet"/>
+                                    <label for="useActiveSheet">Use active sheet</label>
+                                </div>
+                            </div>
+                            <div class="col-sm-6">
+                                <div class="form-group">
+                                    <label for="sheetName">Sheet name</label>
+                                    <input id="sheetName" type="text" class="form-control" v-model="sheetName" name="sheetName" :disabled="useActiveSheet ? true : false"
+                                           :required="useActiveSheet ? false : true">
+                                </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="custom-box checkbox checkbox-primary">
+                                    <input id="useHeader" type="checkbox" name="useHeader" v-model="useHeader"/>
+                                    <label for="useHeader">Use the first row as a header</label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="row">
+                            <hr/>
+                            <div class="col-sm-12">
+                                <h4 class="m-t-2">
+                                    <span class="badge badge-primary">3</span>&#160;
+                                    Data binding
+                                </h4>
+                            </div>
+                            <div class="col-sm-12">
+                                <table class="table table-condensed">
+                                    <thead>
+                                    <tr>
+                                        <th>Column</th>
+                                        <th>Field</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(field, index) in mappedFields">
+                                        <td class="col-sm-3">
+                                            {{field.column}}
+                                        </td>
+                                        <td class="col-sm-8">
+                                            {{field.fieldLabel}}
+                                        </td>
+                                        <td class="hidden">
+                                            {{field.fieldValue}}
+                                        </td>
+                                        <td class="text-right col-sm-1">
+                                            <button type="button" class="btn btn-sm btn-default" @click="deleteRow(index)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    <tr>
+                                        <td class="col-sm-3">
+                                            <select2 :options="optionColumns" class="select2 select2-input" v-model="newField.column">
+                                                <option disabled value="">Select a column</option>
+                                            </select2>
+                                        </td>
+                                        <td class="col-sm-8">
+                                            <select2 :options="optionFields" class="select2 select2-input" v-model="newField.fieldValue">
+                                                <option disabled value="">Select a Field</option>
+                                            </select2>
+                                        </td>
+                                        <td class="text-right">
+                                            <button type="button" class="btn btn-sm btn-default" @click="addRow">
+                                                <i class="fa fa-plus"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                        <button type="submit" class="btn btn-primary">Continue</button>
+                    </div>
+                    <div class="modal-body" v-if="step == 2">
+                        <div class="col-sm-12">
+                            <h4 class="m-t-2">
+                                <span class="badge badge-primary">4</span>&#160;
+                                Import Preview
+                            </h4>
+                        </div>
+                        <div class="row">
+                            <div class="col-sm-12">
+                                <p>
+                                    You can see here the preview of the publishers import.
+                                </p>
+                                <table class="table table-condensed table-striped table-hover">
+                                    <thead>
+                                    <tr>
+                                        <th>Name</th>
+                                        <th>Firstname</th>
+                                        <th>Birthdate</th>
+                                        <th>Baptism</th>
+                                        <th></th>
+                                    </tr>
+                                    </thead>
+                                    <tbody>
+                                    <tr v-for="(publisher, index) in importedPublishers">
+                                        <td>{{publisher.name}}</td>
+                                        <td>{{publisher.firstName}}</td>
+                                        <td>{{formatDate(publisher.birthDate)}}</td>
+                                        <td>{{formatDate(publisher.baptismDate)}}</td>
+                                        <td class="text-right col-sm-1">
+                                            <button type="button" class="btn btn-sm btn-default" @click="deleteRowToImport(index)">
+                                                <i class="fa fa-trash"></i>
+                                            </button>
+                                        </td>
+                                    </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </form>
             </div>
         </div>
-        <!-- END Modal Import data -->
-        
-        <template id="select2-template">
-            <select class="select2 select2-input">
-                <option value="" disabled>Select an option</option>
-                <slot></slot>
-            </select>
-        </template>
-        
-        <script type="application/javascript" th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
-        <script type="application/javascript" th:src="@{https://cdn.datatables.net/plug-ins/1.10.13/sorting/datetime-moment.js}"></script>
-        <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/canvas-to-blob.min.js}"></script>
-        <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/sortable.min.js}"></script>
-        <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/purify.min.js}"></script>
-        <script type="application/javascript" th:src="@{/plugins/fileinput/js/fileinput.min.js}"></script>
-        <script type="application/javascript" th:src="@{/plugins/fileinput/js/locales/fr.min.js}"></script>
-        <script type="application/javascript" th:src="@{/plugins/vuejs/vue.min.js}"></script>
-        <script th:inline="javascript">
-      	//<![CDATA[
+    </div>
+    <!-- END Modal Import data -->
+
+    <template id="select2-template">
+        <select class="select2 select2-input">
+            <option value="" disabled>Select an option</option>
+            <slot></slot>
+        </select>
+    </template>
+
+    <script type="application/javascript" th:src="@{/plugins/select2/js/select2.full.min.js}"></script>
+    <script type="application/javascript" th:src="@{https://cdn.datatables.net/plug-ins/1.10.13/sorting/datetime-moment.js}"></script>
+    <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/canvas-to-blob.min.js}"></script>
+    <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/sortable.min.js}"></script>
+    <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/purify.min.js}"></script>
+    <script type="application/javascript" th:src="@{/plugins/fileinput/js/fileinput.min.js}"></script>
+    <script type="application/javascript" th:src="@{/plugins/fileinput/js/locales/fr.min.js}"></script>
+    <script type="application/javascript" th:src="@{/plugins/vuejs/vue.min.js}"></script>
+    <script th:inline="javascript">
+        //<![CDATA[
         $(document).ready(function () {
-        	$.fn.dataTable.moment('DD/MM/YYYY');
-        	
-        	Vue.component('select2', {
-    			props: ['options', 'value'],
-    			template: '#select2-template',
-    			mounted: function () {
-    		    	var vm = this
-    		    	$(this.$el)
-    		      		// init select2
-    		      		.select2({
-    		      			data: this.options,
-    		      			theme: "bootstrap",
-    	        	        minimumResultsForSearch: Infinity
-		      			})
-    		      		.val(this.value)
-    		      		.trigger('change')
-    		      		// emit event on change.
-    		      		.on('change', function () {
-		        			vm.$emit('input', this.value)
-    		      		})
-    		  	},
-    		  	watch: {
-    		    	value: function (value) {
-        		      // update value
-        		      $(this.$el).val(value).trigger('change');
-        		    },
-        		    options: function (options) {
-        		      // update options
-    		      		$(this.$el).select2({
-    		    	  		data: options,
-    		    	  		theme: "bootstrap",
-    	        	        minimumResultsForSearch: Infinity
-    		   			})
-        		    }
-    		  	},
-    		  	destroyed: function () {
-    		    	$(this.$el).off().select2('destroy')
-    		  	}
-    		});
-        	
-        	vm = new Vue({
-        		el: '#modal_import_publishers',
-        		data: {
-        			optionColumns: [],
-        			optionFields: [],
-        			mappedFields: [],
-        			newField: {
-        				column: '',
-        				fieldLabel: '',
-        				fieldValue: ''
-        			},
-        			useActiveSheet: true,
-        			useHeader: false,
-        			sheetName: '',
-        			importedPublishers: [],
-        			showError: false,
-        			error: {
-        				message: '',
-        				id: ''
-        			},
-        			step: 1
-        		},
-        		methods: {
-        			addRow: function(){
-        				if(this.newField.column.length && this.newField.fieldValue.length){
-            				for(var i = 0; i < this.optionFields.length; i++){
-            					if(this.optionFields[i].id == this.newField.fieldValue){
-            						this.newField.fieldLabel = this.optionFields[i].text;
-            					}
-            				}
-        					this.mappedFields.push(this.newField);
-        				}
-        				this.newField = {
-            				column: '',
-            				fieldLabel: '',
-            				fieldValue: ''
-            			}
-        			},
-        			deleteRow: function(index){
-        				this.mappedFields.splice(index,1);
-        			},
-        			deleteRowToImport: function(index){
-        				this.importedPublishers.splice(index,1);
-        			},
-        			formatDate: function(valTab){
-        				if(valTab == null)
-        					return null;
-        				return moment({
-        					y: valTab[0],
-        					M: valTab[1],
-        					d: valTab[2]
-        				}).format('DD/MM/YYYY');
-        			}
-        		}
-        	});
-        	
-        	$.getJSON('/rest/modeldata/publishers', function (data) {
-	            vm.optionColumns = data.optionColumns;
-	            for(var i = 0; i < data.optionFields.length; i++){
-	            	vm.optionFields.push({
-	            		id: data.optionFields[i].value,
-	            		text: data.optionFields[i].label
-	            	});
-	            }
-	        });
-        	
-        	$('#form_upload_publishers').submit(function(e){
-        		e.preventDefault();
-        		var frm = $('#form_upload_publishers');
-        		formData = new FormData(frm);
+            $.fn.dataTable.moment('DD/MM/YYYY');
 
-        		$.each(vm.mappedFields, function(index, value){
-     		   		formData.append('mappings', value.column + ':' + value.fieldValue);
-             	});
+            Vue.component('select2', {
+                props: ['options', 'value'],
+                template: '#select2-template',
+                mounted: function () {
+                    var vm = this
+                    $(this.$el)
+                    // init select2
+                        .select2({
+                            data: this.options,
+                            theme: "bootstrap",
+                            minimumResultsForSearch: Infinity
+                        })
+                        .val(this.value)
+                        .trigger('change')
+                        // emit event on change.
+                        .on('change', function () {
+                            vm.$emit('input', this.value)
+                        })
+                },
+                watch: {
+                    value: function (value) {
+                        // update value
+                        $(this.$el).val(value).trigger('change');
+                    },
+                    options: function (options) {
+                        // update options
+                        $(this.$el).select2({
+                            data: options,
+                            theme: "bootstrap",
+                            minimumResultsForSearch: Infinity
+                        })
+                    }
+                },
+                destroyed: function () {
+                    $(this.$el).off().select2('destroy')
+                }
+            });
+
+            vm = new Vue({
+                el: '#modal_import_publishers',
+                data: {
+                    optionColumns: [],
+                    optionFields: [],
+                    mappedFields: [],
+                    newField: {
+                        column: '',
+                        fieldLabel: '',
+                        fieldValue: ''
+                    },
+                    useActiveSheet: true,
+                    useHeader: false,
+                    sheetName: '',
+                    importedPublishers: [],
+                    showError: false,
+                    error: {
+                        message: '',
+                        id: ''
+                    },
+                    step: 1
+                },
+                methods: {
+                    addRow: function () {
+                        if (this.newField.column.length && this.newField.fieldValue.length) {
+                            for (var i = 0; i < this.optionFields.length; i++) {
+                                if (this.optionFields[i].id === this.newField.fieldValue) {
+                                    this.newField.fieldLabel = this.optionFields[i].text;
+                                }
+                            }
+                            this.mappedFields.push(this.newField);
+                        }
+                        this.newField = {
+                            column: '',
+                            fieldLabel: '',
+                            fieldValue: ''
+                        }
+                    },
+                    deleteRow: function (index) {
+                        this.mappedFields.splice(index, 1);
+                    },
+                    deleteRowToImport: function (index) {
+                        this.importedPublishers.splice(index, 1);
+                    },
+                    formatDate: function (valTab) {
+                        if (valTab === null)
+                            return null;
+                        return moment({
+                            y: valTab[0],
+                            M: valTab[1],
+                            d: valTab[2]
+                        }).format('DD/MM/YYYY');
+                    }
+                }
+            });
+
+            $.getJSON('/rest/modeldata/publishers', function (data) {
+                vm.optionColumns = data.optionColumns;
+                for (var i = 0; i < data.optionFields.length; i++) {
+                    vm.optionFields.push({
+                        id: data.optionFields[i].value,
+                        text: data.optionFields[i].label
+                    });
+                }
+            });
+
+            $('#form_upload_publishers').submit(function (e) {
+                e.preventDefault();
+                var frm = $('#form_upload_publishers');
+                formData = new FormData(frm[0]);
+
+                $.each(vm.mappedFields, function (index, value) {
+                    formData.append('mappings', value.column + ':' + value.fieldValue);
+                });
                 formData.append('useActiveSheet', vm.useActiveSheet);
-                formData.append('useHeader' ,vm.useHeader);
-                formData.append('sheetName' ,vm.sheetName);
-        		formData.append('file', $('#input_upload_publishers')[0].files[0]);
+                formData.append('useHeader', vm.useHeader);
+                formData.append('sheetName', vm.sheetName);
+                formData.append('file', $('#input_upload_publishers')[0].files[0]);
 
-        		$.ajax({
-        			enctype: frm.attr('enctype'),
+                $.ajax({
+                    enctype: frm.attr('enctype'),
                     type: frm.attr('method'),
                     url: frm.attr('action'),
                     contentType: false,
                     processData: false,
-                    data : formData,
-                    success: function(data){
-                    	vm.importedPublishers = data.publishersData;
-                    	vm.step = 2;
-                    	//console.log(data);
+                    data: formData,
+                    success: function (data) {
+                        vm.importedPublishers = data.publishersData;
+                        vm.step = 2;
+                        //console.log(data);
                     },
                     error: function (e) {
-                    	vm.error = e.responseJSON;
-                    	vm.showError = true;
+                        vm.error = e.responseJSON;
+                        vm.showError = true;
                     }
-        		});
-        	});
-        	
-        	$('#table_publishers').DataTable({
-        		language: {
-        			lengthMenu: 'Afficher _MENU_ résultats par page',
-        			zeroRecords: 'Aucun résultat',
-        			info: 'Page _PAGE_ sur _PAGES_ ',
-        			infoEmpty: '',
-        			infoFiltered: '(Filtre sur _MAX_ résultats)',
-        			search: 'Rechercher: ',
-        			paginate: {
-        				first: 'Premier',
-        				last: 'Dernier',
-        				next: 'Suiv.',
-        				previous: 'Préc.'
-        			}
-        		},
-        		columnDefs: [{
-        			targets: [4, 5],
-        			orderable: false,
+                });
+            });
+
+            $('#table_publishers').DataTable({
+                language: {
+                    lengthMenu: 'Afficher _MENU_ résultats par page',
+                    zeroRecords: 'Aucun résultat',
+                    info: 'Page _PAGE_ sur _PAGES_ ',
+                    infoEmpty: '',
+                    infoFiltered: '(Filtre sur _MAX_ résultats)',
+                    search: 'Rechercher: ',
+                    paginate: {
+                        first: 'Premier',
+                        last: 'Dernier',
+                        next: 'Suiv.',
+                        previous: 'Préc.'
+                    }
+                },
+                columnDefs: [{
+                    targets: [4, 5],
+                    orderable: false,
                     searchable: false
-        		}]
-        	});
-        	
-        	$('#table_publishers_filter :input')
-                .on("focus", function(){
+                }]
+            });
+
+            $('#table_publishers_filter :input')
+                .on("focus", function () {
                     $(this).stop(true, false).animate({
                         width: "350px"
                     });
                 })
-                .on("blur", function(){
+                .on("blur", function () {
                     $(this).stop(true, false).animate({
                         width: "168px"
                     });
                 });
-        	
-        	$('#table_publishers_length select').addClass('select2 select2-input');
-        	
-        	$('#modal_import_publishers').on('shown.bs.modal', function(){
-        		$('#input_upload_publishers').fileinput({
-            		language: 'fr',
-            		showUpload: false,
-            		showPreview: false,
-            		required: true,
-            		browseOnZoneClick: true,
-            		previewFileIcon: '<i class="fa fa-file-o"></i>',
-            		browseIcon: '<i class="fa fa-folder-open-o"></i>',
-            		browseClass: 'btn btn-default',
-            		maxFileSize: 3000
-            	});
-        	});
-        	
-        	(function() {
-        	    if ($('.select2-input').length === 0) {
-        	        return;
-        	    }
 
-        	    $('.select2-input').on( "select2:open", function() {
-        	        if ( $( this ).parents( "[class*='has-']" ).length ) {
-        	            var classNames = $( this ).parents( "[class*='has-']" )[ 0 ].className.split( /\s+/ );
+            $('#table_publishers_length select').addClass('select2 select2-input');
 
-        	            for ( var i = 0; i < classNames.length; ++i ) {
-        	                if ( classNames[ i ].match( "has-" ) ) {
-        	                    $( "body > .select2-container" ).addClass( classNames[ i ] );
-        	                }
-        	            }
-        	        }
-        	    }).select2({
-        	        theme: "bootstrap",
-        	        minimumResultsForSearch: Infinity
-        	    });
-        	})();
+            $('#modal_import_publishers').on('shown.bs.modal', function () {
+                $('#input_upload_publishers').fileinput({
+                    language: 'fr',
+                    showUpload: false,
+                    showPreview: false,
+                    required: true,
+                    browseOnZoneClick: true,
+                    previewFileIcon: '<i class="fa fa-file-o"></i>',
+                    browseIcon: '<i class="fa fa-folder-open-o"></i>',
+                    browseClass: 'btn btn-default',
+                    maxFileSize: 3000
+                });
+            });
+
+            (function () {
+                if ($('.select2-input').length === 0) {
+                    return;
+                }
+
+                $('.select2-input').on("select2:open", function () {
+                    if ($(this).parents("[class*='has-']").length) {
+                        var classNames = $(this).parents("[class*='has-']")[0].className.split(/\s+/);
+
+                        for (var i = 0; i < classNames.length; ++i) {
+                            if (classNames[i].match("has-")) {
+                                $("body > .select2-container").addClass(classNames[i]);
+                            }
+                        }
+                    }
+                }).select2({
+                    theme: "bootstrap",
+                    minimumResultsForSearch: Infinity
+                });
+            })();
         });
         //]]>
-		</script>
-	</div>
+    </script>
+</div>
 </body>
 </html>
