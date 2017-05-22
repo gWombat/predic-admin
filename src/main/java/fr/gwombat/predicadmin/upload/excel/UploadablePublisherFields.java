@@ -3,7 +3,6 @@ package fr.gwombat.predicadmin.upload.excel;
 
 import com.fasterxml.jackson.annotation.JsonValue;
 
-//@JsonSerialize(using = UploadablePublisherFieldSerializer.class)
 public enum UploadablePublisherFields implements UploadableField {
 
     NAME("general.name"),

@@ -4,6 +4,7 @@ import org.springframework.http.HttpStatus;
 
 public class CustomError {
 
+    private String     id;
     private HttpStatus status;
     private String     message;
 
@@ -27,6 +28,14 @@ public class CustomError {
 
     public void setMessage(String message) {
         this.message = message;
+    }
+
+    public String getId() {
+        return id;
+    }
+
+    public void setId(String id) {
+        this.id = id;
     }
 
 }

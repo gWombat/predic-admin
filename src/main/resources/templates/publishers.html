@@ -153,7 +153,19 @@
                             <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                             <h4 class="modal-title" >Import data</h4>
                         </div>
-                        <div class="modal-body">
+                        <div class="modal-body" v-if="step == 1">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="alert alert-danger" role="alert" v-if="showError">
+                                        <span class="fa-stack fa-lg m-r-1">
+                                            <i class="fa fa-circle-thin fa-stack-2x text-danger"></i>
+                                            <i class="fa fa-times fa-stack-1x text-danger"></i>
+                                        </span>
+                                        <strong>Error!!</strong>
+                                        <div><span>{{error.message}} ({{error.id}})</span></div>
+                                    </div>
+                                </div>
+                            </div>
                             <div class="row">
                                 <div class="col-sm-12">
                                     <h4>
@@ -166,7 +178,7 @@
                                         <label for="input_upload_publishers">Choose xls file</label>
                                         <input id="input_upload_publishers" multiple type="file" name="file" 
                                             class="file-loading form-control" required
-                                            accept=".xls, .xslx" />
+                                            accept=".xls, .xlsx" />
                                     </div>
                                 </div>
                             </div>
@@ -252,7 +264,37 @@
                                     </table>
                                 </div>
                             </div>
-                            <button type="submit" class="btn btn-primary">Submit</button>
+                            <button type="submit" class="btn btn-primary">Continue</button>
+                        </div>
+                        <div class="modal-body" v-if="step == 2">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <table class="table table-condensed table-striped table-hover">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Firstname</th>
+                                                <th>Birthdate</th>
+                                                <th>Baptism</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(publisher, index) in importedPublishers">
+                                                <td>{{publisher.name}}</td>
+                                                <td>{{publisher.firstName}}</td>
+                                                <td>{{formatDate(publisher.birthDate)}}</td>
+                                                <td>{{formatDate(publisher.baptismDate)}}</td>
+                                                <td class="text-right col-sm-1">
+                                                    <button type="button" class="btn btn-sm btn-default" @click="deleteRowToImport(index)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
                         </div>
                     </form>
                 </div>
@@ -332,7 +374,13 @@
         			useActiveSheet: true,
         			useHeader: false,
         			sheetName: '',
-        			importedPublishers: []
+        			importedPublishers: [],
+        			showError: false,
+        			error: {
+        				message: '',
+        				id: ''
+        			},
+        			step: 1
         		},
         		methods: {
         			addRow: function(){
@@ -352,6 +400,18 @@
         			},
         			deleteRow: function(index){
         				this.mappedFields.splice(index,1);
+        			},
+        			deleteRowToImport: function(index){
+        				this.importedPublishers.splice(index,1);
+        			},
+        			formatDate: function(valTab){
+        				if(valTab == null)
+        					return null;
+        				return moment({
+        					y: valTab[0],
+        					M: valTab[1],
+        					d: valTab[2]
+        				}).format('DD/MM/YYYY');
         			}
         		}
         	});
@@ -387,11 +447,13 @@
                     processData: false,
                     data : formData,
                     success: function(data){
-                    	vm.importedPublishers = data;
-                    	console.log(data);
+                    	vm.importedPublishers = data.publishersData;
+                    	vm.step = 2;
+                    	//console.log(data);
                     },
                     error: function (e) {
-        			    console.log("ERROR : ", e);
+                    	vm.error = e.responseJSON;
+                    	vm.showError = true;
                     }
         		});
         	});

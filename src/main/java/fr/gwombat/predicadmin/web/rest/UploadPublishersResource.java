@@ -1,6 +1,7 @@
 package fr.gwombat.predicadmin.web.rest;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import fr.gwombat.predicadmin.exception.upload.UploadDataException;
 import fr.gwombat.predicadmin.model.entities.Publisher;
 import fr.gwombat.predicadmin.upload.excel.ExcelFileReader;
 import fr.gwombat.predicadmin.upload.excel.ExcelFileUploadConfiguration;
@@ -29,7 +31,7 @@ public class UploadPublishersResource {
     private MessageSource        messageSource;
 
     @PostMapping("/upload")
-    public UploadPublisherResult uploadPublishers(@ModelAttribute ExcelFileUploadConfiguration fileConfiguration) {
+    public UploadPublisherResult uploadPublishers(@ModelAttribute ExcelFileUploadConfiguration fileConfiguration) throws UploadDataException {
         final ExcelFileReader fileReader = new ExcelFileReader(messageSource);
         final List<PublisherForm> publishersToImport = fileReader.readFile(fileConfiguration);
         return new UploadPublisherResult(publishersToImport);
@@ -44,6 +46,9 @@ public class UploadPublishersResource {
             publishersToImport = publishers;
             publishersData = new ArrayList<>(0);
             if (!CollectionUtils.isEmpty(publishers)) {
+                
+                publishers.sort(Comparator.comparing(PublisherForm::getName).thenComparing(PublisherForm::getFirstName));
+                
                 for (PublisherForm formObject : publishers) {
                     final Publisher publisher = publisherTransformer.toEntity(formObject, null);
                     publishersData.add(publisherTransformer.toViewObject(publisher));
