@@ -1,0 +1,3 @@
+url: http://techlaboratory.net/smartwizard
+
+version: 4.2.1
