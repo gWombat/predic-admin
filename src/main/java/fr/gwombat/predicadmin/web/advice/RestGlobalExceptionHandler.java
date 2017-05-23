@@ -21,26 +21,26 @@ import fr.gwombat.predicadmin.web.rest.error.CustomError;
 public class RestGlobalExceptionHandler extends ResponseEntityExceptionHandler {
 
     private static final Logger logger = LoggerFactory.getLogger(RestGlobalExceptionHandler.class);
-    
-    private MessageSource messageSource;
+
+    private MessageSource       messageSource;
 
     @ResponseBody
     @ExceptionHandler(UploadDataException.class)
     public ResponseEntity<CustomError> handleException(final HttpServletRequest request, final UploadDataException e) {
         final String message = messageSource.getMessage(e.getMessageCode(), e.getMessageArguments(), LocaleContextHolder.getLocale());
-        final HttpStatus status = getStatus(request);
+        final HttpStatus status = getStatus(request, HttpStatus.BAD_REQUEST);
         final CustomError error = new CustomError(status, message);
         error.setId(e.getId());
 
         logger.info("[{}] An error occured when trying to read file: {}", e.getId(), e.getMessage());
-        
+
         return new ResponseEntity<CustomError>(error, status);
     }
 
-    private static HttpStatus getStatus(HttpServletRequest request) {
+    private static HttpStatus getStatus(HttpServletRequest request, HttpStatus defaultStatus) {
         final Integer statusCode = (Integer) request.getAttribute("javax.servlet.error.status_code");
         if (statusCode == null)
-            return HttpStatus.BAD_REQUEST;
+            return defaultStatus;
         return HttpStatus.valueOf(statusCode);
     }
 

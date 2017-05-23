@@ -276,7 +276,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <p>
-                                    You can see here the preview of the publishers import.
+                                    You can see here the preview of the publishers import. There are {{data.publishersCount}} to import!
                                 </p>
                                 <table class="table table-condensed table-striped table-hover">
                                     <thead>
@@ -304,6 +304,7 @@
                                 </table>
                             </div>
                         </div>
+                        <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
                 </form>
             </div>
@@ -325,11 +326,12 @@
     <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/purify.min.js}"></script>
     <script type="application/javascript" th:src="@{/plugins/fileinput/js/fileinput.min.js}"></script>
     <script type="application/javascript" th:src="@{/plugins/fileinput/js/locales/fr.min.js}"></script>
+    <script type="application/javascript" th:src="@{/plugins/bootstrap-wizard/js/jquery.smartWizard.min.js}"></script>
     <script type="application/javascript" th:src="@{/plugins/vuejs/vue.min.js}"></script>
     <script th:inline="javascript">
         //<![CDATA[
         $(document).ready(function () {
-            $.fn.dataTable.moment('DD/MM/YYYY');
+            $.fn.dataTable.moment(/*[[${#strings.toUpperCase(#messages.msg('format.date'))}]]*/'');
 
             Vue.component('select2', {
                 props: ['options', 'value'],
@@ -420,12 +422,12 @@
                             y: valTab[0],
                             M: valTab[1],
                             d: valTab[2]
-                        }).format('DD/MM/YYYY');
+                        }).format(/*[[${#strings.toUpperCase(#messages.msg('format.date'))}]]*/'');
                     }
                 }
             });
 
-            $.getJSON('/rest/modeldata/publishers', function (data) {
+            $.getJSON('/rest/publishers/modeldata', function (data) {
                 vm.optionColumns = data.optionColumns;
                 for (var i = 0; i < data.optionFields.length; i++) {
                     vm.optionFields.push({

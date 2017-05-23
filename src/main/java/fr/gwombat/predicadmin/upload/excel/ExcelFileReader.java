@@ -28,8 +28,7 @@ import fr.gwombat.predicadmin.web.form.PublisherForm;
 public class ExcelFileReader {
 
     private static final String INTERNAL_ERROR_CODE = "validation.error.internal";
-
-    private static final String DATE_FORMAT_CODE = "format.date";
+    private static final String DATE_FORMAT_CODE    = "format.date";
 
     private MessageSource       messageSource;
 
