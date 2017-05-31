@@ -6,10 +6,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
 import org.apache.poi.ss.usermodel.Cell;
+import org.apache.poi.ss.usermodel.CellType;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
@@ -23,12 +26,14 @@ import fr.gwombat.predicadmin.exception.upload.InvalidFileFormatException;
 import fr.gwombat.predicadmin.exception.upload.ProtectedFileException;
 import fr.gwombat.predicadmin.exception.upload.SheetNotFoundException;
 import fr.gwombat.predicadmin.exception.upload.UploadDataException;
+import fr.gwombat.predicadmin.web.form.ContactDetailForm;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
 
 public class ExcelFileReader {
 
-    private static final String INTERNAL_ERROR_CODE = "validation.error.internal";
-    private static final String DATE_FORMAT_CODE    = "format.date";
+    private static final String PHONE_NUMBER_ERROR_CODE = "data.upload.file.excel.invalid.data.phone";
+    private static final String INTERNAL_ERROR_CODE     = "validation.error.internal";
+    private static final String DATE_FORMAT_CODE        = "format.date";
 
     private MessageSource       messageSource;
 
@@ -64,6 +69,7 @@ public class ExcelFileReader {
 
                     if (!skipRow) {
                         final PublisherForm publisher = new PublisherForm();
+                        ContactDetailForm contactDetail = null;
                         final Iterator<Cell> cellIterator = currentRow.cellIterator();
                         while (cellIterator.hasNext()) {
                             final Cell currentCell = cellIterator.next();
@@ -85,6 +91,22 @@ public class ExcelFileReader {
                                     case BAPTISMDATE:
                                         final Date baptismDate = currentCell.getDateCellValue();
                                         publisher.setBaptismDate(convertDate(baptismDate));
+                                        break;
+                                    case EMAIL:
+                                        if (contactDetail == null)
+                                            contactDetail = new ContactDetailForm();
+                                        contactDetail.setEmail(currentCell.getStringCellValue());
+                                        break;
+                                    case PHONE:
+                                        if (contactDetail == null)
+                                            contactDetail = new ContactDetailForm();
+                                        contactDetail.setPhone(extractPhoneNumber(currentCell));
+                                        break;
+                                    case MOBILEPHONE:
+                                        if (contactDetail == null)
+                                            contactDetail = new ContactDetailForm();
+                                        contactDetail.setMobilePhone(extractPhoneNumber(currentCell));
+                                        break;
                                     default:
                                         break;
                                     }
@@ -94,6 +116,7 @@ public class ExcelFileReader {
                                 throw new DataMappingException(getCellValue(currentCell), e);
                             }
                         }
+                        publisher.setContactDetail(contactDetail);
                         publishers.add(publisher);
                     } else if (rowCount > 0)
                         skipRow = false;
@@ -108,6 +131,17 @@ public class ExcelFileReader {
             throw new UploadDataException(INTERNAL_ERROR_CODE, e);
         }
         return publishers;
+    }
+
+    private static String extractPhoneNumber(final Cell cell) throws DataMappingException {
+        Objects.requireNonNull(cell);
+
+        if (cell.getCellTypeEnum() == CellType.STRING)
+            return StringUtils.remove(cell.getStringCellValue(), ' ');
+        else if (cell.getCellTypeEnum() == CellType.NUMERIC)
+            return String.valueOf(cell.getNumericCellValue());
+        else
+            throw new DataMappingException(PHONE_NUMBER_ERROR_CODE, new Object[] { getCellValue(cell) });
     }
 
     private String convertDate(final Date date) {

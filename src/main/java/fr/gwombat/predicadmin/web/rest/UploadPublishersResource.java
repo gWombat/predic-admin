@@ -15,6 +15,7 @@ import fr.gwombat.predicadmin.upload.excel.ExcelFileReader;
 import fr.gwombat.predicadmin.upload.excel.ExcelFileUploadConfiguration;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.rest.out.UploadPublisherPreviewOut;
+import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
 import fr.gwombat.predicadmin.web.vuejs.ImportPublishersModelData;
 
 /**
@@ -24,7 +25,8 @@ import fr.gwombat.predicadmin.web.vuejs.ImportPublishersModelData;
 @RequestMapping("/rest/publishers")
 public class UploadPublishersResource {
 
-    private MessageSource messageSource;
+    private MessageSource        messageSource;
+    private PublisherTransformer publisherTransformer;
 
     @GetMapping("/modeldata")
     public ImportPublishersModelData getVueJsData() {
@@ -36,11 +38,16 @@ public class UploadPublishersResource {
     public UploadPublisherPreviewOut uploadPublishers(@ModelAttribute ExcelFileUploadConfiguration fileConfiguration) throws UploadDataException {
         final ExcelFileReader fileReader = new ExcelFileReader(messageSource);
         final List<PublisherForm> publishersToImport = fileReader.readFile(fileConfiguration);
-        return new UploadPublisherPreviewOut(publishersToImport);
+        return new UploadPublisherPreviewOut(publishersToImport, publisherTransformer);
     }
 
     @Autowired
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
+    }
+
+    @Autowired
+    public void setPublisherTransformer(PublisherTransformer publisherTransformer) {
+        this.publisherTransformer = publisherTransformer;
     }
 }

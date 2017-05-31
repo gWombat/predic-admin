@@ -145,7 +145,7 @@
 
     <!-- START Modal Import data -->
     <div id="modal_import_publishers" class="modal fade" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
+        <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
                 <form id="form_upload_publishers" class="form" role="form" th:action="@{/rest/publishers/upload}" method="post" enctype="multipart/form-data">
                     <div class="modal-header">
@@ -276,7 +276,7 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <p>
-                                    You can see here the preview of the publishers import. There are {{data.publishersCount}} to import!
+                                    You can see here the preview of the publishers import. There are {{importedPublishers.length}} publishers to import!
                                 </p>
                                 <table class="table table-condensed table-striped table-hover">
                                     <thead>
@@ -285,6 +285,9 @@
                                         <th>Firstname</th>
                                         <th>Birthdate</th>
                                         <th>Baptism</th>
+                                        <th>Email</th>
+                                        <th>Phone</th>
+                                        <th>Mobile phone</th>
                                         <th></th>
                                     </tr>
                                     </thead>
@@ -294,6 +297,9 @@
                                         <td>{{publisher.firstName}}</td>
                                         <td>{{formatDate(publisher.birthDate)}}</td>
                                         <td>{{formatDate(publisher.baptismDate)}}</td>
+                                        <td><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.email}}</span></td>
+                                        <td><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.phone}}</span></td>
+                                        <td><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.mobilePhone}}</span></td>
                                         <td class="text-right col-sm-1">
                                             <button type="button" class="btn btn-sm btn-default" @click="deleteRowToImport(index)">
                                                 <i class="fa fa-trash"></i>
@@ -327,7 +333,7 @@
     <script type="application/javascript" th:src="@{/plugins/fileinput/js/fileinput.min.js}"></script>
     <script type="application/javascript" th:src="@{/plugins/fileinput/js/locales/fr.min.js}"></script>
     <script type="application/javascript" th:src="@{/plugins/bootstrap-wizard/js/jquery.smartWizard.min.js}"></script>
-    <script type="application/javascript" th:src="@{/plugins/vuejs/vue.min.js}"></script>
+    <script type="application/javascript" th:src="@{/plugins/vuejs/vue.js}"></script>
     <script th:inline="javascript">
         //<![CDATA[
         $(document).ready(function () {
@@ -457,8 +463,8 @@
                     contentType: false,
                     processData: false,
                     data: formData,
-                    success: function (data) {
-                        vm.importedPublishers = data.publishersData;
+                    success: function (resData) {
+                        vm.importedPublishers = resData.publishersData;
                         vm.step = 2;
                         //console.log(data);
                     },

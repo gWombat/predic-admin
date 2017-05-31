@@ -32,7 +32,7 @@ class ContactDetailTransformer extends AbstractEntityTransformer<ContactDetail, 
                 if (contactDetail == null)
                     contactDetail = new ContactDetail();
 
-                contactDetail.setEmail(contactDetailForm.getEmail());
+                contactDetail.setEmail(StringUtils.lowerCase(contactDetailForm.getEmail()));
                 contactDetail.setMobilePhone(contactDetailForm.getMobilePhone());
                 contactDetail.setPhone(contactDetailForm.getPhone());
             }
@@ -68,7 +68,9 @@ class ContactDetailTransformer extends AbstractEntityTransformer<ContactDetail, 
             try {
                 PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
                 final Phonenumber.PhoneNumber mobilePhoneNumber = phoneNumberUtil.parse(strNumber, "FR");
-                return phoneNumberUtil.format(mobilePhoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+                if(phoneNumberUtil.isValidNumber(mobilePhoneNumber))
+                    return phoneNumberUtil.format(mobilePhoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
+                return "N/A";
             } catch (NumberParseException e) {
                 logger.warn(e.getMessage());
                 return "N/A";
