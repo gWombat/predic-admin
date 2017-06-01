@@ -147,124 +147,106 @@
     <div id="modal_import_publishers" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
             <div class="modal-content">
-                <form id="form_upload_publishers" class="form" role="form" th:action="@{/rest/publishers/upload}" method="post" enctype="multipart/form-data">
                     <div class="modal-header">
                         <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
                         <h4 class="modal-title">Import data</h4>
                     </div>
                     <div class="modal-body" v-if="step == 1">
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <div class="alert alert-danger" role="alert" v-if="showError">
-                                        <span class="fa-stack fa-lg m-r-1">
-                                            <i class="fa fa-circle-thin fa-stack-2x text-danger"></i>
-                                            <i class="fa fa-times fa-stack-1x text-danger"></i>
-                                        </span>
-                                    <strong>Error!!</strong>
-                                    <div><span>{{error.message}} ({{error.id}})</span></div>
+                        <form id="form_upload_publishers" class="form" role="form" th:action="@{/rest/publishers/upload}" method="post" enctype="multipart/form-data">
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <div class="alert alert-danger" role="alert" v-if="showError">
+                                        <span class="fa-stack fa-lg m-r-1"> <i class="fa fa-circle-thin fa-stack-2x text-danger"></i> <i class="fa fa-times fa-stack-1x text-danger"></i>
+                                        </span> <strong>Error!!</strong>
+                                        <div>
+                                            <span>{{error.message}} ({{error.id}})</span>
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="col-sm-12">
-                                <h4>
-                                    <span class="badge badge-primary">1</span>&#160;
-                                    Choose the file to import
-                                </h4>
-                            </div>
-                            <div class="col-sm-12">
-                                <div class="form-group">
-                                    <label for="input_upload_publishers">Choose xls file</label>
-                                    <input id="input_upload_publishers" multiple type="file" name="file"
-                                           class="file-loading form-control" required
-                                           accept=".xls, .xlsx"/>
+                            <div class="row">
+                                <div class="col-sm-12">
+                                    <h4>
+                                        <span class="badge badge-primary">1</span>&#160; Choose the file to import
+                                    </h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <div class="form-group">
+                                        <label for="input_upload_publishers">Choose xls file</label> <input id="input_upload_publishers" multiple type="file" name="file"
+                                            class="file-loading form-control" required accept=".xls, .xlsx" />
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <hr/>
-                            <div class="col-sm-12">
-                                <h4 class="m-t-2">
-                                    <span class="badge badge-primary">2</span>&#160;
-                                    Configuration
-                                </h4>
-                            </div>
-                            <div class="col-md-12">
-                                <div class="custom-box checkbox checkbox-primary">
-                                    <input id="useActiveSheet" type="checkbox" name="useActiveSheet" v-model="useActiveSheet"/>
-                                    <label for="useActiveSheet">Use active sheet</label>
+                            <div class="row">
+                                <hr />
+                                <div class="col-sm-12">
+                                    <h4 class="m-t-2">
+                                        <span class="badge badge-primary">2</span>&#160; Configuration
+                                    </h4>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="custom-box checkbox checkbox-primary">
+                                        <input id="useActiveSheet" type="checkbox" name="useActiveSheet" v-model="useActiveSheet" /> <label for="useActiveSheet">Use active sheet</label>
+                                    </div>
+                                </div>
+                                <div class="col-sm-6">
+                                    <div class="form-group">
+                                        <label for="sheetName">Sheet name</label> <input id="sheetName" type="text" class="form-control" v-model="sheetName" name="sheetName"
+                                            :disabled="useActiveSheet ? true : false" :required="useActiveSheet ? false : true">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="custom-box checkbox checkbox-primary">
+                                        <input id="useHeader" type="checkbox" name="useHeader" v-model="useHeader" /> <label for="useHeader">Use the first row as a header</label>
+                                    </div>
                                 </div>
                             </div>
-                            <div class="col-sm-6">
-                                <div class="form-group">
-                                    <label for="sheetName">Sheet name</label>
-                                    <input id="sheetName" type="text" class="form-control" v-model="sheetName" name="sheetName" :disabled="useActiveSheet ? true : false"
-                                           :required="useActiveSheet ? false : true">
+                            <div class="row">
+                                <hr />
+                                <div class="col-sm-12">
+                                    <h4 class="m-t-2">
+                                        <span class="badge badge-primary">3</span>&#160; Data binding
+                                    </h4>
+                                </div>
+                                <div class="col-sm-12">
+                                    <table class="table table-condensed">
+                                        <thead>
+                                            <tr>
+                                                <th>Column</th>
+                                                <th>Field</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(field, index) in mappedFields">
+                                                <td class="col-sm-3">{{field.column}}</td>
+                                                <td class="col-sm-8">{{field.fieldLabel}}</td>
+                                                <td class="hidden">{{field.fieldValue}}</td>
+                                                <td class="text-right col-sm-1">
+                                                    <button type="button" class="btn btn-sm btn-default" @click="deleteRow(index)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                            <tr>
+                                                <td class="col-sm-3"><select2 :options="optionColumns" class="select2 select2-input" v-model="newField.column">
+                                                    <option disabled value="">Select a column</option>
+                                                    </select2></td>
+                                                <td class="col-sm-8"><select2 :options="optionFields" class="select2 select2-input" v-model="newField.fieldValue">
+                                                    <option disabled value="">Select a Field</option>
+                                                    </select2></td>
+                                                <td class="text-right">
+                                                    <button type="button" class="btn btn-sm btn-default" @click="addRow">
+                                                        <i class="fa fa-plus"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
                                 </div>
                             </div>
-                            <div class="col-md-12">
-                                <div class="custom-box checkbox checkbox-primary">
-                                    <input id="useHeader" type="checkbox" name="useHeader" v-model="useHeader"/>
-                                    <label for="useHeader">Use the first row as a header</label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="row">
-                            <hr/>
-                            <div class="col-sm-12">
-                                <h4 class="m-t-2">
-                                    <span class="badge badge-primary">3</span>&#160;
-                                    Data binding
-                                </h4>
-                            </div>
-                            <div class="col-sm-12">
-                                <table class="table table-condensed">
-                                    <thead>
-                                    <tr>
-                                        <th>Column</th>
-                                        <th>Field</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="(field, index) in mappedFields">
-                                        <td class="col-sm-3">
-                                            {{field.column}}
-                                        </td>
-                                        <td class="col-sm-8">
-                                            {{field.fieldLabel}}
-                                        </td>
-                                        <td class="hidden">
-                                            {{field.fieldValue}}
-                                        </td>
-                                        <td class="text-right col-sm-1">
-                                            <button type="button" class="btn btn-sm btn-default" @click="deleteRow(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    <tr>
-                                        <td class="col-sm-3">
-                                            <select2 :options="optionColumns" class="select2 select2-input" v-model="newField.column">
-                                                <option disabled value="">Select a column</option>
-                                            </select2>
-                                        </td>
-                                        <td class="col-sm-8">
-                                            <select2 :options="optionFields" class="select2 select2-input" v-model="newField.fieldValue">
-                                                <option disabled value="">Select a Field</option>
-                                            </select2>
-                                        </td>
-                                        <td class="text-right">
-                                            <button type="button" class="btn btn-sm btn-default" @click="addRow">
-                                                <i class="fa fa-plus"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
-                            </div>
-                        </div>
-                        <button type="submit" class="btn btn-primary">Continue</button>
+                            <button type="submit" class="btn btn-primary">Continue</button>
+                        </form>
                     </div>
                     <div class="modal-body" v-if="step == 2">
                         <div class="col-sm-12">
@@ -278,7 +260,7 @@
                                 <p>
                                     You can see here the preview of the publishers import. There are {{importedPublishers.length}} publishers to import!
                                 </p>
-                                <table class="table table-condensed table-striped table-hover">
+                                <table class="table table-condensed table-striped table-hover table-responsive scroll-200 custom-scrollbar">
                                     <thead>
                                     <tr>
                                         <th>Name</th>
@@ -288,18 +270,24 @@
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Mobile phone</th>
+                                        <th>Street</th>
+                                        <th>Zip</th>
+                                        <th>City</th>
                                         <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
                                     <tr v-for="(publisher, index) in importedPublishers">
-                                        <td>{{publisher.name}}</td>
-                                        <td>{{publisher.firstName}}</td>
-                                        <td>{{formatDate(publisher.birthDate)}}</td>
-                                        <td>{{formatDate(publisher.baptismDate)}}</td>
-                                        <td><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.email}}</span></td>
-                                        <td><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.phone}}</span></td>
-                                        <td><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.mobilePhone}}</span></td>
+                                        <td class="col-sm-2">{{publisher.name}}</td>
+                                        <td class="col-sm-2">{{publisher.firstName}}</td>
+                                        <td class="col-sm-2">{{formatDate(publisher.birthDate)}}</td>
+                                        <td class="col-sm-2">{{formatDate(publisher.baptismDate)}}</td>
+                                        <td class="col-sm-3"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.email}}</span></td>
+                                        <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.phone}}</span></td>
+                                        <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.mobilePhone}}</span></td>
+                                        <td class="col-sm-4"><span v-if="publisher.address != null">{{publisher.address.street1}}</span></td>
+                                        <td class="col-sm-2"><span v-if="publisher.address != null">{{publisher.address.zip}}</span></td>
+                                        <td class="col-sm-3"><span v-if="publisher.address != null">{{publisher.address.city}}</span></td>
                                         <td class="text-right col-sm-1">
                                             <button type="button" class="btn btn-sm btn-default" @click="deleteRowToImport(index)">
                                                 <i class="fa fa-trash"></i>
@@ -312,7 +300,6 @@
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
-                </form>
             </div>
         </div>
     </div>

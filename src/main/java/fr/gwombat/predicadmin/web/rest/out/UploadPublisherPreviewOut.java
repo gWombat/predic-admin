@@ -1,12 +1,11 @@
 package fr.gwombat.predicadmin.web.rest.out;
 
-import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
+import java.util.stream.Collectors;
 
 import org.springframework.util.CollectionUtils;
 
-import fr.gwombat.predicadmin.model.entities.Publisher;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
@@ -14,21 +13,21 @@ import fr.gwombat.predicadmin.web.vo.PublisherVO;
 public class UploadPublisherPreviewOut {
 
     private final List<PublisherForm> publishersToImport;
-    private final List<PublisherVO>   publishersData;
+    private List<PublisherVO>         publishersData = null;
     private final int                 publishersCount;
 
     public UploadPublisherPreviewOut(List<PublisherForm> publishers, final PublisherTransformer publisherTransformer) {
         publishersToImport = publishers;
-        publishersData = new ArrayList<>(0);
 
         int count = 0;
         if (!CollectionUtils.isEmpty(publishers)) {
-            publishers.sort(Comparator.comparing(PublisherForm::getName).thenComparing(PublisherForm::getFirstName));
+            publishers.sort(Comparator.comparing(PublisherForm::getName)
+                    .thenComparing(PublisherForm::getFirstName));
 
-            for (PublisherForm formObject : publishers) {
-                final Publisher publisher = publisherTransformer.toEntity(formObject, null);
-                publishersData.add(publisherTransformer.toViewObject(publisher));
-            }
+            publishersData = publishers.stream()
+                    .map(p -> publisherTransformer.toEntity(p, null))
+                    .map(p -> publisherTransformer.toViewObject(p))
+                    .collect(Collectors.toList());
 
             count = publishers.size();
         }

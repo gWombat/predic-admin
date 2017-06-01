@@ -25,7 +25,7 @@ class AddressTransformer extends AbstractEntityTransformer<Address, AddressForm,
                 if(address == null)
                     address = new Address();
 
-                address.setCity(WordUtils.capitalizeFully(addressForm.getCity()));
+                address.setCity(WordUtils.capitalizeFully(addressForm.getCity(), ' ', '-'));
                 address.setCountry(StringUtils.upperCase(addressForm.getCountry()));
                 address.setStreet1(addressForm.getStreet1());
                 address.setStreet2(addressForm.getStreet2());

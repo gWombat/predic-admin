@@ -1,24 +1,20 @@
 package fr.gwombat.predicadmin.upload.excel;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.web.multipart.MultipartFile;
 
 public class ExcelFileUploadConfiguration {
 
-    private MultipartFile                 file;
-    private String                        sheetName;
-    private boolean                       useHeader;
-    private boolean                       useActiveSheet;
-    private List<ColumnMappingItem>       mappings;
-    private Map<Integer, UploadableField> mappedFieldsByColumnIndex;
+    private MultipartFile           file;
+    private String                  sheetName;
+    private boolean                 useHeader;
+    private boolean                 useActiveSheet;
+    private List<ColumnMappingItem> mappings;
 
     public ExcelFileUploadConfiguration() {
         mappings = new ArrayList<>(0);
-        mappedFieldsByColumnIndex = new HashMap<>(0);
     }
 
     public MultipartFile getFile() {
@@ -43,15 +39,11 @@ public class ExcelFileUploadConfiguration {
 
     public void setMappings(List<ColumnMappingItem> mappings) {
         this.mappings = mappings;
-        for (ColumnMappingItem item : mappings)
-            mappedFieldsByColumnIndex.put(item.getColumnIndex(), item.getMappedToValue());
     }
 
     public void addMappingItem(ColumnMappingItem item) {
-        if (item != null) {
+        if (item != null)
             mappings.add(item);
-            mappedFieldsByColumnIndex.put(item.getColumnIndex(), item.getMappedToValue());
-        }
     }
 
     public boolean isUseHeader() {
@@ -63,7 +55,11 @@ public class ExcelFileUploadConfiguration {
     }
 
     public UploadablePublisherFields getEntityFieldForindex(int columnIndex) {
-        return (UploadablePublisherFields) mappedFieldsByColumnIndex.get(columnIndex);
+        return mappings.stream()
+                .filter(item -> columnIndex == item.getColumnIndex())
+                .map(ColumnMappingItem::getMappedToValue)
+                .findFirst()
+                .get();
     }
 
     public boolean isUseActiveSheet() {

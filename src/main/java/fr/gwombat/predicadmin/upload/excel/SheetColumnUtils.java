@@ -39,14 +39,11 @@ public final class SheetColumnUtils {
     }
 
     public static List<String> getAllColumns() {
-        final List<String> columns = mapValues.entrySet().stream().map(Map.Entry::getKey).collect(Collectors.toList());
-        columns.sort((c1, c2) -> {
-            if(c1.length() < c2.length())
-                return -1;
-            if(c1.length() == c2.length())
-                return c1.compareTo(c2);
-            return 1;
-        });
+        final List<String> columns = mapValues.entrySet()
+                .stream()
+                .map(Map.Entry::getKey)
+                .sorted((c1, c2) -> c1.length() - c2.length())
+                .collect(Collectors.toList());
         return Collections.unmodifiableList(columns);
     }
 

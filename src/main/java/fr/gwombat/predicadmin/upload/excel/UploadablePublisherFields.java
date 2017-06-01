@@ -11,7 +11,10 @@ public enum UploadablePublisherFields implements UploadableField {
     BAPTISMDATE("general.baptism.date"),
     EMAIL("general.email"),
     PHONE("general.phone"),
-    MOBILEPHONE("general.mobile")
+    MOBILEPHONE("general.mobile"),
+    STREET("general.street"),
+    ZIP("general.zip"),
+    CITY("general.city")
 
     ;
 

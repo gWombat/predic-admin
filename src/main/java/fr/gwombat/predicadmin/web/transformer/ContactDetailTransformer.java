@@ -70,7 +70,7 @@ class ContactDetailTransformer extends AbstractEntityTransformer<ContactDetail, 
                 final Phonenumber.PhoneNumber mobilePhoneNumber = phoneNumberUtil.parse(strNumber, "FR");
                 if(phoneNumberUtil.isValidNumber(mobilePhoneNumber))
                     return phoneNumberUtil.format(mobilePhoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
-                return "N/A";
+                return strNumber;
             } catch (NumberParseException e) {
                 logger.warn(e.getMessage());
                 return "N/A";
