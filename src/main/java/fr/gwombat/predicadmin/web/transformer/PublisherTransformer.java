@@ -1,5 +1,11 @@
 package fr.gwombat.predicadmin.web.transformer;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.text.WordUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
+import org.springframework.stereotype.Component;
+
 import fr.gwombat.predicadmin.model.entities.Publisher;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.vo.AddressVO;
@@ -7,12 +13,6 @@ import fr.gwombat.predicadmin.web.vo.ContactDetailVO;
 import fr.gwombat.predicadmin.web.vo.PrivilegeVO;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
 import fr.gwombat.predicadmin.web.vo.builder.PublisherVoBuilder;
-
-import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.text.WordUtils;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.MessageSource;
-import org.springframework.stereotype.Component;
 
 @Component
 public class PublisherTransformer extends AbstractEntityTransformer<Publisher, PublisherForm, PublisherVO> {
@@ -29,10 +29,10 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
 
     @Override
     public Publisher toEntity(PublisherForm publisherForm, Publisher publisher) {
-        if(publisher == null)
+        if (publisher == null)
             publisher = new Publisher();
 
-        if(publisherForm != null) {
+        if (publisherForm != null) {
             publisher.setName(StringUtils.upperCase(publisherForm.getName()));
             publisher.setFirstName(WordUtils.capitalizeFully(publisherForm.getFirstName(), ' ', '-'));
             publisher.setGender(publisherForm.getGender());
@@ -50,7 +50,7 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
 
     @Override
     public PublisherForm toFormObject(Publisher publisher) {
-        if(publisher != null) {
+        if (publisher != null) {
             final PublisherForm publisherForm = new PublisherForm();
 
             publisherForm.setBaptismDate(formatDate(publisher.getBaptismDate()));
@@ -71,24 +71,41 @@ public class PublisherTransformer extends AbstractEntityTransformer<Publisher, P
         return null;
     }
 
-    @Override
-    public PublisherVO toViewObject(Publisher publisher) {
-        if(publisher != null) {
+    public PublisherVO toViewObject(PublisherForm publisher) {
+        if (publisher != null) {
             final AddressVO addressVo = addressTransformer.toViewObject(publisher.getAddress());
             final ContactDetailVO contactDetailVo = contactDetailTransformer.toViewObject(publisher.getContactDetail());
-            
+
+            final PublisherVoBuilder builder = PublisherVoBuilder.create(contactDetailVo, addressVo)
+                    .identifier(publisher.getIdentifier())
+                    .birthDate(formatDate(publisher.getBirthDate()))
+                    .name(StringUtils.upperCase(publisher.getName()))
+                    .firstName(WordUtils.capitalizeFully(publisher.getFirstName(), ' ', '-'))
+                    .baptismDate(formatDate(publisher.getBaptismDate()));
+
+            return builder.build();
+        }
+        return null;
+    }
+
+    @Override
+    public PublisherVO toViewObject(Publisher publisher) {
+        if (publisher != null) {
+            final AddressVO addressVo = addressTransformer.toViewObject(publisher.getAddress());
+            final ContactDetailVO contactDetailVo = contactDetailTransformer.toViewObject(publisher.getContactDetail());
+
             PrivilegeVO privilege = null;
-            if(publisher.getPrivilege() != null)
+            if (publisher.getPrivilege() != null)
                 privilege = new PrivilegeVO(publisher.getPrivilege());
 
             final PublisherVoBuilder builder = PublisherVoBuilder.create(contactDetailVo, addressVo)
-                                                                 .fullName(publisher.getFullName())
-                                                                 .identifier(publisher.getIdentifier())
-                                                                 .birthDate(publisher.getBirthDate())
-                                                                 .name(publisher.getName())
-                                                                 .firstName(publisher.getFirstName())
-                                                                 .baptismDate(publisher.getBaptismDate())
-                                                                 .privilege(privilege);
+                    .fullName(publisher.getFullName())
+                    .identifier(publisher.getIdentifier())
+                    .birthDate(publisher.getBirthDate())
+                    .name(publisher.getName())
+                    .firstName(publisher.getFirstName())
+                    .baptismDate(publisher.getBaptismDate())
+                    .privilege(privilege);
 
             return builder.build();
         }

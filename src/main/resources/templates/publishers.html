@@ -152,7 +152,7 @@
                         <h4 class="modal-title">Import data</h4>
                     </div>
                     <div class="modal-body" v-if="step == 1">
-                        <form id="form_upload_publishers" class="form" role="form" th:action="@{/rest/publishers/upload}" method="post" enctype="multipart/form-data">
+                        <form id="form_upload_publishers" class="form" role="form" th:action="@{/rest/publishers/upload/preview}" method="post" enctype="multipart/form-data">
                             <div class="row">
                                 <div class="col-sm-12">
                                     <div class="alert alert-danger" role="alert" v-if="showError">
@@ -258,7 +258,8 @@
                         <div class="row">
                             <div class="col-sm-12">
                                 <p>
-                                    You can see here the preview of the publishers import. There are {{importedPublishers.length}} publishers to import!
+                                    You can see here the preview of the publishers import. There are {{importPreviewData.publishersCount}} publishers to import!<br/>
+                                    {{importPreviewData.newPublishersCount}} are new!
                                 </p>
                                 <table class="table table-condensed table-striped table-hover table-responsive scroll-200 custom-scrollbar">
                                     <thead>
@@ -270,24 +271,22 @@
                                         <th>Email</th>
                                         <th>Phone</th>
                                         <th>Mobile phone</th>
-                                        <th>Street</th>
-                                        <th>Zip</th>
-                                        <th>City</th>
                                         <th></th>
                                     </tr>
                                     </thead>
                                     <tbody>
-                                    <tr v-for="(publisher, index) in importedPublishers">
-                                        <td class="col-sm-2">{{publisher.name}}</td>
-                                        <td class="col-sm-2">{{publisher.firstName}}</td>
+                                    <tr v-for="(publisher, index) in importPreviewData.publishersData">
+                                        <td class="col-sm-2">
+                                            <span class="text-white">{{publisher.name}}</span>
+                                        </td>
+                                        <td class="col-sm-2">
+                                            <span class="text-white">{{publisher.firstName}}</span>
+                                        </td>
                                         <td class="col-sm-2">{{formatDate(publisher.birthDate)}}</td>
                                         <td class="col-sm-2">{{formatDate(publisher.baptismDate)}}</td>
-                                        <td class="col-sm-3"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.email}}</span></td>
+                                        <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.email}}</span></td>
                                         <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.phone}}</span></td>
                                         <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.mobilePhone}}</span></td>
-                                        <td class="col-sm-4"><span v-if="publisher.address != null">{{publisher.address.street1}}</span></td>
-                                        <td class="col-sm-2"><span v-if="publisher.address != null">{{publisher.address.zip}}</span></td>
-                                        <td class="col-sm-3"><span v-if="publisher.address != null">{{publisher.address.city}}</span></td>
                                         <td class="text-right col-sm-1">
                                             <button type="button" class="btn btn-sm btn-default" @click="deleteRowToImport(index)">
                                                 <i class="fa fa-trash"></i>
@@ -378,7 +377,7 @@
                     useActiveSheet: true,
                     useHeader: false,
                     sheetName: '',
-                    importedPublishers: [],
+                    importPreviewData: {},
                     showError: false,
                     error: {
                         message: '',
@@ -451,7 +450,7 @@
                     processData: false,
                     data: formData,
                     success: function (resData) {
-                        vm.importedPublishers = resData.publishersData;
+                        vm.importPreviewData = resData;
                         vm.step = 2;
                         //console.log(data);
                     },

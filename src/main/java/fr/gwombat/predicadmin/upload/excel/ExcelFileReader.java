@@ -17,8 +17,10 @@ import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.ss.usermodel.Sheet;
 import org.apache.poi.ss.usermodel.Workbook;
 import org.apache.poi.ss.usermodel.WorkbookFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
+import org.springframework.stereotype.Component;
 
 import fr.gwombat.predicadmin.exception.upload.DataMappingException;
 import fr.gwombat.predicadmin.exception.upload.InvalidFileFormatException;
@@ -29,6 +31,7 @@ import fr.gwombat.predicadmin.web.form.AddressForm;
 import fr.gwombat.predicadmin.web.form.ContactDetailForm;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
 
+@Component
 public class ExcelFileReader {
 
     private static final String PHONE_NUMBER_ERROR_CODE = "data.upload.file.excel.invalid.data.phone";
@@ -37,10 +40,6 @@ public class ExcelFileReader {
     private static final String DATE_FORMAT_CODE        = "format.date";
 
     private MessageSource       messageSource;
-
-    public ExcelFileReader(final MessageSource messageSource) {
-        this.messageSource = messageSource;
-    }
 
     public List<PublisherForm> readFile(final ExcelFileUploadConfiguration fileConfiguration) throws UploadDataException {
         Objects.requireNonNull(fileConfiguration);
@@ -204,6 +203,11 @@ public class ExcelFileReader {
         default:
             return null;
         }
+    }
+
+    @Autowired
+    public void setMessageSource(MessageSource messageSource) {
+        this.messageSource = messageSource;
     }
 
 }

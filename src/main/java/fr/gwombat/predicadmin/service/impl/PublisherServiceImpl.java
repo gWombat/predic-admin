@@ -1,26 +1,23 @@
 package fr.gwombat.predicadmin.service.impl;
 
-import fr.gwombat.predicadmin.model.entities.Congregation;
-import fr.gwombat.predicadmin.model.entities.Publisher;
-import fr.gwombat.predicadmin.repository.PublisherRepository;
-import fr.gwombat.predicadmin.service.PublisherService;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.List;
+import fr.gwombat.predicadmin.model.entities.Congregation;
+import fr.gwombat.predicadmin.model.entities.Publisher;
+import fr.gwombat.predicadmin.repository.PublisherRepository;
+import fr.gwombat.predicadmin.service.CongregationService;
+import fr.gwombat.predicadmin.service.PublisherService;
 
 @Service
 @Transactional
 public class PublisherServiceImpl implements PublisherService {
 
     private PublisherRepository publisherRepository;
-
-    @Autowired
-    public PublisherServiceImpl(final PublisherRepository publisherRepository) {
-        this.publisherRepository = publisherRepository;
-    }
+    private CongregationService congregationService;
 
     @Override
     public Publisher getByIdentifier(String identifier) {
@@ -38,6 +35,11 @@ public class PublisherServiceImpl implements PublisherService {
     }
 
     @Override
+    public List<Publisher> getForCurrentCongregation() {
+        return getByCongregation(congregationService.getCurrentCongregation());
+    }
+
+    @Override
     public void delete(final Publisher publisher) {
         publisherRepository.delete(publisher);
     }
@@ -45,8 +47,17 @@ public class PublisherServiceImpl implements PublisherService {
     @Override
     public void deleteByIdentifier(String identifier) {
         final Publisher publisher = getByIdentifier(identifier);
-        if(publisher != null)
+        if (publisher != null)
             delete(publisher);
     }
 
+    @Autowired
+    public void setCongregationService(CongregationService congregationService) {
+        this.congregationService = congregationService;
+    }
+
+    @Autowired
+    public void setPublisherRepository(PublisherRepository publisherRepository) {
+        this.publisherRepository = publisherRepository;
+    }
 }

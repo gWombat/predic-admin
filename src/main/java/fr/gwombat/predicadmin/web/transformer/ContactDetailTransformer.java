@@ -54,10 +54,19 @@ class ContactDetailTransformer extends AbstractEntityTransformer<ContactDetail, 
 
     @Override
     public ContactDetailVO toViewObject(final ContactDetail contactDetail) {
-        ContactDetailVoBuilder builder = ContactDetailVoBuilder.create();
+        final ContactDetailVoBuilder builder = ContactDetailVoBuilder.create();
         if (contactDetail != null)
-            builder = ContactDetailVoBuilder.create()
+            ContactDetailVoBuilder.create()
                     .email(contactDetail.getEmail())
+                    .mobilePhone(formatPhoneNumber(contactDetail.getMobilePhone()))
+                    .phone(formatPhoneNumber(contactDetail.getPhone()));
+        return builder.build();
+    }
+    
+    public ContactDetailVO toViewObject(final ContactDetailForm contactDetail) {
+        final ContactDetailVoBuilder builder = ContactDetailVoBuilder.create();
+        if (contactDetail != null)
+            builder.email(StringUtils.lowerCase(contactDetail.getEmail()))
                     .mobilePhone(formatPhoneNumber(contactDetail.getMobilePhone()))
                     .phone(formatPhoneNumber(contactDetail.getPhone()));
         return builder.build();
@@ -68,7 +77,7 @@ class ContactDetailTransformer extends AbstractEntityTransformer<ContactDetail, 
             try {
                 PhoneNumberUtil phoneNumberUtil = PhoneNumberUtil.getInstance();
                 final Phonenumber.PhoneNumber mobilePhoneNumber = phoneNumberUtil.parse(strNumber, "FR");
-                if(phoneNumberUtil.isValidNumber(mobilePhoneNumber))
+                if (phoneNumberUtil.isValidNumber(mobilePhoneNumber))
                     return phoneNumberUtil.format(mobilePhoneNumber, PhoneNumberUtil.PhoneNumberFormat.INTERNATIONAL);
                 return strNumber;
             } catch (NumberParseException e) {

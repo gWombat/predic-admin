@@ -11,6 +11,8 @@ public class PublisherVO {
     private final String          fullName;
     private final String          identifier;
 
+    private boolean               newPublisher;
+
     private final LocalDate       birthDate;
     private final LocalDate       baptismDate;
 
@@ -64,5 +66,13 @@ public class PublisherVO {
 
     public PrivilegeVO getPrivilege() {
         return privilege;
+    }
+
+    public boolean isNewPublisher() {
+        return newPublisher;
+    }
+
+    public void setNewPublisher(boolean newPublisher) {
+        this.newPublisher = newPublisher;
     }
 }

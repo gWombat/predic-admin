@@ -18,6 +18,7 @@ public final class SheetColumnUtils {
 
     static {
         int counter = 0;
+
         for (int i = 0; i < classicAlphabet.length; i++)
             mapValues.put(String.valueOf(classicAlphabet[i]), counter++);
 
