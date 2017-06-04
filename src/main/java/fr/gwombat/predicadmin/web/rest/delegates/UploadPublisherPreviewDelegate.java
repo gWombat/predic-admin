@@ -1,13 +1,5 @@
 package fr.gwombat.predicadmin.web.rest.delegates;
 
-import java.util.Comparator;
-import java.util.List;
-import java.util.stream.Collectors;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
-import org.springframework.util.CollectionUtils;
-
 import fr.gwombat.predicadmin.exception.upload.UploadDataException;
 import fr.gwombat.predicadmin.model.entities.Publisher;
 import fr.gwombat.predicadmin.service.PublisherService;
@@ -17,6 +9,13 @@ import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.rest.out.UploadPublisherPreviewOut;
 import fr.gwombat.predicadmin.web.transformer.PublisherTransformer;
 import fr.gwombat.predicadmin.web.vo.PublisherVO;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
+
+import java.util.Comparator;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 public class UploadPublisherPreviewDelegate {
@@ -31,14 +30,14 @@ public class UploadPublisherPreviewDelegate {
 
         final UploadPublisherPreviewOut out = new UploadPublisherPreviewOut();
         out.setPublishersToImport(importResult);
-        
+
         final List<PublisherVO> publishersVo = convertPublishers(importResult);
         out.setPublishersData(publishersVo);
 
-        if (publishersVo != null) {
+        if(publishersVo != null) {
             final long newPublishersCount = publishersVo.stream()
-                    .filter(p -> p.isNewPublisher())
-                    .count();
+                                                        .filter(PublisherVO::isNewPublisher)
+                                                        .count();
             final long publishersCount = publishersVo.size();
 
             out.setNewPublishersCount(newPublishersCount);
@@ -49,14 +48,14 @@ public class UploadPublisherPreviewDelegate {
     }
 
     private List<PublisherVO> convertPublishers(final List<PublisherForm> publishers) {
-        if (!CollectionUtils.isEmpty(publishers)) {
+        if(!CollectionUtils.isEmpty(publishers)) {
             publishers.sort(Comparator.comparing(PublisherForm::getName)
-                    .thenComparing(PublisherForm::getFirstName));
+                                      .thenComparing(PublisherForm::getFirstName));
 
             final List<String> existingNames = getAndComputeExistingPublishersNames();
             return publishers.stream()
-                    .map(p -> processPublisher(p, existingNames))
-                    .collect(Collectors.toList());
+                             .map(p -> processPublisher(p, existingNames))
+                             .collect(Collectors.toList());
         }
         return null;
     }
@@ -64,27 +63,27 @@ public class UploadPublisherPreviewDelegate {
     private PublisherVO processPublisher(final PublisherForm publisherForm, final List<String> existingNames) {
         final PublisherVO publisherVo = publisherTransformer.toViewObject(publisherForm);
         final String publisherName = parsePublisherName(publisherVo.getFullName());
-        if (existingNames != null)
+        if(existingNames != null)
             publisherVo.setNewPublisher(!existingNames.contains(publisherName));
         return publisherVo;
     }
 
     private List<String> getAndComputeExistingPublishersNames() {
         final List<Publisher> allPublishers = publisherService.getForCurrentCongregation();
-        if (allPublishers != null) {
+        if(allPublishers != null) {
             return allPublishers.stream()
-                    .map(publisher -> parsePublisherName(publisher.getFullName()))
-                    .collect(Collectors.toList());
+                                .map(publisher -> parsePublisherName(publisher.getFullName()))
+                                .collect(Collectors.toList());
         }
         return null;
     }
 
     private static String parsePublisherName(final String fullName) {
-        if (fullName == null)
+        if(fullName == null)
             return null;
         return fullName.trim()
-                .replaceAll("[-\\s]", "")
-                .toLowerCase();
+                       .replaceAll("[-\\s]", "")
+                       .toLowerCase();
     }
 
     @Autowired
