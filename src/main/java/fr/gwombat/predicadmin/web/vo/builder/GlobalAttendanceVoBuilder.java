@@ -19,6 +19,11 @@ public class GlobalAttendanceVoBuilder {
     public static GlobalAttendanceVoBuilder create() {
         return new GlobalAttendanceVoBuilder();
     }
+    
+    public GlobalAttendanceVoBuilder attendances(final List<YearAttendanceVO> attendances){
+        this.attendances = attendances;
+        return this;
+    }
 
     public GlobalAttendanceVoBuilder addAttendance(final YearAttendanceVO yearAttendance) {
         if (yearAttendance != null)

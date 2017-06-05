@@ -1,7 +1,13 @@
 package fr.gwombat.predicadmin.web.transformer;
 
+import java.util.Arrays;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
+import java.util.OptionalDouble;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -18,23 +24,25 @@ public class GlobalAttendanceTransformer implements ViewTransformer<List<YearAtt
 
     private YearAttendanceTransformer yearAttendanceTransformer;
 
-    public GlobalAttendanceVO toViewObject(List<YearAttendance> years) {
+    public GlobalAttendanceVO toViewObject(final List<YearAttendance> years) {
         GlobalAttendanceVO globalAttendance = null;
 
         if (!CollectionUtils.isEmpty(years)) {
-            years.sort(Comparator.comparing(YearAttendance::getTheocraticYear).reversed());
+            years.sort(Comparator.comparing(YearAttendance::getTheocraticYear)
+                    .reversed());
 
-            final GlobalAttendanceVoBuilder builder = GlobalAttendanceVoBuilder.create();
+            final List<YearAttendanceVO> yearsVo = years.stream()
+                    .map(year -> yearAttendanceTransformer.toViewObject(year))
+                    .collect(Collectors.toList());
 
-            for (YearAttendance year : years) {
-                final YearAttendanceVO yearAttendanceVo = yearAttendanceTransformer.toViewObject(year);
-                builder.addAttendance(yearAttendanceVo);
-            }
+            final GlobalAttendanceVoBuilder builder = GlobalAttendanceVoBuilder.create()
+                    .attendances(yearsVo);
 
             final int averageAttendance = calculateAverageAttendance(builder.getAttendances());
             final int nbReports = calculateNbReports(builder.getAttendances());
 
-            builder.averageAttendance(averageAttendance).nbReports(nbReports);
+            builder.averageAttendance(averageAttendance)
+                    .nbReports(nbReports);
 
             globalAttendance = builder.build();
         }
@@ -42,26 +50,36 @@ public class GlobalAttendanceTransformer implements ViewTransformer<List<YearAtt
         return globalAttendance;
     }
 
-    private int calculateAverageAttendance(final List<YearAttendanceVO> attendances) {
+    private static int calculateAverageAttendance(final List<YearAttendanceVO> attendances) {
         int result = 0;
         if (CollectionUtils.isEmpty(attendances))
             return result;
 
-        for (YearAttendanceVO yearAttendance : attendances)
-            if (yearAttendance != null)
-                result += yearAttendance.getAverageAttendance();
-        result /= Math.max(1, attendances.size());
+        final OptionalDouble averageAttendance = attendances.stream()
+                .filter(Objects::nonNull)
+                .mapToInt(attendance -> attendance.getAverageAttendance())
+                .average();
+
+        if (averageAttendance.isPresent())
+            result = (int) averageAttendance.getAsDouble();
+
         return result;
     }
 
-    private int calculateNbReports(final List<YearAttendanceVO> attendances) {
+    private static int calculateNbReports(final List<YearAttendanceVO> attendances) {
         int result = 0;
-        if (!CollectionUtils.isEmpty(attendances))
-            for (YearAttendanceVO yearAttendance : attendances)
-                if (yearAttendance != null)
-                    for (MonthAttendanceVO monthAttendance : yearAttendance.getAttendances())
-                        if (monthAttendance != null)
-                            result += monthAttendance.getAttendances().size();
+
+        if (!CollectionUtils.isEmpty(attendances)) {
+            final Stream<MonthAttendanceVO> allMonthAttendances = attendances.stream()
+                    .filter(Objects::nonNull)
+                    .map(yearAttendances -> yearAttendances.getAttendances())
+                    .flatMap(Arrays::stream)
+                    .filter(Objects::nonNull);
+
+            result = allMonthAttendances.map(monthAttendances -> monthAttendances.getAttendances())
+                    .flatMapToInt(monthMeetings -> IntStream.of(monthMeetings.size()))
+                    .sum();
+        }
 
         return result;
     }

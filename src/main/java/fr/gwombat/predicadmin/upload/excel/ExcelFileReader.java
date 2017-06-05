@@ -4,6 +4,7 @@ import fr.gwombat.predicadmin.exception.upload.*;
 import fr.gwombat.predicadmin.web.form.AddressForm;
 import fr.gwombat.predicadmin.web.form.ContactDetailForm;
 import fr.gwombat.predicadmin.web.form.PublisherForm;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.poi.EncryptedDocumentException;
 import org.apache.poi.openxml4j.exceptions.InvalidFormatException;
@@ -12,6 +13,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.stereotype.Component;
+import org.springframework.util.CollectionUtils;
 
 import java.io.IOException;
 import java.text.SimpleDateFormat;
@@ -77,8 +79,10 @@ public class ExcelFileReader {
         ContactDetailForm contactDetail = null;
         AddressForm addressForm = null;
         final Iterator<Cell> cellIterator = currentRow.cellIterator();
-        while(cellIterator.hasNext()) {
+        int cellsCount = 0;
+        while(cellIterator.hasNext() && isMappingAvailable(cellsCount, fileConfiguration.getMappings())) {
             final Cell currentCell = cellIterator.next();
+            cellsCount++;
             final UploadablePublisherFields entityFieldName = fileConfiguration.getEntityFieldForindex(currentCell.getColumnIndex());
 
             try {
@@ -141,6 +145,12 @@ public class ExcelFileReader {
         publisher.setContactDetail(contactDetail);
         publisher.setAddress(addressForm);
         return publisher;
+    }
+    
+    private static boolean isMappingAvailable(final int index, final List<ColumnMappingItem> items){
+        if(CollectionUtils.isEmpty(items))
+            return false;
+        return index < items.size();
     }
 
     /**

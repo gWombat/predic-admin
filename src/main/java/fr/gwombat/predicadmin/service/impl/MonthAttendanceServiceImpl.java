@@ -44,10 +44,13 @@ public class MonthAttendanceServiceImpl implements MonthAttendanceService {
         Assert.notNull(startPeriod, "The start period must not be null");
 
         if (endPeriod == null)
-            endPeriod = PeriodBuilder.create().build();
+            endPeriod = PeriodBuilder.create()
+                    .build();
 
-        final LocalDate startDate = startPeriod.getStart().toLocalDate();
-        final LocalDate endDate = endPeriod.getEnd().toLocalDate();
+        final LocalDate startDate = startPeriod.getStart()
+                .toLocalDate();
+        final LocalDate endDate = endPeriod.getEnd()
+                .toLocalDate();
 
         final List<MeetingAttendance> attendances = attendanceService.getAttendancesBetween(congregation, startDate, endDate);
         final List<MonthAttendance> finalAttendances = buildMonthsAttendances(attendances);
@@ -73,7 +76,12 @@ public class MonthAttendanceServiceImpl implements MonthAttendanceService {
         if (attendances != null) {
             final Map<Period, MonthAttendance> mapAttendances = new HashMap<>(0);
             for (MeetingAttendance meetingAttendance : attendances) {
-                final Period period = PeriodBuilder.create().month(meetingAttendance.getDate().getMonthValue()).year(meetingAttendance.getDate().getYear()).build();
+                final Period period = PeriodBuilder.create()
+                        .month(meetingAttendance.getDate()
+                                .getMonthValue())
+                        .year(meetingAttendance.getDate()
+                                .getYear())
+                        .build();
                 MonthAttendance monthAttendance = mapAttendances.get(period);
                 if (monthAttendance == null) {
                     final List<MeetingAttendance> meetings = new ArrayList<>(1);
@@ -85,7 +93,10 @@ public class MonthAttendanceServiceImpl implements MonthAttendanceService {
                 }
             }
 
-            return mapAttendances.entrySet().stream().map(Map.Entry::getValue).collect(Collectors.toList());
+            return mapAttendances.entrySet()
+                    .stream()
+                    .map(Map.Entry::getValue)
+                    .collect(Collectors.toList());
 
         }
         return null;
