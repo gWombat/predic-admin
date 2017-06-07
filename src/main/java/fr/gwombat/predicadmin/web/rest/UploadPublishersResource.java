@@ -1,15 +1,21 @@
 package fr.gwombat.predicadmin.web.rest;
 
+import javax.validation.Valid;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import fr.gwombat.predicadmin.exception.upload.UploadDataException;
+import fr.gwombat.predicadmin.support.ValidList;
 import fr.gwombat.predicadmin.upload.excel.ExcelFileUploadConfiguration;
+import fr.gwombat.predicadmin.web.form.PublisherForm;
 import fr.gwombat.predicadmin.web.rest.delegates.UploadPublisherPreviewDelegate;
 import fr.gwombat.predicadmin.web.rest.out.UploadPublisherPreviewOut;
 import fr.gwombat.predicadmin.web.vuejs.ImportPublishersModelData;
@@ -35,7 +41,15 @@ public class UploadPublishersResource {
         final UploadPublisherPreviewOut out = uploadDelegate.process(fileConfiguration);
         return out;
     }
-    
+
+    @PostMapping("/upload")
+    public String uploadPublishers(@RequestBody @Valid final ValidList<PublisherForm> publishers, final BindingResult result) {
+
+        
+        
+        return "redirect:/publishers";
+    }
+
     @Autowired
     public void setMessageSource(MessageSource messageSource) {
         this.messageSource = messageSource;
