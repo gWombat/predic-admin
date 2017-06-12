@@ -8,5 +8,11 @@ http://stackoverflow.com/questions/14522441/determine-ms-excel-file-type-with-ap
 
 http://www.mkyong.com/spring-boot/spring-boot-file-upload-example-ajax-and-rest/
 
-Bootstrap steps
-https://github.com/VinceG/twitter-bootstrap-wizard
+Vue js
+http://vee-validate.logaretm.com/index.html#about
+
+Bitbucket
+https://bitbucket.org/
+
+Axios
+https://github.com/mzabriskie/axios

@@ -6,4 +6,9 @@ public class SuccessAlertMessage extends AlertMessage {
         super(AlertMessageLevel.SUCCESS);
     }
 
+    public SuccessAlertMessage(final String labelCode) {
+        super(AlertMessageLevel.SUCCESS);
+        setLabelCode(labelCode);
+    }
+
 }
