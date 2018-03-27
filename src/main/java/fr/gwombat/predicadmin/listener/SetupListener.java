@@ -6,7 +6,6 @@ import fr.gwombat.predicadmin.repository.MeetingAttendanceRepository;
 import fr.gwombat.predicadmin.repository.PublisherRepository;
 import fr.gwombat.predicadmin.support.Gender;
 import fr.gwombat.predicadmin.support.Privilege;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,14 +39,14 @@ public class SetupListener {
 
     @EventListener
     public void handleRefreshContext(ContextRefreshedEvent event) {
-        if(env.acceptsProfiles("default", "dev") && !setUp)
+        if (env.acceptsProfiles("default", "dev") && !setUp)
             setUp();
     }
 
     private void setUp() {
 
         Congregation congreg = congregationRepository.findByName("Verneuil-sur-Seine");
-        if(congreg == null) {
+        if (congreg == null) {
             congreg = new Congregation();
             congreg.setName("Verneuil-sur-Seine");
             congreg = congregationRepository.save(congreg);
@@ -113,10 +112,10 @@ public class SetupListener {
 
         int startYear = LocalDate.now().getYear();
         final List<Integer> years = new ArrayList<>(0);
-        for(int i = startYear; i > startYear - 5; i--)
+        for (int i = startYear; i > startYear - 5; i--)
             years.add(i);
 
-        for(int i = 0; i < bound; i++) {
+        for (int i = 0; i < bound; i++) {
             MeetingAttendance meetingAttendance = new MeetingAttendance();
             meetingAttendance.setCongregation(congregation);
             meetingAttendance.setAttendance(new Random().nextInt(120));
@@ -128,11 +127,11 @@ public class SetupListener {
             attendances.put(date, meetingAttendance);
         }
 
-        attendanceRepository.save(attendances.entrySet()
-                                             .stream()
-                                             .map(Map.Entry::getValue)
-                                             .filter(attendance -> attendance.getDate().isBefore(LocalDate.now()))
-                                             .collect(Collectors.toList()));
+        attendanceRepository.saveAll(attendances.entrySet()
+                .stream()
+                .map(Map.Entry::getValue)
+                .filter(attendance -> attendance.getDate().isBefore(LocalDate.now()))
+                .collect(Collectors.toList()));
     }
 
     @Autowired
