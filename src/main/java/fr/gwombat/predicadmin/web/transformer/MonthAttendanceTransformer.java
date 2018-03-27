@@ -2,6 +2,7 @@ package fr.gwombat.predicadmin.web.transformer;
 
 import java.util.Comparator;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -24,23 +25,25 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
     @Override
     public MonthAttendanceVO toViewObject(MonthAttendance entity) {
         MonthAttendanceVO attendanceVo = null;
-        MonthAttendanceVoBuilder builder = MonthAttendanceVoBuilder.create().period(entity.getPeriod());
+        final MonthAttendanceVoBuilder builder = MonthAttendanceVoBuilder.create()
+                .period(entity.getPeriod());
+
         if (entity != null) {
             final List<MeetingAttendance> originalAttendances = entity.getAttendances();
             if (!CollectionUtils.isEmpty(originalAttendances)) {
-                for (MeetingAttendance originalAttendance : originalAttendances) {
-                    final MeetingAttendanceVO meetingAttendanceVo = meetingAttendanceTransformer.toViewObject(originalAttendance);
-                    builder = builder.addAttendance(meetingAttendanceVo);
-                }
+                originalAttendances.forEach(attendance -> {
+                    final MeetingAttendanceVO meetingAttendanceVo = meetingAttendanceTransformer.toViewObject(attendance);
+                    builder.addAttendance(meetingAttendanceVo);
+                });
             }
 
-            builder = builder.averageAttendance(entity.getAverageAttendance());
+            builder.averageAttendance(entity.getAverageAttendance());
 
             final MeetingAttendanceVO maxAttendance = getMaxOrMinAttendance(builder.getAttendances(), MAX_ATTENDANCE);
-            builder = builder.maxAttendance(maxAttendance);
+            builder.maxAttendance(maxAttendance);
 
             final MeetingAttendanceVO minAttendance = getMaxOrMinAttendance(builder.getAttendances(), MIN_ATTENDANCE);
-            builder = builder.minAttendance(minAttendance);
+            builder.minAttendance(minAttendance);
         }
         attendanceVo = builder.build();
         return attendanceVo;
@@ -50,15 +53,15 @@ public class MonthAttendanceTransformer implements ViewTransformer<MonthAttendan
         if (CollectionUtils.isEmpty(attendances))
             return null;
 
-        MeetingAttendanceVO result = null;
         Comparator<MeetingAttendanceVO> comparator = Comparator.comparing(MeetingAttendanceVO::getAttendance);
         if (maxOrMinAttendance == MAX_ATTENDANCE)
             comparator = comparator.reversed();
 
-        attendances.sort(comparator);
-        result = attendances.get(0);
-        attendances.sort(Comparator.comparing(MeetingAttendanceVO::getDate));
-        return result;
+        Optional<MeetingAttendanceVO> maxMinAttendance = attendances.stream()
+                .sorted(comparator)
+                .findFirst();
+
+        return maxMinAttendance.orElse(null);
     }
 
     @Autowired

@@ -2,6 +2,7 @@ package fr.gwombat.predicadmin.upload.excel;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.web.multipart.MultipartFile;
 
@@ -55,11 +56,11 @@ public class ExcelFileUploadConfiguration {
     }
 
     public UploadablePublisherFields getEntityFieldForindex(int columnIndex) {
-        return mappings.stream()
+        Optional<UploadablePublisherFields> field = mappings.stream()
                 .filter(item -> columnIndex == item.getColumnIndex())
                 .map(ColumnMappingItem::getMappedToValue)
-                .findFirst()
-                .get();
+                .findFirst();
+        return field.orElse(null);
     }
 
     public boolean isUseActiveSheet() {

@@ -82,7 +82,8 @@ public class MeetingAttendanceController {
 
     @ModelAttribute("currentMonthAttendance")
     public MonthAttendanceVO getCurrentMonthAttendance() {
-        final Period currentPeriod = PeriodBuilder.create().build();
+        final Period currentPeriod = PeriodBuilder.create()
+                .build();
         final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(congregationService.getCurrentCongregation(), currentPeriod);
         MonthAttendanceVO attendanceVO = monthAttendanceTransformer.toViewObject(monthAttendance);
 
@@ -99,14 +100,16 @@ public class MeetingAttendanceController {
     @ModelAttribute("monthNames")
     public List<String> getMonthsNames() {
         final Locale locale = LocaleContextHolder.getLocale();
-        final String[] monthNames = DateFormatSymbols.getInstance(locale).getMonths();
+        final String[] monthNames = DateFormatSymbols.getInstance(locale)
+                .getMonths();
         return convertArrayToList(monthNames);
     }
 
     @ModelAttribute("shortMonthNames")
     public List<String> getShortMonthsNames() {
         final Locale locale = LocaleContextHolder.getLocale();
-        final String[] monthNames = DateFormatSymbols.getInstance(locale).getShortMonths();
+        final String[] monthNames = DateFormatSymbols.getInstance(locale)
+                .getShortMonths();
         return convertArrayToList(monthNames);
     }
 
@@ -124,34 +127,41 @@ public class MeetingAttendanceController {
     @ModelAttribute("weekdaysNames")
     public List<String> getWeekdaysNames() {
         final Locale locale = LocaleContextHolder.getLocale();
-        final String[] weekdaysNames = DateFormatSymbols.getInstance(locale).getWeekdays();
+        final String[] weekdaysNames = DateFormatSymbols.getInstance(locale)
+                .getWeekdays();
         return convertArrayToList(weekdaysNames);
     }
 
     @GetMapping
     public String attendancePage(Model model) {
         final MeetingAttendanceForm meetingAttendance = new MeetingAttendanceForm();
-        
-        final Period currentPeriod = PeriodBuilder.create().build();
+
+        final Period currentPeriod = PeriodBuilder.create()
+                .build();
         model.addAttribute("attendance", meetingAttendance);
-        model.addAttribute("previousPeriod", Period.shiftPeriod(currentPeriod, -1).getPeriodValue());
-        model.addAttribute("nextPeriod", Period.shiftPeriod(currentPeriod, 1).getPeriodValue());
+        model.addAttribute("previousPeriod", Period.shiftPeriod(currentPeriod, -1)
+                .getPeriodValue());
+        model.addAttribute("nextPeriod", Period.shiftPeriod(currentPeriod, 1)
+                .getPeriodValue());
 
         return "attendances";
     }
 
     @GetMapping("/month")
     public String monthTabTemplate(Model model, @RequestParam(name = "period", required = false) Period period) {
-        if(period == null)
-            period = PeriodBuilder.create().build();
-        
+        if (period == null)
+            period = PeriodBuilder.create()
+                    .build();
+
         final MonthAttendance monthAttendance = monthAttendanceService.getByPeriod(congregationService.getCurrentCongregation(), period);
         MonthAttendanceVO attendanceVO = monthAttendanceTransformer.toViewObject(monthAttendance);
-        
+
         model.addAttribute("currentMonthAttendance", attendanceVO);
-        model.addAttribute("previousPeriod", Period.shiftPeriod(period, -1).getPeriodValue());
-        model.addAttribute("nextPeriod", Period.shiftPeriod(period, 1).getPeriodValue());
-        
+        model.addAttribute("previousPeriod", Period.shiftPeriod(period, -1)
+                .getPeriodValue());
+        model.addAttribute("nextPeriod", Period.shiftPeriod(period, 1)
+                .getPeriodValue());
+
         return "attendances :: tab_month";
     }
 
@@ -167,12 +177,17 @@ public class MeetingAttendanceController {
         meetingAttendance.setCongregation(congregationService.getCurrentCongregation());
 
         if (!result.hasErrors() && BooleanUtils.isTrue(meetingAttendance.getMemorial())) {
-            final Period attendancePeriod = PeriodBuilder.create().date(meetingAttendance.getDate()).build();
+            final Period attendancePeriod = PeriodBuilder.create()
+                    .date(meetingAttendance.getDate())
+                    .build();
             final TheocraticYear year = new TheocraticYear(attendancePeriod);
             final MeetingAttendance memorialAttendance = meetingAttendanceService.getMemorialAttendance(congregationService.getCurrentCongregation(), year);
 
             if (memorialAttendance != null) {
-                final Date attendanceDate = Date.from(memorialAttendance.getDate().atStartOfDay().atZone(ZoneId.systemDefault()).toInstant());
+                final Date attendanceDate = Date.from(memorialAttendance.getDate()
+                        .atStartOfDay()
+                        .atZone(ZoneId.systemDefault())
+                        .toInstant());
                 result.rejectValue("memorial", "validation.attendance.memorial", new Object[] { attendanceDate }, "validation.attendance.memorial.alt");
             }
         }
@@ -184,15 +199,13 @@ public class MeetingAttendanceController {
         try {
             meetingAttendanceService.save(meetingAttendance);
 
-            message = new SuccessAlertMessage();
-            message.setLabelCode("page.meeting.attendance.creation.success");
+            message = new SuccessAlertMessage("page.meeting.attendance.creation.success");
         } catch (DataIntegrityViolationException e) {
-            message = new DangerAlertMessage();
-            message.setLabelCode("page.meeting.attendance.already.exists");
-            logger.info(meetingAttendance + " " + e.getMostSpecificCause().getMessage());
+            message = new DangerAlertMessage("page.meeting.attendance.already.exists");
+            logger.info(meetingAttendance + " " + e.getMostSpecificCause()
+                    .getMessage());
         } catch (Exception e) {
-            message = new DangerAlertMessage();
-            message.setLabelCode("validation.error.internal");
+            message = new DangerAlertMessage("validation.error.internal");
             logger.error(String.format("Error saving attendance [%s]: %s", meetingAttendance, e.getMessage()));
         }
 
@@ -208,11 +221,9 @@ public class MeetingAttendanceController {
         try {
             meetingAttendanceService.deleteByIdentifier(identifier);
 
-            message = new SuccessAlertMessage();
-            message.setLabelCode("page.meeting.attendance.delete.success");
+            message = new SuccessAlertMessage("page.meeting.attendance.delete.success");
         } catch (Exception e) {
-            message = new DangerAlertMessage();
-            message.setLabelCode("validation.error.internal");
+            message = new DangerAlertMessage("validation.error.internal");
             model.addAttribute("message", message);
             logger.error(String.format("Error deleting attendance [%s]: ", identifier), e);
         }
@@ -223,10 +234,12 @@ public class MeetingAttendanceController {
     }
 
     private static List<String> convertArrayToList(final String[] array) {
-        final List<String> values = Arrays.stream(array).collect(Collectors.toList());
-        values.removeIf(String::isEmpty);
+        final List<String> values = Arrays.stream(array)
+                .filter(StringUtils::isNoneBlank)
+                .map(StringUtils::capitalize)
+                .collect(Collectors.toList());
 
-        return values.stream().map(item -> StringUtils.capitalize(item)).collect(Collectors.toList());
+        return values;
     }
 
     @Autowired

@@ -146,9 +146,11 @@
     <!-- START Modal Import data -->
     <div id="modal_import_publishers" class="modal fade" tabindex="-1" role="dialog">
         <div class="modal-dialog modal-lg" role="document">
-            <div class="modal-content">
+                <div class="modal-content">
                     <div class="modal-header">
-                        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
                         <h4 class="modal-title">Import data</h4>
                     </div>
                     <div class="modal-body" v-if="step == 1">
@@ -251,56 +253,53 @@
                     <div class="modal-body" v-if="step == 2">
                         <div class="col-sm-12">
                             <h4 class="m-t-2">
-                                <span class="badge badge-primary">4</span>&#160;
-                                Import Preview
+                                <span class="badge badge-primary">4</span>&#160; Import Preview
                             </h4>
                         </div>
                         <div class="row">
                             <div class="col-sm-12">
                                 <p>
-                                    You can see here the preview of the publishers import. There are {{importPreviewData.publishersCount}} publishers to import!<br/>
+                                    You can see here the preview of the publishers import. There are {{importPreviewData.publishersCount}} publishers to import!<br />
                                     {{importPreviewData.newPublishersCount}} are new!
                                 </p>
-                                <table class="table table-condensed table-striped table-hover table-responsive scroll-200 custom-scrollbar">
-                                    <thead>
-                                    <tr>
-                                        <th>Name</th>
-                                        <th>Firstname</th>
-                                        <th>Birthdate</th>
-                                        <th>Baptism</th>
-                                        <th>Email</th>
-                                        <th>Phone</th>
-                                        <th>Mobile phone</th>
-                                        <th></th>
-                                    </tr>
-                                    </thead>
-                                    <tbody>
-                                    <tr v-for="(publisher, index) in importPreviewData.publishersData">
-                                        <td class="col-sm-2">
-                                            <span class="text-white">{{publisher.name}}</span>
-                                        </td>
-                                        <td class="col-sm-2">
-                                            <span class="text-white">{{publisher.firstName}}</span>
-                                        </td>
-                                        <td class="col-sm-2">{{formatDate(publisher.birthDate)}}</td>
-                                        <td class="col-sm-2">{{formatDate(publisher.baptismDate)}}</td>
-                                        <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.email}}</span></td>
-                                        <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.phone}}</span></td>
-                                        <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.mobilePhone}}</span></td>
-                                        <td class="text-right col-sm-1">
-                                            <button type="button" class="btn btn-sm btn-default" @click="deleteRowToImport(index)">
-                                                <i class="fa fa-trash"></i>
-                                            </button>
-                                        </td>
-                                    </tr>
-                                    </tbody>
-                                </table>
+                                <div class="table-responsive">
+                                    <table class="table table-condensed table-striped table-hover scroll-200 custom-scrollbar">
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Firstname</th>
+                                                <th>Birthdate</th>
+                                                <th>Baptism</th>
+                                                <th>Email</th>
+                                                <th>Phone</th>
+                                                <th>Mobile phone</th>
+                                                <th></th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr v-for="(publisher, index) in importPreviewData.publishersData">
+                                                <td class="col-sm-2"><span class="text-white">{{publisher.name}}</span></td>
+                                                <td class="col-sm-2"><span class="text-white">{{publisher.firstName}}</span></td>
+                                                <td class="col-sm-2">{{formatDate(publisher.birthDate)}}</td>
+                                                <td class="col-sm-2">{{formatDate(publisher.baptismDate)}}</td>
+                                                <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.email}}</span></td>
+                                                <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.phone}}</span></td>
+                                                <td class="col-sm-2"><span v-if="publisher.contactDetail != null">{{publisher.contactDetail.mobilePhone}}</span></td>
+                                                <td class="text-right col-sm-1">
+                                                    <button type="button" class="btn btn-sm btn-default" @click="deleteRowToImport(index)">
+                                                        <i class="fa fa-trash"></i>
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
                             </div>
                         </div>
                         <button type="submit" class="btn btn-primary">Submit</button>
                     </div>
+                </div>
             </div>
-        </div>
     </div>
     <!-- END Modal Import data -->
 
@@ -318,7 +317,6 @@
     <script type="application/javascript" th:src="@{/plugins/fileinput/js/plugins/purify.min.js}"></script>
     <script type="application/javascript" th:src="@{/plugins/fileinput/js/fileinput.min.js}"></script>
     <script type="application/javascript" th:src="@{/plugins/fileinput/js/locales/fr.min.js}"></script>
-    <script type="application/javascript" th:src="@{/plugins/bootstrap-wizard/js/jquery.smartWizard.min.js}"></script>
     <script type="application/javascript" th:src="@{/plugins/vuejs/vue.js}"></script>
     <script th:inline="javascript">
         //<![CDATA[
@@ -362,8 +360,8 @@
                     $(this.$el).off().select2('destroy')
                 }
             });
-
-            vm = new Vue({
+            
+           vm = new Vue({
                 el: '#modal_import_publishers',
                 data: {
                     optionColumns: [],
@@ -510,8 +508,8 @@
                     maxFileSize: 3000
                 });
             });
-
-            (function () {
+            
+          	(function () {
                 if ($('.select2-input').length === 0) {
                     return;
                 }
